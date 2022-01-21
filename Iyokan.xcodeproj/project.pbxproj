@@ -1,0 +1,719 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		34DA1923279A87A700481176 /* IyokanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1922279A87A700481176 /* IyokanApp.swift */; };
+		34DA1925279A87A700481176 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1924279A87A700481176 /* ContentView.swift */; };
+		34DA1927279A87A800481176 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34DA1926279A87A800481176 /* Assets.xcassets */; };
+		34DA192A279A87A800481176 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34DA1929279A87A800481176 /* Preview Assets.xcassets */; };
+		34DA1935279A87A800481176 /* IyokanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1934279A87A800481176 /* IyokanTests.swift */; };
+		34DA193F279A87A800481176 /* IyokanUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA193E279A87A800481176 /* IyokanUITests.swift */; };
+		34DA1941279A87A800481176 /* IyokanUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1940279A87A800481176 /* IyokanUITestsLaunchTests.swift */; };
+		34DA194E279A8B4F00481176 /* Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA194D279A8B4F00481176 /* Decoder.swift */; };
+		34DA1952279A8BD000481176 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1951279A8BD000481176 /* AppData.swift */; };
+		34DA1954279A8BEE00481176 /* PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1953279A8BEE00481176 /* PlaylistView.swift */; };
+		34DA195B279A8C4F00481176 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1956279A8C4E00481176 /* Item.swift */; };
+		34DA195C279A8C4F00481176 /* DataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1957279A8C4E00481176 /* DataStorage.swift */; };
+		34DA195D279A8C4F00481176 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1958279A8C4E00481176 /* Song.swift */; };
+		34DA195E279A8C4F00481176 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1959279A8C4E00481176 /* Playlist.swift */; };
+		34DA195F279A8C4F00481176 /* Serializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA195A279A8C4F00481176 /* Serializer.swift */; };
+		34DA1962279A8C8E00481176 /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1961279A8C8E00481176 /* Helper.m */; };
+		34DA196D279A8DD800481176 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DA1968279A8DB400481176 /* libavcodec.a */; };
+		34DA196E279A8DE400481176 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DA196C279A8DB400481176 /* libavfilter.a */; };
+		34DA196F279A8DEB00481176 /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DA1969279A8DB400481176 /* libavformat.a */; };
+		34DA1970279A8DF800481176 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DA196B279A8DB400481176 /* libavutil.a */; };
+		34DA1971279A8E0000481176 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DA196A279A8DB400481176 /* libswresample.a */; };
+		34DA1973279A8E1400481176 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DA1972279A8E0D00481176 /* libbz2.tbd */; };
+		34DA1975279A8E2100481176 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DA1974279A8E1B00481176 /* libiconv.tbd */; };
+		34DA1977279A8E2C00481176 /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DA1976279A8E2700481176 /* liblzma.tbd */; };
+		34DA1979279A8E3700481176 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DA1978279A8E3000481176 /* libz.tbd */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		34DA1931279A87A800481176 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 34DA1917279A87A700481176 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 34DA191E279A87A700481176;
+			remoteInfo = Iyokan;
+		};
+		34DA193B279A87A800481176 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 34DA1917279A87A700481176 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 34DA191E279A87A700481176;
+			remoteInfo = Iyokan;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		34DA191F279A87A700481176 /* Iyokan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Iyokan.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		34DA1922279A87A700481176 /* IyokanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IyokanApp.swift; sourceTree = "<group>"; };
+		34DA1924279A87A700481176 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		34DA1926279A87A800481176 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		34DA1929279A87A800481176 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		34DA192B279A87A800481176 /* Iyokan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Iyokan.entitlements; sourceTree = "<group>"; };
+		34DA1930279A87A800481176 /* IyokanTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IyokanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		34DA1934279A87A800481176 /* IyokanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IyokanTests.swift; sourceTree = "<group>"; };
+		34DA193A279A87A800481176 /* IyokanUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IyokanUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		34DA193E279A87A800481176 /* IyokanUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IyokanUITests.swift; sourceTree = "<group>"; };
+		34DA1940279A87A800481176 /* IyokanUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IyokanUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		34DA194D279A8B4F00481176 /* Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decoder.swift; sourceTree = "<group>"; };
+		34DA1951279A8BD000481176 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
+		34DA1953279A8BEE00481176 /* PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistView.swift; sourceTree = "<group>"; };
+		34DA1956279A8C4E00481176 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		34DA1957279A8C4E00481176 /* DataStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStorage.swift; sourceTree = "<group>"; };
+		34DA1958279A8C4E00481176 /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
+		34DA1959279A8C4E00481176 /* Playlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
+		34DA195A279A8C4F00481176 /* Serializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializer.swift; sourceTree = "<group>"; };
+		34DA1960279A8C8D00481176 /* Iyokan-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Iyokan-Bridging-Header.h"; sourceTree = "<group>"; };
+		34DA1961279A8C8E00481176 /* Helper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Helper.m; sourceTree = "<group>"; };
+		34DA1964279A8CCA00481176 /* Helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Helper.h; sourceTree = "<group>"; };
+		34DA1968279A8DB400481176 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = FFmpeg/lib/libavcodec.a; sourceTree = "<group>"; };
+		34DA1969279A8DB400481176 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = FFmpeg/lib/libavformat.a; sourceTree = "<group>"; };
+		34DA196A279A8DB400481176 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = FFmpeg/lib/libswresample.a; sourceTree = "<group>"; };
+		34DA196B279A8DB400481176 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = FFmpeg/lib/libavutil.a; sourceTree = "<group>"; };
+		34DA196C279A8DB400481176 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = FFmpeg/lib/libavfilter.a; sourceTree = "<group>"; };
+		34DA1972279A8E0D00481176 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		34DA1974279A8E1B00481176 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		34DA1976279A8E2700481176 /* liblzma.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = liblzma.tbd; path = usr/lib/liblzma.tbd; sourceTree = SDKROOT; };
+		34DA1978279A8E3000481176 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		34DA191C279A87A700481176 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34DA1979279A8E3700481176 /* libz.tbd in Frameworks */,
+				34DA1973279A8E1400481176 /* libbz2.tbd in Frameworks */,
+				34DA1977279A8E2C00481176 /* liblzma.tbd in Frameworks */,
+				34DA1975279A8E2100481176 /* libiconv.tbd in Frameworks */,
+				34DA196F279A8DEB00481176 /* libavformat.a in Frameworks */,
+				34DA1971279A8E0000481176 /* libswresample.a in Frameworks */,
+				34DA196E279A8DE400481176 /* libavfilter.a in Frameworks */,
+				34DA1970279A8DF800481176 /* libavutil.a in Frameworks */,
+				34DA196D279A8DD800481176 /* libavcodec.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34DA192D279A87A800481176 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34DA1937279A87A800481176 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		34DA1916279A87A700481176 = {
+			isa = PBXGroup;
+			children = (
+				34DA1921279A87A700481176 /* Iyokan */,
+				34DA1933279A87A800481176 /* IyokanTests */,
+				34DA193D279A87A800481176 /* IyokanUITests */,
+				34DA1920279A87A700481176 /* Products */,
+				34DA1967279A8DB400481176 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		34DA1920279A87A700481176 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				34DA191F279A87A700481176 /* Iyokan.app */,
+				34DA1930279A87A800481176 /* IyokanTests.xctest */,
+				34DA193A279A87A800481176 /* IyokanUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		34DA1921279A87A700481176 /* Iyokan */ = {
+			isa = PBXGroup;
+			children = (
+				34DA1922279A87A700481176 /* IyokanApp.swift */,
+				34DA1951279A8BD000481176 /* AppData.swift */,
+				34DA194D279A8B4F00481176 /* Decoder.swift */,
+				34DA194F279A8B7A00481176 /* Views */,
+				34DA1955279A8C0B00481176 /* Models */,
+				34DA1963279A8C9F00481176 /* ObjC */,
+				34DA1965279A8CE000481176 /* Bridging Headers */,
+				34DA1966279A8D0100481176 /* Others */,
+				34DA1928279A87A800481176 /* Preview Content */,
+			);
+			path = Iyokan;
+			sourceTree = "<group>";
+		};
+		34DA1928279A87A800481176 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				34DA1929279A87A800481176 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		34DA1933279A87A800481176 /* IyokanTests */ = {
+			isa = PBXGroup;
+			children = (
+				34DA1934279A87A800481176 /* IyokanTests.swift */,
+			);
+			path = IyokanTests;
+			sourceTree = "<group>";
+		};
+		34DA193D279A87A800481176 /* IyokanUITests */ = {
+			isa = PBXGroup;
+			children = (
+				34DA193E279A87A800481176 /* IyokanUITests.swift */,
+				34DA1940279A87A800481176 /* IyokanUITestsLaunchTests.swift */,
+			);
+			path = IyokanUITests;
+			sourceTree = "<group>";
+		};
+		34DA194F279A8B7A00481176 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				34DA1924279A87A700481176 /* ContentView.swift */,
+				34DA1953279A8BEE00481176 /* PlaylistView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		34DA1955279A8C0B00481176 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				34DA1957279A8C4E00481176 /* DataStorage.swift */,
+				34DA1956279A8C4E00481176 /* Item.swift */,
+				34DA1959279A8C4E00481176 /* Playlist.swift */,
+				34DA195A279A8C4F00481176 /* Serializer.swift */,
+				34DA1958279A8C4E00481176 /* Song.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		34DA1963279A8C9F00481176 /* ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				34DA1961279A8C8E00481176 /* Helper.m */,
+				34DA1964279A8CCA00481176 /* Helper.h */,
+			);
+			name = ObjC;
+			sourceTree = "<group>";
+		};
+		34DA1965279A8CE000481176 /* Bridging Headers */ = {
+			isa = PBXGroup;
+			children = (
+				34DA1960279A8C8D00481176 /* Iyokan-Bridging-Header.h */,
+			);
+			name = "Bridging Headers";
+			sourceTree = "<group>";
+		};
+		34DA1966279A8D0100481176 /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				34DA1926279A87A800481176 /* Assets.xcassets */,
+				34DA192B279A87A800481176 /* Iyokan.entitlements */,
+			);
+			name = Others;
+			sourceTree = "<group>";
+		};
+		34DA1967279A8DB400481176 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				34DA1978279A8E3000481176 /* libz.tbd */,
+				34DA1976279A8E2700481176 /* liblzma.tbd */,
+				34DA1974279A8E1B00481176 /* libiconv.tbd */,
+				34DA1972279A8E0D00481176 /* libbz2.tbd */,
+				34DA1968279A8DB400481176 /* libavcodec.a */,
+				34DA196C279A8DB400481176 /* libavfilter.a */,
+				34DA1969279A8DB400481176 /* libavformat.a */,
+				34DA196B279A8DB400481176 /* libavutil.a */,
+				34DA196A279A8DB400481176 /* libswresample.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		34DA191E279A87A700481176 /* Iyokan */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34DA1944279A87A800481176 /* Build configuration list for PBXNativeTarget "Iyokan" */;
+			buildPhases = (
+				34DA191B279A87A700481176 /* Sources */,
+				34DA191C279A87A700481176 /* Frameworks */,
+				34DA191D279A87A700481176 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Iyokan;
+			productName = Iyokan;
+			productReference = 34DA191F279A87A700481176 /* Iyokan.app */;
+			productType = "com.apple.product-type.application";
+		};
+		34DA192F279A87A800481176 /* IyokanTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34DA1947279A87A800481176 /* Build configuration list for PBXNativeTarget "IyokanTests" */;
+			buildPhases = (
+				34DA192C279A87A800481176 /* Sources */,
+				34DA192D279A87A800481176 /* Frameworks */,
+				34DA192E279A87A800481176 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				34DA1932279A87A800481176 /* PBXTargetDependency */,
+			);
+			name = IyokanTests;
+			productName = IyokanTests;
+			productReference = 34DA1930279A87A800481176 /* IyokanTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		34DA1939279A87A800481176 /* IyokanUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34DA194A279A87A800481176 /* Build configuration list for PBXNativeTarget "IyokanUITests" */;
+			buildPhases = (
+				34DA1936279A87A800481176 /* Sources */,
+				34DA1937279A87A800481176 /* Frameworks */,
+				34DA1938279A87A800481176 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				34DA193C279A87A800481176 /* PBXTargetDependency */,
+			);
+			name = IyokanUITests;
+			productName = IyokanUITests;
+			productReference = 34DA193A279A87A800481176 /* IyokanUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		34DA1917279A87A700481176 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1320;
+				LastUpgradeCheck = 1320;
+				TargetAttributes = {
+					34DA191E279A87A700481176 = {
+						CreatedOnToolsVersion = 13.2.1;
+						LastSwiftMigration = 1320;
+					};
+					34DA192F279A87A800481176 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = 34DA191E279A87A700481176;
+					};
+					34DA1939279A87A800481176 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = 34DA191E279A87A700481176;
+					};
+				};
+			};
+			buildConfigurationList = 34DA191A279A87A700481176 /* Build configuration list for PBXProject "Iyokan" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 34DA1916279A87A700481176;
+			productRefGroup = 34DA1920279A87A700481176 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				34DA191E279A87A700481176 /* Iyokan */,
+				34DA192F279A87A800481176 /* IyokanTests */,
+				34DA1939279A87A800481176 /* IyokanUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		34DA191D279A87A700481176 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34DA192A279A87A800481176 /* Preview Assets.xcassets in Resources */,
+				34DA1927279A87A800481176 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34DA192E279A87A800481176 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34DA1938279A87A800481176 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		34DA191B279A87A700481176 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34DA1925279A87A700481176 /* ContentView.swift in Sources */,
+				34DA194E279A8B4F00481176 /* Decoder.swift in Sources */,
+				34DA195E279A8C4F00481176 /* Playlist.swift in Sources */,
+				34DA1923279A87A700481176 /* IyokanApp.swift in Sources */,
+				34DA1952279A8BD000481176 /* AppData.swift in Sources */,
+				34DA195D279A8C4F00481176 /* Song.swift in Sources */,
+				34DA195B279A8C4F00481176 /* Item.swift in Sources */,
+				34DA195C279A8C4F00481176 /* DataStorage.swift in Sources */,
+				34DA1962279A8C8E00481176 /* Helper.m in Sources */,
+				34DA1954279A8BEE00481176 /* PlaylistView.swift in Sources */,
+				34DA195F279A8C4F00481176 /* Serializer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34DA192C279A87A800481176 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34DA1935279A87A800481176 /* IyokanTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34DA1936279A87A800481176 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34DA193F279A87A800481176 /* IyokanUITests.swift in Sources */,
+				34DA1941279A87A800481176 /* IyokanUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		34DA1932279A87A800481176 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 34DA191E279A87A700481176 /* Iyokan */;
+			targetProxy = 34DA1931279A87A800481176 /* PBXContainerItemProxy */;
+		};
+		34DA193C279A87A800481176 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 34DA191E279A87A700481176 /* Iyokan */;
+			targetProxy = 34DA193B279A87A800481176 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		34DA1942279A87A800481176 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		34DA1943279A87A800481176 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		34DA1945279A87A800481176 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Iyokan/Iyokan.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Iyokan/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FFmpeg/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.Iyokan-app.Iyokan";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Iyokan/Iyokan-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/FFmpeg/include";
+			};
+			name = Debug;
+		};
+		34DA1946279A87A800481176 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Iyokan/Iyokan.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Iyokan/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FFmpeg/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.Iyokan-app.Iyokan";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Iyokan/Iyokan-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/FFmpeg/include";
+			};
+			name = Release;
+		};
+		34DA1948279A87A800481176 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.Iyokan-app.IyokanTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Iyokan.app/Contents/MacOS/Iyokan";
+			};
+			name = Debug;
+		};
+		34DA1949279A87A800481176 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.Iyokan-app.IyokanTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Iyokan.app/Contents/MacOS/Iyokan";
+			};
+			name = Release;
+		};
+		34DA194B279A87A800481176 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.Iyokan-app.IyokanUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Iyokan;
+			};
+			name = Debug;
+		};
+		34DA194C279A87A800481176 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.Iyokan-app.IyokanUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Iyokan;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		34DA191A279A87A700481176 /* Build configuration list for PBXProject "Iyokan" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34DA1942279A87A800481176 /* Debug */,
+				34DA1943279A87A800481176 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34DA1944279A87A800481176 /* Build configuration list for PBXNativeTarget "Iyokan" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34DA1945279A87A800481176 /* Debug */,
+				34DA1946279A87A800481176 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34DA1947279A87A800481176 /* Build configuration list for PBXNativeTarget "IyokanTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34DA1948279A87A800481176 /* Debug */,
+				34DA1949279A87A800481176 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34DA194A279A87A800481176 /* Build configuration list for PBXNativeTarget "IyokanUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34DA194B279A87A800481176 /* Debug */,
+				34DA194C279A87A800481176 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 34DA1917279A87A700481176 /* Project object */;
+}

@@ -1,6 +1,6 @@
 //
 //  Song.swift
-//  Dimko
+//  Iyokan
 //
 //  Created by uiryuu on 2021/07/06.
 //

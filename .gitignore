@@ -1,6 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/macos,swift,swiftpm,xcode
-# Edit at https://www.toptal.com/developers/gitignore?templates=macos,swift,swiftpm,xcode
+# Created by https://www.toptal.com/developers/gitignore/api/macos,swift,xcode
+# Edit at https://www.toptal.com/developers/gitignore?templates=macos,swift,xcode
 
 ### macOS ###
 # General
@@ -114,31 +114,21 @@ fastlane/test_output
 
 iOSInjectionProject/
 
-### SwiftPM ###
-Packages
-xcuserdata
-*.xcodeproj
-
-
 ### Xcode ###
-# Xcode
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
-
-
-
-## Gcc Patch
-/*.gcno
+## Xcode 8 and earlier
 
 ### Xcode Patch ###
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
 !*.xcworkspace/contents.xcworkspacedata
+/*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,swift,swiftpm,xcode
+# End of https://www.toptal.com/developers/gitignore/api/macos,swift,xcode
 
 # Do not track header files and static libraries
 FFmpeg/*
 !FFmpeg/Makefile
+

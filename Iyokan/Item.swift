@@ -1,6 +1,6 @@
 //
 //  Item.swift
-//  Dimko
+//  Iyokan
 //
 //  Created by uiryuu on 2021/07/07.
 //

@@ -1,6 +1,6 @@
 //
 //  Serializer.swift
-//  Dimko
+//  Iyokan
 //
 //  Created by uiryuu on 2021/07/06.
 //
@@ -10,7 +10,7 @@ import AVFoundation
 import os
 
 class Serializer: ObservableObject {
-    private let serializationQueue = DispatchQueue(label: "io.dimko.dimko.serialization.queue", qos: .userInteractive)
+    private let serializationQueue = DispatchQueue(label: "org.iyokan-app.iyokan.serialization.queue", qos: .userInteractive)
 
     // The playback infrastructure
     private let renderer = AVSampleBufferAudioRenderer()

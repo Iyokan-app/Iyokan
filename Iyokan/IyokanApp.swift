@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct DimkoApp: App {
+struct IyokanApp: App {
     @StateObject var dataStorage = DataStorage()
 
     var body: some Scene {

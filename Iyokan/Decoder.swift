@@ -1,6 +1,6 @@
 //
 //  Helper.m
-//  Dimko
+//  Iyokan
 //
 //  Created by uiryuu on 2021/07/02.
 //
@@ -8,7 +8,7 @@
 import Foundation
 import AVFoundation
 
-fileprivate let serializationQueue = DispatchQueue(label: "dimko.serialization.queue")
+fileprivate let serializationQueue = DispatchQueue(label: "iyokan.serialization.queue")
 
 class Decoder {
     private let helper: Helper

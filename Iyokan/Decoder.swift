@@ -112,10 +112,10 @@ class Decoder {
             mSampleRate: Float64(sampleRate),
             mFormatID: kAudioFormatLinearPCM,
             mFormatFlags: kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked,
-            mBytesPerPacket: 4,
+            mBytesPerPacket: 8,
             mFramesPerPacket: 1,
-            mBytesPerFrame: 4,
-            mChannelsPerFrame: 1,
+            mBytesPerFrame: 8,
+            mChannelsPerFrame: 2,
             mBitsPerChannel: 32,
             mReserved: 0)
 

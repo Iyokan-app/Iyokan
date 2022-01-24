@@ -66,8 +66,6 @@ int audioStreamIndex = -1;
     if (!codec) return NO;
 
     codecContext = avcodec_alloc_context3(codec);
-    codecContext->request_sample_fmt = AV_SAMPLE_FMT_S16;
-    codecContext->request_channel_layout = 0;
 
     AVDictionary *dict = NULL;
     int ret = av_dict_set(&dict, "ac", "2", 0);
@@ -100,18 +98,24 @@ int audioStreamIndex = -1;
     //    int outChannelCount = av_get_channel_layout_nb_channels(outChannelLayout);
 }
 
-- (nullable AVFrame *) nextFrame {
-    if (!codecIsOpen) return NULL;
+- (BOOL) sendPacket {
+    if (!codecIsOpen) return NO;
     int ret = 0;
     while (av_read_frame(formatContext, packet) >= 0) {
         if (packet->stream_index != audioStreamIndex) continue;
         ret = avcodec_send_packet(codecContext, packet);
-        if (ret < 0) return NULL;
-        ret = avcodec_receive_frame(codecContext, frame);
-        if (ret < 0) return NULL;
-        return frame;
+        return ret >= 0;
     }
-    return NULL;
+    return NO;
+}
+
+- (nullable AVFrame *) nextFrame {
+    if (!codecIsOpen) return NULL;
+    int ret = avcodec_receive_frame(codecContext, frame);
+    if (!_format)
+        _format = frame->format;
+    if (ret < 0) return NULL;
+    return frame;
 }
 
 - (void) dealloc {

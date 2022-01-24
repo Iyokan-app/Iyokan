@@ -34,20 +34,22 @@ class Decoder {
         var presentationTimeStamp = CMTime(value: 0, timescale: sampleRate)
 
         do {
-            while (true) {
-                guard let frame = helper.nextFrame()?.pointee else { break }
-                guard let data = frame.data.0 else { return }
-                let sampleBuffer = try makeSampleBuffer(from: data,
-                                                        linesize: Int(frame.linesize.0),
-                                                        presentationTimeStamp: presentationTimeStamp,
-                                                        samples: frame.nb_samples,
-                                                        sampleRate: sampleRate)
+            while (helper.sendPacket()) {
+                while (true) {
+                    guard let frame = helper.nextFrame()?.pointee else { break }
+                    guard let data = frame.data.0 else { return }
+                    let sampleBuffer = try makeSampleBuffer(from: data,
+                                                            linesize: Int(frame.linesize.0),
+                                                            presentationTimeStamp: presentationTimeStamp,
+                                                            samples: frame.nb_samples,
+                                                            sampleRate: sampleRate)
 
-                let pts = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
-                let duration = CMSampleBufferGetOutputDuration(sampleBuffer)
-                presentationTimeStamp = pts + duration
+                    let pts = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
+                    let duration = CMSampleBufferGetOutputDuration(sampleBuffer)
+                    presentationTimeStamp = pts + duration
 
-                buffers.append(sampleBuffer)
+                    buffers.append(sampleBuffer)
+                }
             }
         } catch let e {
             print(e)
@@ -76,6 +78,49 @@ class Decoder {
     func nextSampleBuffer() -> CMSampleBuffer? {
         guard !buffers.isEmpty else { return nil }
         return buffers.removeFirst()
+    }
+
+    private func getASBD(from format: AVSampleFormat) -> AudioStreamBasicDescription {
+        var desc = AudioStreamBasicDescription()
+        desc.mSampleRate = Float64(helper.sampleRate)
+        desc.mFormatID = kAudioFormatLinearPCM
+
+        switch format {
+        case AV_SAMPLE_FMT_U8, AV_SAMPLE_FMT_U8P:
+            desc.mBitsPerChannel = 8
+        case AV_SAMPLE_FMT_S16, AV_SAMPLE_FMT_S16P:
+            desc.mBitsPerChannel = 16
+        case AV_SAMPLE_FMT_S32, AV_SAMPLE_FMT_S32P, AV_SAMPLE_FMT_FLT, AV_SAMPLE_FMT_FLTP:
+            desc.mBitsPerChannel = 32
+        case AV_SAMPLE_FMT_S64, AV_SAMPLE_FMT_S64P, AV_SAMPLE_FMT_DBL, AV_SAMPLE_FMT_DBLP:
+            desc.mBitsPerChannel = 64
+        default:
+            break
+        }
+
+        // set flags
+        if ([AV_SAMPLE_FMT_FLT, AV_SAMPLE_FMT_DBL, AV_SAMPLE_FMT_FLTP, AV_SAMPLE_FMT_DBLP].contains(format)) {
+            desc.mFormatFlags |= kAudioFormatFlagIsFloat
+        }
+
+        if ([AV_SAMPLE_FMT_S16, AV_SAMPLE_FMT_S16P, AV_SAMPLE_FMT_S32, AV_SAMPLE_FMT_S32P, AV_SAMPLE_FMT_S64, AV_SAMPLE_FMT_S64P].contains(format)) {
+            desc.mFormatFlags |= kAudioFormatFlagIsSignedInteger
+        }
+
+        if ([AV_SAMPLE_FMT_U8P, AV_SAMPLE_FMT_S16P, AV_SAMPLE_FMT_S32P, AV_SAMPLE_FMT_FLTP, AV_SAMPLE_FMT_DBLP, AV_SAMPLE_FMT_S64P].contains(format)) {
+            desc.mFormatFlags |= kAudioFormatFlagIsNonInterleaved
+            desc.mChannelsPerFrame = 1
+            desc.mBytesPerFrame = desc.mBitsPerChannel / 8
+            desc.mFramesPerPacket = desc.mChannelsPerFrame
+        } else {
+            desc.mChannelsPerFrame = 2
+            desc.mBytesPerFrame = desc.mBitsPerChannel / 8 * desc.mChannelsPerFrame
+            desc.mFramesPerPacket = 1
+        }
+
+        desc.mBytesPerPacket = desc.mFramesPerPacket * desc.mBytesPerFrame
+
+        return desc
     }
 
     func makeSampleBuffer(from data: UnsafeRawPointer, linesize: Int, presentationTimeStamp time: CMTime, samples: Int32, sampleRate: Int32) throws -> CMSampleBuffer {
@@ -108,16 +153,7 @@ class Decoder {
 
         try checkErr(status)
 
-        var streamDescription = AudioStreamBasicDescription(
-            mSampleRate: Float64(sampleRate),
-            mFormatID: kAudioFormatLinearPCM,
-            mFormatFlags: kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked,
-            mBytesPerPacket: 8,
-            mFramesPerPacket: 1,
-            mBytesPerFrame: 8,
-            mChannelsPerFrame: 2,
-            mBitsPerChannel: 32,
-            mReserved: 0)
+        var streamDescription = getASBD(from: helper.format)
 
         var audioFormatDescription: CMAudioFormatDescription? = nil
 
@@ -157,7 +193,7 @@ class Decoder {
         return sampleBuffer!
     }
 
-    func checkErr(_ status: OSStatus) throws {
+    private func checkErr(_ status: OSStatus) throws {
         guard status == noErr else { throw NSError(domain: NSOSStatusErrorDomain, code: Int(status))}
     }
 }

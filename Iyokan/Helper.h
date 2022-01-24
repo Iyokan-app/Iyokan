@@ -17,11 +17,13 @@
 @interface Helper: NSObject
 
 @property int sampleRate;
+@property enum AVSampleFormat format;
 
 - (id _Nullable) init:(NSString * _Nonnull) filePath;
 - (BOOL) openCodec;
 - (NSDictionary<NSString *, NSString *> * _Nonnull) getMetadata;
 
+- (BOOL) sendPacket;
 - (nullable AVFrame *) nextFrame;
 
 @end

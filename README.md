@@ -1,8 +1,9 @@
 # Iyokan
 
 ## Compilation
+
 ```shell
-cd FFmpeg
-make install
+bash build_ffmpeg.sh
 ```
+
 Then run in Xcode.

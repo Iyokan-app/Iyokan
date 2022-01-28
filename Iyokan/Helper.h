@@ -9,6 +9,7 @@
 #define Helper_h
 
 #import <Foundation/Foundation.h>
+#import <CoreMedia/CoreMedia.h>
 
 #import "libavcodec/avcodec.h"
 #import "libavformat/avformat.h"
@@ -17,6 +18,7 @@
 @interface Helper: NSObject
 
 @property int sampleRate;
+@property CMTime duration;
 @property enum AVSampleFormat format;
 
 - (id _Nullable) init:(NSString * _Nonnull) filePath;

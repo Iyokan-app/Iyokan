@@ -18,8 +18,7 @@ struct Song {
         self.trackNo = (metadata["track"]! as NSString).integerValue
         self.artist = metadata["artist"] ?? "Unkown Artist"
 
-        // FIXME
-        self.duration = CMTime.init(value: 10000, timescale: 100)
+        self.duration = decoder.getDuration()
     }
     let path: String
     let decoder: Decoder

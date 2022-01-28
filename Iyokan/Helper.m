@@ -75,6 +75,8 @@ int audioStreamIndex = -1;
     if (ret < 0) return NO;
 
     _sampleRate = codecParams->sample_rate;
+    _duration.timescale = AV_TIME_BASE;
+    _duration.value = formatContext->duration;
 
     packet = av_packet_alloc();
     frame = av_frame_alloc();

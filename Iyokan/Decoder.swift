@@ -15,15 +15,18 @@ class Decoder {
 
     init(_ filePath: String) {
         self.helper = Helper(filePath)!
+        self.helper.openCodec()
     }
 
     func getMetadata() -> Dictionary<String, String> {
         return helper.getMetadata()
     }
 
-    func decode() {
-        helper.openCodec()
+    func getDuration() -> CMTime {
+        return helper.duration
+    }
 
+    func decode() {
         let sampleRate = Int32(helper.sampleRate)
         var presentationTimeStamp = CMTime(value: 0, timescale: sampleRate)
 

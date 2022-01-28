@@ -6,16 +6,9 @@
 //
 
 import Foundation
+import CoreMedia
 
-struct Song: Identifiable, Hashable {
-    static func == (lhs: Song, rhs: Song) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
+struct Song {
     init(_ path: String) {
         self.path = path
         self.decoder = Decoder(path)
@@ -24,8 +17,10 @@ struct Song: Identifiable, Hashable {
         self.title = metadata["title"] ?? "Unkown"
         self.trackNo = (metadata["track"]! as NSString).integerValue
         self.artist = metadata["artist"] ?? "Unkown Artist"
+
+        // FIXME
+        self.duration = CMTime.init(value: 10000, timescale: 100)
     }
-    let id = UUID()
     let path: String
     let decoder: Decoder
 
@@ -33,4 +28,6 @@ struct Song: Identifiable, Hashable {
     let title: String
     let trackNo: Int
     let artist: String
+
+    let duration: CMTime
 }

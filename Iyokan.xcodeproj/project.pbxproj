@@ -145,7 +145,7 @@
 			children = (
 				34DA1922279A87A700481176 /* IyokanApp.swift */,
 				34DA1951279A8BD000481176 /* AppData.swift */,
-				34DA194D279A8B4F00481176 /* Decoder.swift */,
+				34E3AA0327A434F700ADC90A /* Components */,
 				34DA194F279A8B7A00481176 /* Views */,
 				34DA1955279A8C0B00481176 /* Models */,
 				34DA1963279A8C9F00481176 /* ObjC */,
@@ -194,10 +194,9 @@
 			isa = PBXGroup;
 			children = (
 				34DA1957279A8C4E00481176 /* DataStorage.swift */,
+				34DA1958279A8C4E00481176 /* Song.swift */,
 				34DA1956279A8C4E00481176 /* Item.swift */,
 				34DA1959279A8C4E00481176 /* Playlist.swift */,
-				34DA195A279A8C4F00481176 /* Serializer.swift */,
-				34DA1958279A8C4E00481176 /* Song.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -242,6 +241,15 @@
 				34DA196A279A8DB400481176 /* libswresample.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		34E3AA0327A434F700ADC90A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				34DA194D279A8B4F00481176 /* Decoder.swift */,
+				34DA195A279A8C4F00481176 /* Serializer.swift */,
+			);
+			name = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

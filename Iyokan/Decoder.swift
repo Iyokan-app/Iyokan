@@ -8,16 +8,10 @@
 import Foundation
 import AVFoundation
 
-fileprivate let serializationQueue = DispatchQueue(label: "iyokan.serialization.queue")
-
 class Decoder {
     private let helper: Helper
 
     var buffers: [CMSampleBuffer] = []
-
-    // audio rendering infrustracture
-    let renderSynchronizer = AVSampleBufferRenderSynchronizer()
-    let audioRenderer = AVSampleBufferAudioRenderer()
 
     init(_ filePath: String) {
         self.helper = Helper(filePath)!
@@ -53,25 +47,6 @@ class Decoder {
             }
         } catch let e {
             print(e)
-        }
-        subscribeToAudioRenderer()
-        startPlayback()
-    }
-
-    func subscribeToAudioRenderer() {
-        renderSynchronizer.addRenderer(audioRenderer)
-        audioRenderer.requestMediaDataWhenReady(on: serializationQueue) {
-            while self.audioRenderer.isReadyForMoreMediaData {
-                if let sampleBuffer = self.nextSampleBuffer() {
-                    self.audioRenderer.enqueue(sampleBuffer)
-                }
-            }
-        }
-    }
-
-    func startPlayback() {
-        serializationQueue.async {
-            self.renderSynchronizer.rate = 1
         }
     }
 

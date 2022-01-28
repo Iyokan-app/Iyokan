@@ -12,7 +12,7 @@ class Playlist: Identifiable, ObservableObject, Hashable {
         lhs.id == rhs.id
     }
 
-    init(name: String, items: [Song]?) {
+    init(name: String, items: [Item]?) {
         self.name = name
         self.items = items ?? []
     }
@@ -22,11 +22,15 @@ class Playlist: Identifiable, ObservableObject, Hashable {
     }
 
     func addMedia(urls: [URL]) {
-        urls.forEach{ items.append(Song($0.path)) }
+        urls.forEach{
+            let song = Song($0.path)
+            song.decoder.decode()
+            items.append(Item(song: song, fromOffset: .zero))
+        }
         objectWillChange.send()
     }
 
     let id = UUID()
     var name: String = ""
-    var items: [Song] = []
+    var items: [Item] = []
 }

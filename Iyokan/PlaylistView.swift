@@ -9,21 +9,20 @@ import Foundation
 import SwiftUI
 import AVFoundation
 
-var decoder: Decoder?
+let serializer = Serializer()
 
 struct PlaylistView: View {
 
     @ObservedObject var playlist: Playlist
 
-    @State private var selectedSongs = Set<Song.ID>()
-    @State private var sortOrder = [KeyPathComparator(\Song.trackNo)]
+    @State private var selectedItems = Set<Item.ID>()
+    @State private var sortOrder = [KeyPathComparator(\Item.song.trackNo)]
     @State private var position: Double = 1
 
     func togglePlay() {
         guard !playlist.items.isEmpty else { return }
-        let song = playlist.items[0]
-        decoder = Decoder(song.path)
-        decoder!.decode()
+        serializer.items = playlist.items
+        serializer.startPlayback()
     }
 
     func previous() {
@@ -47,12 +46,12 @@ struct PlaylistView: View {
 
     var body: some View {
         VStack {
-            Table(playlist.items, selection: $selectedSongs, sortOrder: $sortOrder) {
-                TableColumn("#", value: \.trackNo) {
-                    Text(String($0.trackNo))
+            Table(playlist.items, selection: $selectedItems, sortOrder: $sortOrder) {
+                TableColumn("#", value: \.song.trackNo) {
+                    Text(String($0.song.trackNo))
                 }.width(min: 10, ideal: 10, max: 50)
-                TableColumn("Title", value: \.title)
-                TableColumn("Artrist", value: \.artist)
+                TableColumn("Title", value: \.song.title)
+                TableColumn("Artrist", value: \.song.artist)
             }
             .onChange(of: sortOrder) {
                 playlist.items.sort(using: $0)

@@ -21,8 +21,12 @@ struct PlaylistView: View {
 
     func togglePlay() {
         guard !playlist.items.isEmpty else { return }
-        serializer.items = playlist.items
-        serializer.startPlayback()
+        if (serializer.isPlaying) {
+            serializer.stopPlayback()
+        } else {
+            serializer.items = playlist.items
+            serializer.startPlayback()
+        }
     }
 
     func previous() {

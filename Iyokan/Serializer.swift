@@ -34,19 +34,13 @@ class Serializer: ObservableObject {
     // logger
     private let logger = Logger(subsystem: "Serializer", category: "Playback")
 
+    var isPlaying: Bool { synchronizer.rate != 0 }
+
     // published states
     @Published var playerState: Bool = false
 
     init() {
         synchronizer.addRenderer(renderer)
-        renderer.requestMediaDataWhenReady(on: serializationQueue) {
-            while self.renderer.isReadyForMoreMediaData {
-                if let sampleBuffer = self.currentItem?.song.decoder.nextSampleBuffer() {
-                    self.renderer.enqueue(sampleBuffer)
-                }
-            }
-        }
-
 //        automaticFlushObserver = NotificationCenter.default.addObserver(forName: .AVSampleBufferAudioRendererWasFlushedAutomatically,
 //                                                                        object: renderer,
 //                                                                        queue: nil) { [unowned self] notification in
@@ -58,8 +52,31 @@ class Serializer: ObservableObject {
     }
 
     func startPlayback() {
+        renderer.requestMediaDataWhenReady(on: serializationQueue) {
+            while self.renderer.isReadyForMoreMediaData {
+                if let sampleBuffer = self.currentItem?.song.decoder.nextSampleBuffer() {
+                    self.renderer.enqueue(sampleBuffer)
+                }
+            }
+        }
         serializationQueue.async {
             self.synchronizer.rate = 1
         }
+    }
+
+    func stopPlayback() {
+        serializationQueue.async {
+            print("Stopping playing")
+            self.stopEnqueuing()
+        }
+    }
+
+
+    /// - Tag: Private functions
+
+    private func stopEnqueuing() {
+        synchronizer.rate = 0
+        renderer.stopRequestingMediaData()
+        renderer.flush()
     }
 }

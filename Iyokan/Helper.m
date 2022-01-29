@@ -77,6 +77,7 @@ int audioStreamIndex = -1;
     _sampleRate = codecParams->sample_rate;
     _duration.timescale = AV_TIME_BASE;
     _duration.value = formatContext->duration;
+    _duration.flags |= kCMTimeFlags_Valid;
 
     packet = av_packet_alloc();
     frame = av_frame_alloc();

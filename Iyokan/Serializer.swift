@@ -30,14 +30,14 @@ class Serializer: ObservableObject {
 
     // observers
     private var automaticFlushObserver: NSObjectProtocol!
+    private var periodicObserver: Any?
 
     // logger
     private let logger = Logger(subsystem: "Serializer", category: "Playback")
 
     var isPlaying: Bool { synchronizer.rate != 0 }
 
-    // published states
-    @Published var playerState: Bool = false
+    @Published var percentage: Double = 0.0
 
     init() {
         synchronizer.addRenderer(renderer)
@@ -53,7 +53,7 @@ class Serializer: ObservableObject {
 
     func startPlayback() {
         renderer.requestMediaDataWhenReady(on: serializationQueue) {
-            while self.renderer.isReadyForMoreMediaData {
+         while self.renderer.isReadyForMoreMediaData {
                 if let sampleBuffer = self.currentItem?.song.decoder.nextSampleBuffer() {
                     self.renderer.enqueue(sampleBuffer)
                 }
@@ -61,6 +61,7 @@ class Serializer: ObservableObject {
         }
         serializationQueue.async {
             self.synchronizer.rate = 1
+            self.updateCurrentPlayingItem(at: .zero)
         }
     }
 
@@ -78,5 +79,25 @@ class Serializer: ObservableObject {
         synchronizer.rate = 0
         renderer.stopRequestingMediaData()
         renderer.flush()
+    }
+
+    private func updateCurrentPlayingItem(at boundaryTime: CMTime) {
+        if let observer = periodicObserver {
+            synchronizer.removeTimeObserver(observer)
+            periodicObserver = nil
+        }
+
+        if items.first != nil {
+            let interval = CMTime(seconds: 0.1, preferredTimescale: 1000)
+            periodicObserver = synchronizer.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [unowned self] _ in
+                if let currentSong = currentItem?.song {
+                    let currentTime = CMTimeGetSeconds(synchronizer.currentTime())
+                    let duration = CMTimeGetSeconds(currentSong.duration)
+                    percentage = currentTime / duration
+                }
+            }
+        } else {
+            synchronizer.rate = 0
+        }
     }
 }

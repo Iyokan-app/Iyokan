@@ -9,11 +9,10 @@ import Foundation
 import SwiftUI
 import AVFoundation
 
-let serializer = Serializer()
-
 struct PlaylistView: View {
 
     @ObservedObject var playlist: Playlist
+    @ObservedObject var serializer = Serializer()
 
     @State private var selectedItems = Set<Item.ID>()
     @State private var sortOrder = [KeyPathComparator(\Item.song.trackNo)]
@@ -48,6 +47,12 @@ struct PlaylistView: View {
         }
     }
 
+    func timeOffsetChanged(newTime: CMTime) {
+        if let currentItem = serializer.currentItem {
+            position = newTime.seconds / currentItem.song.duration.seconds
+        }
+    }
+
     var body: some View {
         VStack {
             Table(playlist.items, selection: $selectedItems, sortOrder: $sortOrder) {
@@ -60,7 +65,7 @@ struct PlaylistView: View {
             .onChange(of: sortOrder) {
                 playlist.items.sort(using: $0)
             }
-            Slider(value: $position, in: 0...100, onEditingChanged: {_ in })
+            Slider(value: $serializer.percentage, in: 0...1, onEditingChanged: {_ in })
                 .padding(.horizontal, nil)
             HStack {
                 Button(action: previous) {

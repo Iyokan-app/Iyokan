@@ -14,7 +14,7 @@ struct Song {
         let decoder = Decoder(path)
         let metadata = decoder.getMetadata()
         self.title = metadata["title"] ?? "Unkown"
-        self.trackNo = (metadata["track"]! as NSString).integerValue
+        self.trackNo = Int(metadata["track"] ?? "0") ?? 0
         self.artist = metadata["artist"] ?? "Unkown Artist"
 
         self.duration = decoder.getDuration()

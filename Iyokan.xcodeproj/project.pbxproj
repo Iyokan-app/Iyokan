@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		343D1E8D27AA78E70067958D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343D1E8C27AA78E70067958D /* Extensions.swift */; };
 		34DA1923279A87A700481176 /* IyokanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1922279A87A700481176 /* IyokanApp.swift */; };
 		34DA1925279A87A700481176 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1924279A87A700481176 /* ContentView.swift */; };
 		34DA1927279A87A800481176 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34DA1926279A87A800481176 /* Assets.xcassets */; };
@@ -52,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		343D1E8C27AA78E70067958D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		34DA191F279A87A700481176 /* Iyokan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Iyokan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34DA1922279A87A700481176 /* IyokanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IyokanApp.swift; sourceTree = "<group>"; };
 		34DA1924279A87A700481176 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			children = (
 				34DA1922279A87A700481176 /* IyokanApp.swift */,
 				34DA1951279A8BD000481176 /* AppData.swift */,
+				343D1E8C27AA78E70067958D /* Extensions.swift */,
 				34E3AA0327A434F700ADC90A /* Components */,
 				34DA194F279A8B7A00481176 /* Views */,
 				34DA1955279A8C0B00481176 /* Models */,
@@ -390,6 +393,7 @@
 				34DA1952279A8BD000481176 /* AppData.swift in Sources */,
 				34DA195D279A8C4F00481176 /* Song.swift in Sources */,
 				34DA195B279A8C4F00481176 /* Item.swift in Sources */,
+				343D1E8D27AA78E70067958D /* Extensions.swift in Sources */,
 				34DA195C279A8C4F00481176 /* DataStorage.swift in Sources */,
 				34DA1962279A8C8E00481176 /* Helper.m in Sources */,
 				34DA1954279A8BEE00481176 /* PlaylistView.swift in Sources */,

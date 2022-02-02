@@ -10,6 +10,7 @@ import AVFoundation
 import os
 
 fileprivate let serializationQueue = DispatchQueue(label: "org.iyokan-app.iyokan.serialization.queue", qos: .userInteractive)
+fileprivate let logger = Logger.init(subsystem: "Iyokan", category: "Serializer")
 
 class Serializer: ObservableObject {
     // The playback infrastructure
@@ -32,9 +33,6 @@ class Serializer: ObservableObject {
     private var automaticFlushObserver: NSObjectProtocol!
     private var periodicObserver: Any?
 
-    // logger
-    private let logger = Logger(subsystem: "Serializer", category: "Playback")
-
     var isPlaying: Bool { synchronizer.rate != 0 }
 
     @Published var percentage: Double = 0.0
@@ -52,90 +50,91 @@ class Serializer: ObservableObject {
     }
 
     func startPlayback() {
-        serializationQueue.async {
-            self.synchronizer.rate = 1
-            self.updateCurrentPlayingItem(at: .zero)
+        serializationQueue.async { [unowned self] in
+            logger.debug("Start playing")
+            synchronizer.rate = 1
+            updateCurrentPlayingItem(at: .zero)
         }
     }
 
     func stopPlayback() {
-        serializationQueue.async {
-            print("Stopping playing")
-            self.stopEnqueuing()
+        serializationQueue.async { [unowned self] in
+            logger.debug("Stopping playing")
+            stopEnqueuing()
         }
     }
 
     func pausePlayback() {
-        serializationQueue.async {
-            print("pausing playback")
-            if self.synchronizer.rate == 0 { return }
-            self.synchronizer.rate = 0
+        serializationQueue.async { [unowned self] in
+            logger.debug("Pause playing")
+            if synchronizer.rate == 0 { return }
+            synchronizer.rate = 0
         }
     }
 
     func resumePlayback() {
-        serializationQueue.async {
-            if self.synchronizer.rate != 0 || self.items.isEmpty { return }
-            self.synchronizer.rate = 0
+        serializationQueue.async { [unowned self] in
+            logger.debug("Resume playing")
+            if synchronizer.rate != 0 || items.isEmpty { return }
+            synchronizer.rate = 0
         }
     }
 
     func restartPlayback(with newItems: [Item], atOffset offset: CMTime) {
-        serializationQueue.async {
-            self.stopEnqueuing()
+        serializationQueue.async { [unowned self] in
+            stopEnqueuing()
 
-            self.items = newItems
-            self.items.forEach { $0.startOffset = .zero }
+            items = newItems
+            items.forEach { $0.startOffset = .zero }
 
-            guard let firstItem = self.items.first else { return }
+            guard let firstItem = items.first else { return }
             firstItem.startOffset = offset
 
-            self.nowEnqueuing = 0
-            self.enqueuingPlaybackEndTime = .zero
-            self.enqueuingPlaybackEndOffset = .zero
+            nowEnqueuing = 0
+            enqueuingPlaybackEndTime = .zero
+            enqueuingPlaybackEndOffset = .zero
 
-            self.updateCurrentPlayingItem(at: .zero)
+            updateCurrentPlayingItem(at: .zero)
 
-            self.provideMediaData(for: CMTime(seconds: 0.25, preferredTimescale: 1000))
-            self.renderer.requestMediaDataWhenReady(on: serializationQueue) { [unowned self] in
+            provideMediaData(for: CMTime(seconds: 0.25, preferredTimescale: 1000))
+            renderer.requestMediaDataWhenReady(on: serializationQueue) {
                 self.provideMediaData()
             }
 
-            self.synchronizer.setRate(1, time: firstItem.startOffset)
+            synchronizer.setRate(1, time: firstItem.startOffset)
         }
     }
 
     func continuePlayback(with specifiedItems: [Item]) {
-        serializationQueue.async {
-            self._continuePlayback(with: specifiedItems)
-        }
-    }
+        serializationQueue.async { [unowned self] in
+            var initialItemCount = 0
+            var initialTime = CMTime.zero
 
-    private func _continuePlayback(with newItems: [Item]) {
-        var initialItemCount = 0
-        var initialTime = CMTime.zero
+            for index in 0 ..< min(items.count, specifiedItems.count) {
+                guard items[index] == specifiedItems[index], items[index].isEnqueued else { break }
+                initialItemCount += 1
+                initialTime += items[index].endOffset
+            }
 
-        for index in 0 ..< min(items.count, newItems.count) {
-            guard items[index] == newItems[index], items[index].isEnqueued else { break }
-            initialItemCount += 1
-            initialTime = initialTime + items[index].endOffset
-        }
+            if initialItemCount == 0 {
+                restartPlayback(with: specifiedItems, atOffset: .zero)
+                return
+            }
 
-        if initialItemCount == 0 {
-            restartPlayback(with: newItems, atOffset: .zero)
-            return
-        }
-
-        renderer.stopRequestingMediaData()
-        renderer.flush(fromSourceTime: initialTime) { succeeded in
-            serializationQueue.async {
-                self.finishContinuePlayback(with: newItems, didFlush: succeeded)
+            renderer.stopRequestingMediaData()
+            renderer.flush(fromSourceTime: initialTime) { succeeded in
+                serializationQueue.async {
+                    self.finishContinuePlayback(with: specifiedItems, didFlush: succeeded)
+                }
             }
         }
     }
 
     private func finishContinuePlayback(with newItems: [Item], didFlush: Bool) {
-        guard didFlush else { self.restartPlayback(with: newItems, atOffset: .zero); return }
+        if !didFlush {
+            self.restartPlayback(with: newItems, atOffset: .zero)
+            return
+        }
 
         var initialItemCount = 0
         var initialEndTime = CMTime.zero
@@ -143,7 +142,7 @@ class Serializer: ObservableObject {
         for index in 0 ..< min(items.count, newItems.count) {
             guard items[index] == newItems[index], items[index].isEnqueued else { break }
             initialItemCount += 1
-            initialEndTime = initialEndTime + items[index].endOffset
+            initialEndTime += items[index].endOffset
         }
 
         if initialItemCount == 0 {
@@ -161,12 +160,12 @@ class Serializer: ObservableObject {
         }
 
         provideMediaData(for: CMTime(seconds: 0.25, preferredTimescale: 1000))
-        renderer.requestMediaDataWhenReady(on: serializationQueue) { [unowned self] in
+        renderer.requestMediaDataWhenReady(on: serializationQueue) {
             self.provideMediaData()
         }
     }
 
-    /// - Tag: Private functions
+    /// - Tag: Private helper functions
 
     private func stopEnqueuing() {
         synchronizer.rate = 0
@@ -204,9 +203,9 @@ class Serializer: ObservableObject {
         var remainingTime = limitedTime
 
         if let seconds = remainingTime?.seconds {
-            print("Providing \(seconds)s of data for item $\(nowEnqueuing)")
+            logger.debug("Providing \(seconds)s of data for item #\(self.nowEnqueuing)")
         } else {
-            print("Providing data for item $\(nowEnqueuing)")
+            logger.debug("Providing data for item #\(self.nowEnqueuing)")
         }
 
         while renderer.isReadyForMoreMediaData {
@@ -228,11 +227,11 @@ class Serializer: ObservableObject {
                 // TODO: invalide the current item
 
                 nowEnqueuing += 1
-                enqueuingPlaybackEndTime = enqueuingPlaybackEndTime + currentItem.endOffset
+                enqueuingPlaybackEndTime += currentItem.endOffset
 
                 let times = [NSValue(time: enqueuingPlaybackEndTime)]
-                currentItem.boundaryTimeObserver = synchronizer.addBoundaryTimeObserver(forTimes: times, queue: serializationQueue) { [unowned self] in
-                    self.updateCurrentPlayingItem(at: enqueuingPlaybackEndTime)
+                currentItem.boundaryTimeObserver = synchronizer.addBoundaryTimeObserver(forTimes: times, queue: serializationQueue) {
+                    self.updateCurrentPlayingItem(at: self.enqueuingPlaybackEndTime)
                 }
 
                 // run out of tracks
@@ -248,14 +247,14 @@ class Serializer: ObservableObject {
 
     private func autoflushPlayback(restartingAt time: CMTime?) {
         let restartTime = time ?? synchronizer.currentTime()
-        print("automatic flush from \(restartTime)")
+        logger.debug("automatic flush from \(restartTime)")
 
         while nowEnqueuing > 0, restartTime < enqueuingPlaybackEndTime {
             let item = items[nowEnqueuing - 1]
             let duration = item.endOffset - item.startOffset
 
             nowEnqueuing -= 1
-            enqueuingPlaybackEndTime = enqueuingPlaybackEndTime - duration
+            enqueuingPlaybackEndTime -= duration
         }
 
         let newItems: [Item]
@@ -265,11 +264,11 @@ class Serializer: ObservableObject {
             newItems = Array(items[nowEnqueuing...])
             let firstItem = newItems.first!
             offset = max(min(restartTime - enqueuingPlaybackEndTime, firstItem.endOffset), firstItem.startOffset)
-            print("restarting playback at offset \(offset)")
+            logger.debug("restarting playback at offset \(offset)")
         } else {
             newItems = []
             offset = .zero
-            print("stopping playback")
+            logger.debug("stopping playback")
         }
 
         // Restart playback with the new item  queue.

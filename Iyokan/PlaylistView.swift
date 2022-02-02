@@ -23,8 +23,9 @@ struct PlaylistView: View {
         if (serializer.isPlaying) {
             serializer.stopPlayback()
         } else {
-            serializer.items = playlist.items
-            serializer.startPlayback()
+            // serializer.items = playlist.items
+            // serializer.startPlayback()
+            serializer.restartPlayback(with: playlist.items, atOffset: .zero)
         }
     }
 

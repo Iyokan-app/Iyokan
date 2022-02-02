@@ -21,6 +21,8 @@ class Item: Identifiable, Hashable {
     let id = UUID()
     let song: Song
 
+    var boundaryTimeObserver: Any?
+
     var startOffset: CMTime {
         didSet {
             endOffset = startOffset
@@ -40,5 +42,9 @@ class Item: Identifiable, Hashable {
         self.endOffset = offset
 
         self.startOffset = offset > .zero && offset < song.duration ? offset : .zero
+    }
+
+    func nextSample() -> CMSampleBuffer? {
+        return song.decoder.nextSampleBuffer()
     }
 }

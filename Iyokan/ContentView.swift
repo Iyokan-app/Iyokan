@@ -18,7 +18,7 @@ struct ContentView: View {
             VStack {
                 List {
                     ForEach(dataStorage.playlists) { playlist in
-                        NavigationLink(destination: PlaylistView(playlist: playlist), tag: playlist, selection: $dataStorage.selectedPlaylist) {
+                        NavigationLink(destination: MainView(), tag: playlist, selection: $dataStorage.selectedPlaylist) {
                             Label(playlist.name, systemImage: "music.note.list")
                         }
                     }
@@ -49,11 +49,20 @@ struct ContentView: View {
             }
         }.onAppear {
             // select = playlists[0]
-        }
+        }.environmentObject(dataStorage)
     }
 
     private func toggleSidebar() {
         NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
     }
 
+}
+
+struct MainView: View {
+    var body: some View {
+        VStack {
+            PlaylistView()
+            PlayerView()
+        }
+    }
 }

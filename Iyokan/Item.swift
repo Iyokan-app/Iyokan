@@ -33,9 +33,6 @@ class Item: Identifiable, Hashable {
     // true if this item has been used to get sample buffers
     private(set) var isEnqueued = false
 
-    private let logger = Logger.init(subsystem: "Item", category: "Playback")
-    private var logCount = 0
-
     init (song: Song, fromOffset offset: CMTime) {
         self.song = song
         self.startOffset = offset

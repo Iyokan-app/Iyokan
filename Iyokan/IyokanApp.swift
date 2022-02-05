@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct IyokanApp: App {
-    @StateObject var dataStorage = DataStorage()
+    @StateObject var dataStorage = DataStorage.shared
 
     var body: some Scene {
         WindowGroup {

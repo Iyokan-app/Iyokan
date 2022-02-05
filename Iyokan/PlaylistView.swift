@@ -11,17 +11,10 @@ import AVFoundation
 
 struct PlaylistView: View {
     @EnvironmentObject var dataStorage: DataStorage
-    @ObservedObject var player = Player()
 
     @State private var selectedItems = Set<Item.ID>()
     @State private var sortOrder = [KeyPathComparator(\Item.song.trackNo)]
     @State private var position: Double = 0
-
-    func timeOffsetChanged(newTime: CMTime) {
-        if let currentItem = player.serializer.currentItem {
-            position = newTime.seconds / currentItem.song.duration.seconds
-        }
-    }
 
     var body: some View {
         VStack {

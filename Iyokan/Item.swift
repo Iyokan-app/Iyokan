@@ -42,6 +42,8 @@ class Item: Identifiable, Hashable {
     }
 
     func nextSample() -> CMSampleBuffer? {
-        return song.decoder.nextSampleBuffer()
+        guard let buffer = song.decoder.nextSampleBuffer() else { return nil }
+        endOffset = buffer.presentationTimeStamp + buffer.duration
+        return buffer
     }
 }

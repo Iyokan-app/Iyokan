@@ -17,6 +17,10 @@ class Serializer: ObservableObject {
     private let renderer = AVSampleBufferAudioRenderer()
     private let synchronizer = AVSampleBufferRenderSynchronizer()
 
+    static let percentageKey = "IKCurrentPercentage"
+    static let offsetDidChange = Notification.Name("IKSerializerOffsetDidChange")
+    static let itemDidChange = Notification.Name("IKSerializerItemDidChange")
+
     var items: [Item] = []
 
     var currentItem: Item? {
@@ -34,8 +38,6 @@ class Serializer: ObservableObject {
     private var periodicObserver: Any?
 
     var isPlaying: Bool { synchronizer.rate != 0 }
-
-    @Published var percentage: Double = 0.0
 
     init() {
         synchronizer.addRenderer(renderer)
@@ -76,7 +78,7 @@ class Serializer: ObservableObject {
         serializationQueue.async { [unowned self] in
             logger.debug("Resume playing")
             if synchronizer.rate != 0 || items.isEmpty { return }
-            synchronizer.rate = 0
+            synchronizer.rate = 1
         }
     }
 
@@ -179,13 +181,16 @@ class Serializer: ObservableObject {
             periodicObserver = nil
         }
 
+        NotificationCenter.default.post(name: Serializer.itemDidChange, object: self)
+
         if items.first != nil {
             let interval = CMTime(seconds: 0.1, preferredTimescale: 1000)
             periodicObserver = synchronizer.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [unowned self] _ in
                 if let currentSong = currentItem?.song {
                     let currentTime = CMTimeGetSeconds(synchronizer.currentTime())
                     let duration = CMTimeGetSeconds(currentSong.duration)
-                    percentage = currentTime / duration
+                    let userInfo = [Serializer.percentageKey: currentTime / duration]
+                    NotificationCenter.default.post(name: Serializer.offsetDidChange, object: self, userInfo: userInfo)
                 }
             }
         } else {
@@ -220,7 +225,7 @@ class Serializer: ObservableObject {
                 }
                 CMSampleBufferSetOutputPresentationTimeStamp(buffer, newValue: enqueuingPlaybackEndTime + pts)
 
-                enqueuingPlaybackEndTime = currentItem.endOffset
+                enqueuingPlaybackEndOffset = currentItem.endOffset
                 renderer.enqueue(buffer)
             } else {
                 // play the next item

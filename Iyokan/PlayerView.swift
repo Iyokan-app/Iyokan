@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlayerView: View {
     @EnvironmentObject var dataStorage: DataStorage
+
     @ObservedObject var player = Player()
 
     func togglePlay() {
@@ -45,8 +46,16 @@ struct PlayerView: View {
     }
 
     var body: some View {
-        Slider(value: $player.percentage, in: 0...1, onEditingChanged: {_ in })
-            .padding(.horizontal, nil)
+        Slider(value: $player.percentage, in: 0...1) { editing in
+            if editing {
+                player.pause()
+            } else {
+                guard let index = dataStorage.selectedPlaylist?.currentIndex else { return }
+                let duration = dataStorage.selectedPlaylist!.items[index].song.duration
+                player.seekToOffset(CMTimeMultiplyByFloat64(duration, multiplier: player.percentage))
+                player.play()
+            }
+        }.padding(.horizontal, nil)
         HStack {
             Button(action: previous) {
                 Image(systemName: "backward.fill")

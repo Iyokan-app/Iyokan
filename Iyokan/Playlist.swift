@@ -30,7 +30,19 @@ class Playlist: Identifiable, ObservableObject, Hashable {
         objectWillChange.send()
     }
 
+    func setCurrnetIndex(id: UUID) {
+        for i in 0 ..< items.count {
+            if items[i].id == id {
+                currentIndex = i
+                return
+            }
+        }
+        currentIndex = nil
+    }
+
     let id = UUID()
     var name: String = ""
     var items: [Item] = []
+    // nil if the player is in a stopped state
+    var currentIndex: Int?
 }

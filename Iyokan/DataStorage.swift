@@ -8,6 +8,8 @@
 import Foundation
 
 class DataStorage: ObservableObject {
+    static let shared = DataStorage()
+
     var playlists: [Playlist] = []
     @Published var selectedPlaylist: Playlist?
 

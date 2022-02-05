@@ -23,14 +23,6 @@ struct ContentView: View {
                         }
                     }
                 }
-                .navigationTitle("SwiftUI")
-                .toolbar {
-                    ToolbarItem(placement: .primaryAction) {
-                        Button(action: toggleSidebar, label: {
-                            Image(systemName: "sidebar.left")
-                        }).controlSize(.large)
-                    }
-                }
                 .listStyle(.sidebar)
                 Divider()
                 HStack {
@@ -49,11 +41,38 @@ struct ContentView: View {
             }
         }.onAppear {
             // select = playlists[0]
+        }.toolbar {
+            ToolbarItem() {
+                Button(action: toggleSidebar, label: {
+                    Image(systemName: "sidebar.left")
+                }).controlSize(.large)
+            }
+            ToolbarItem() {
+                Spacer()
+            }
+            ToolbarItem() {
+                Button(action: openFile, label: {
+                    Image(systemName: "plus")
+                }).controlSize(.large)
+            }
         }.environmentObject(dataStorage)
     }
 
     private func toggleSidebar() {
         NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+    }
+
+    func openFile() {
+        guard let playlist = dataStorage.selectedPlaylist else { return }
+        let openPanel = NSOpenPanel()
+        openPanel.allowedContentTypes = [.audio]
+        openPanel.allowsMultipleSelection = true
+        openPanel.canChooseDirectories = false
+        openPanel.canChooseFiles = true
+        openPanel.beginSheetModal(for: NSApp.keyWindow!) {_ in
+            playlist.addMedia(urls: openPanel.urls)
+            dataStorage.objectWillChange.send()
+        }
     }
 
 }

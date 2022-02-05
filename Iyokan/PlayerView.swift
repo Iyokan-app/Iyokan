@@ -69,9 +69,6 @@ struct PlayerView: View {
                         Image(systemName: "forward.fill")
                     }.buttonStyle(.borderless)
                     Spacer()
-                    Button(action: openFile) {
-                        Image(systemName: "plus")
-                    }.buttonStyle(.borderless)
                 }.padding(.bottom)
             }.padding(.horizontal, nil)
         }

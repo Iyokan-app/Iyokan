@@ -46,29 +46,34 @@ struct PlayerView: View {
     }
 
     var body: some View {
-        Slider(value: $player.percentage, in: 0...1) { editing in
-            if editing {
-                player.pause()
-            } else {
-                guard let index = dataStorage.selectedPlaylist?.currentIndex else { return }
-                let duration = dataStorage.selectedPlaylist!.items[index].song.duration
-                player.seekToOffset(CMTimeMultiplyByFloat64(duration, multiplier: player.percentage))
-                player.play()
-            }
-        }.padding(.horizontal, nil)
         HStack {
-            Button(action: previous) {
-                Image(systemName: "backward.fill")
-            }.buttonStyle(.borderless).padding()
-            Button(action: togglePlay) {
-                Image(systemName: "playpause.fill")
-            }.buttonStyle(.borderless).padding()
-            Button(action: next) {
-                Image(systemName: "forward.fill")
-            }.buttonStyle(.borderless).padding()
-            Button(action: openFile) {
-                Image(systemName: "plus")
-            }.buttonStyle(.borderless).padding()
+            VStack {
+                Slider(value: $player.percentage, in: 0...1) { editing in
+                    if editing {
+                        player.pause()
+                    } else {
+                        guard let index = dataStorage.selectedPlaylist?.currentIndex else { return }
+                        let duration = dataStorage.selectedPlaylist!.items[index].song.duration
+                        player.seekToOffset(CMTimeMultiplyByFloat64(duration, multiplier: player.percentage))
+                        player.play()
+                    }
+                }
+                HStack(alignment: .center, spacing: 20) {
+                    Button(action: previous) {
+                        Image(systemName: "backward.fill")
+                    }.buttonStyle(.borderless)
+                    Button(action: togglePlay) {
+                        Image(systemName: "playpause.fill")
+                    }.buttonStyle(.borderless)
+                    Button(action: next) {
+                        Image(systemName: "forward.fill")
+                    }.buttonStyle(.borderless)
+                    Spacer()
+                    Button(action: openFile) {
+                        Image(systemName: "plus")
+                    }.buttonStyle(.borderless)
+                }.padding(.bottom)
+            }.padding(.horizontal, nil)
         }
     }
 }

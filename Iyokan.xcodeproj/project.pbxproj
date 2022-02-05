@@ -202,9 +202,9 @@
 			isa = PBXGroup;
 			children = (
 				34DA1957279A8C4E00481176 /* DataStorage.swift */,
-				34DA1958279A8C4E00481176 /* Song.swift */,
-				34DA1956279A8C4E00481176 /* Item.swift */,
 				34DA1959279A8C4E00481176 /* Playlist.swift */,
+				34DA1956279A8C4E00481176 /* Item.swift */,
+				34DA1958279A8C4E00481176 /* Song.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";

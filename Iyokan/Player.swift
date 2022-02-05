@@ -48,7 +48,11 @@ class Player: ObservableObject {
         lock.wait()
         defer { lock.signal() }
 
-        if !serializer.isPlaying {
+        guard let playlist = dataStorage.selectedPlaylist else { return }
+
+        if playlist.currentIndex == nil {
+            restartWithItems(fromIndex: 0, atOffset: .zero)
+        } else if !serializer.isPlaying {
             serializer.resumePlayback()
         }
     }

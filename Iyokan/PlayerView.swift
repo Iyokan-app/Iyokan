@@ -16,11 +16,9 @@ struct PlayerView: View {
         guard let playlist = dataStorage.selectedPlaylist else { return }
         guard !playlist.items.isEmpty else { return }
         if player.serializer.isPlaying {
-            player.serializer.stopPlayback()
+            player.serializer.pausePlayback()
         } else {
-            // serializer.items = playlist.items
-            // serializer.startPlayback()
-            player.serializer.restartPlayback(with: playlist.items, atOffset: .zero)
+            player.play()
         }
     }
 
@@ -30,19 +28,6 @@ struct PlayerView: View {
 
     func next() {
         print("next")
-    }
-
-    func openFile() {
-        guard let playlist = dataStorage.selectedPlaylist else { return }
-        let openPanel = NSOpenPanel()
-        openPanel.allowedContentTypes = [.audio]
-        openPanel.allowsMultipleSelection = true
-        openPanel.canChooseDirectories = false
-        openPanel.canChooseFiles = true
-        openPanel.beginSheetModal(for: NSApp.keyWindow!) {_ in
-            playlist.addMedia(urls: openPanel.urls)
-            dataStorage.objectWillChange.send()
-        }
     }
 
     var body: some View {

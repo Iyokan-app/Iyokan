@@ -16,6 +16,19 @@ struct PlaylistView: View {
     @State private var sortOrder = [KeyPathComparator(\Item.song.trackNo)]
     @State private var position: Double = 0
 
+    func openFile() {
+        guard let playlist = dataStorage.selectedPlaylist else { return }
+        let openPanel = NSOpenPanel()
+        openPanel.allowedContentTypes = [.audio]
+        openPanel.allowsMultipleSelection = true
+        openPanel.canChooseDirectories = false
+        openPanel.canChooseFiles = true
+        openPanel.beginSheetModal(for: NSApp.keyWindow!) {_ in
+            playlist.addMedia(urls: openPanel.urls)
+            dataStorage.objectWillChange.send()
+        }
+    }
+
     var body: some View {
         VStack {
             Table(dataStorage.selectedPlaylist!.items, selection: $selectedItems, sortOrder: $sortOrder) {
@@ -27,6 +40,16 @@ struct PlaylistView: View {
             }
             .onChange(of: sortOrder) {
                 dataStorage.selectedPlaylist!.items.sort(using: $0)
+            }
+            .toolbar {
+                ToolbarItem(id: "spacer", placement: .automatic, showsByDefault: true) {
+                    Spacer()
+                }
+                ToolbarItem(id: "add_songs", placement: .automatic, showsByDefault: true) {
+                    Button(action: openFile, label: {
+                        Image(systemName: "doc.badge.plus")
+                    }).controlSize(.large)
+                }
             }
         }
     }

@@ -42,13 +42,13 @@ struct PlaylistView: View {
                 dataStorage.selectedPlaylist!.items.sort(using: $0)
             }
             .toolbar {
-                ToolbarItem(id: "spacer", placement: .automatic, showsByDefault: true) {
+                ToolbarItem() {
                     Spacer()
                 }
-                ToolbarItem(id: "add_songs", placement: .automatic, showsByDefault: true) {
-                    Button(action: openFile, label: {
+                ToolbarItem() {
+                    Button(action: openFile) {
                         Image(systemName: "doc.badge.plus")
-                    }).controlSize(.large)
+                    }.controlSize(.large)
                 }
             }
         }

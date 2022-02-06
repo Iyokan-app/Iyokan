@@ -42,20 +42,27 @@ struct PlayerView: View {
                         player.seekToOffset(CMTimeMultiplyByFloat64(duration, multiplier: player.percentage))
                         player.play()
                     }
-                }
-                HStack(alignment: .center, spacing: 20) {
+                }.padding(.horizontal)
+            }
+        }.toolbar {
+            ToolbarItemGroup(placement: .navigation) {
+                HStack {
                     Button(action: previous) {
                         Image(systemName: "backward.fill")
-                    }.buttonStyle(.borderless)
+                    }
                     Button(action: togglePlay) {
                         Image(systemName: "playpause.fill")
-                    }.buttonStyle(.borderless)
+                    }
                     Button(action: next) {
                         Image(systemName: "forward.fill")
-                    }.buttonStyle(.borderless)
-                    Spacer()
-                }.padding(.bottom)
-            }.padding(.horizontal, nil)
+                    }
+                    // Divider()
+                    VStack {
+                        Text("Song Name").bold()
+                        Text("Artist Name").foregroundColor(.secondary)
+                    }.padding(.vertical)
+                }
+            }
         }
     }
 }

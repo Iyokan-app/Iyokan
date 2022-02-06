@@ -25,7 +25,7 @@ struct ContentView: View {
                 }
                 .listStyle(.sidebar)
                 .toolbar {
-                    ToolbarItem(id: "toggle_sidebar", placement: .primaryAction, showsByDefault: true) {
+                    ToolbarItem(placement: .primaryAction) {
                         Button(action: toggleSidebar, label: {
                             Image(systemName: "sidebar.left")
                         }).controlSize(.large)
@@ -60,8 +60,8 @@ struct ContentView: View {
 struct MainView: View {
     var body: some View {
         VStack {
-            PlaylistView()
             PlayerView()
+            PlaylistView()
         }
     }
 }

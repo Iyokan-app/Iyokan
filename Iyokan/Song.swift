@@ -11,8 +11,8 @@ import CoreMedia
 struct Song {
     init(_ path: String) {
         self.path = path
-        self.decoder = Decoder(path)
 
+        let decoder = Decoder(path)
         let metadata = decoder.getMetadata()
         self.title = metadata["title"] ?? "Unkown"
         self.trackNo = (metadata["track"]! as NSString).integerValue
@@ -21,7 +21,6 @@ struct Song {
         self.duration = decoder.getDuration()
     }
     let path: String
-    let decoder: Decoder
 
     // metadata
     let title: String

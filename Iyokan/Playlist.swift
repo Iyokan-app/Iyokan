@@ -24,7 +24,6 @@ class Playlist: Identifiable, ObservableObject, Hashable {
     func addMedia(urls: [URL]) {
         urls.forEach{
             let song = Song($0.path)
-            song.decoder.decode()
             items.append(Item(song: song, fromOffset: .zero))
         }
         objectWillChange.send()

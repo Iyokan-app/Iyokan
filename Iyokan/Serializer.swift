@@ -152,7 +152,9 @@ class Serializer: ObservableObject {
             return
         }
 
-        // TODO: flush unwanted items
+        for item in items[initialItemCount...] {
+            flushItem(item)
+        }
 
         items = Array(items[0 ..< initialItemCount] + newItems[initialItemCount...])
 
@@ -173,12 +175,29 @@ class Serializer: ObservableObject {
         synchronizer.rate = 0
         renderer.stopRequestingMediaData()
         renderer.flush()
+
+        for item in items {
+            flushItem(item)
+        }
+
+        if let observer = periodicObserver {
+            logger.debug("Periodic Observer gets removed")
+            synchronizer.removeTimeObserver(observer)
+            periodicObserver = nil
+        }
     }
 
     private func updateCurrentPlayingItem(at boundaryTime: CMTime) {
         if let observer = periodicObserver {
             synchronizer.removeTimeObserver(observer)
             periodicObserver = nil
+        }
+
+        if nowEnqueuing > 0 {
+            let item = items.removeFirst()
+            flushItem(item)
+            nowEnqueuing -= 1
+            logger.debug("Flushing the first item")
         }
 
         NotificationCenter.default.post(name: Serializer.itemDidChange, object: self)
@@ -278,6 +297,13 @@ class Serializer: ObservableObject {
 
         // Restart playback with the new item  queue.
         restartPlayback(with: newItems, atOffset: offset)
+    }
+
+    func flushItem(_ item: Item) {
+        if let observer = item.boundaryTimeObserver {
+            synchronizer.removeTimeObserver(observer)
+        }
+        item.flush()
     }
 
 }

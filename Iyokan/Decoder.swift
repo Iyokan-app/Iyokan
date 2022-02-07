@@ -7,15 +7,22 @@
 
 import Foundation
 import AVFoundation
+import os
+
+fileprivate let logger = Logger.init(subsystem: "Iyokan", category: "Decoder")
 
 class Decoder {
     private let helper: Helper
 
     var buffers: [CMSampleBuffer] = []
+    private var presentationTimeStamp: CMTime
+    private let sampleRate: Int32
 
     init(_ filePath: String) {
         self.helper = Helper(filePath)!
         self.helper.openCodec()
+        self.sampleRate = helper.sampleRate
+        self.presentationTimeStamp = CMTime(value: 0, timescale: sampleRate)
     }
 
     func getMetadata() -> Dictionary<String, String> {
@@ -26,36 +33,26 @@ class Decoder {
         return helper.duration
     }
 
-    func decode() {
-        let sampleRate = Int32(helper.sampleRate)
-        var presentationTimeStamp = CMTime(value: 0, timescale: sampleRate)
-
-        do {
-            while (helper.sendPacket()) {
-                while (true) {
-                    guard let frame = helper.nextFrame()?.pointee else { break }
-                    guard let data = frame.data.0 else { return }
-                    let sampleBuffer = try makeSampleBuffer(from: data,
-                                                            linesize: Int(frame.linesize.0),
-                                                            presentationTimeStamp: presentationTimeStamp,
-                                                            samples: frame.nb_samples,
-                                                            sampleRate: sampleRate)
-
-                    let pts = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
-                    let duration = CMSampleBufferGetOutputDuration(sampleBuffer)
-                    presentationTimeStamp = pts + duration
-
-                    buffers.append(sampleBuffer)
-                }
-            }
-        } catch let e {
-            print(e)
-        }
-    }
-
     func nextSampleBuffer() -> CMSampleBuffer? {
-        guard !buffers.isEmpty else { return nil }
-        return buffers.removeFirst()
+        helper.sendPacket()
+        guard let frame = helper.nextFrame()?.pointee else { return nil }
+        guard let data = frame.data.0 else { return nil }
+        let sampleBuffer: CMSampleBuffer
+        do {
+            sampleBuffer = try makeSampleBuffer(from: data,
+                                                linesize: Int(frame.linesize.0),
+                                                presentationTimeStamp: presentationTimeStamp,
+                                                samples: frame.nb_samples,
+                                                sampleRate: sampleRate)
+
+            let pts = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
+            let duration = CMSampleBufferGetOutputDuration(sampleBuffer)
+            presentationTimeStamp = pts + duration
+        } catch {
+            logger.fault("Error when making sample buffer")
+            return nil
+        }
+        return sampleBuffer
     }
 
     private func getASBD(from format: AVSampleFormat) -> AudioStreamBasicDescription {

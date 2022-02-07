@@ -20,6 +20,7 @@ class Item: Identifiable, Hashable {
 
     let id = UUID()
     let song: Song
+    private var decoder: Decoder?
 
     var boundaryTimeObserver: Any?
 
@@ -42,8 +43,19 @@ class Item: Identifiable, Hashable {
     }
 
     func nextSample() -> CMSampleBuffer? {
-        guard let buffer = song.decoder.nextSampleBuffer() else { return nil }
+        if decoder == nil {
+            isEnqueued = true
+            decoder = Decoder(song.path)
+        }
+
+        guard let buffer = decoder?.nextSampleBuffer() else { return nil }
         endOffset = buffer.presentationTimeStamp + buffer.duration
         return buffer
+    }
+
+    func flush() {
+        isEnqueued = false
+        decoder = nil
+        boundaryTimeObserver = nil
     }
 }

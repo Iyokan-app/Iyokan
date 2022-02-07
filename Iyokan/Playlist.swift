@@ -27,6 +27,7 @@ class Playlist: Identifiable, ObservableObject, Hashable {
             items.append(Item(song: song, fromOffset: .zero))
         }
         objectWillChange.send()
+        Player.shared.continueWithCurrentItems()
     }
 
     func setCurrnetIndex(id: UUID) {

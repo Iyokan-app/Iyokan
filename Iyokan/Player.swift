@@ -13,6 +13,8 @@ fileprivate let logger = Logger.init(subsystem: "Iyokan", category: "Player")
 fileprivate let lock = DispatchSemaphore(value: 1)
 
 class Player: ObservableObject {
+    static let shared = Player()
+
     @Published var percentage: Double = 0.0
     @Published var song: Song?
 
@@ -65,6 +67,18 @@ class Player: ObservableObject {
         defer { lock.signal() }
 
         restartWithItems(fromIndex: 0, atOffset: offset)
+    }
+
+    // called when the playlist has been changed
+    func continueWithCurrentItems() {
+        logger.debug("Coninue with current items")
+        guard let playlist = dataStorage.selectedPlaylist,
+              let currentIndex = playlist.currentIndex else { return }
+        lock.wait()
+        defer { lock.signal() }
+        let items = Array(playlist.items[currentIndex ..< playlist.items.count])
+
+        serializer.continuePlayback(with: items)
     }
 
     private func restartWithItems(fromIndex index: Int, atOffset offset: CMTime) {

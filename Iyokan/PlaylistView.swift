@@ -16,6 +16,8 @@ struct PlaylistView: View {
     @State private var sortOrder = [KeyPathComparator(\Item.song.trackNo)]
     @State private var position: Double = 0
 
+    @State private var hovering: [Item] = []
+
     func openFile() {
         guard let playlist = dataStorage.selectedPlaylist else { return }
         let openPanel = NSOpenPanel()
@@ -31,24 +33,44 @@ struct PlaylistView: View {
 
     var body: some View {
         VStack {
-            Table(dataStorage.selectedPlaylist!.items, selection: $selectedItems, sortOrder: $sortOrder) {
-                TableColumn("#", value: \.song.trackNo) {
-                    Text(String($0.song.trackNo))
-                }.width(min: 10, ideal: 10, max: 50)
-                TableColumn("Title", value: \.song.title)
-                TableColumn("Artrist", value: \.song.artist)
-            }
-            .onChange(of: sortOrder) {
-                dataStorage.selectedPlaylist!.items.sort(using: $0)
-            }
-            .toolbar {
-                ToolbarItem() {
-                    Spacer()
+            GeometryReader { geometry in
+                Table(dataStorage.selectedPlaylist!.items, selection: $selectedItems, sortOrder: $sortOrder) {
+                    TableColumn("#", value: \.song.trackNo) { row in
+                        Text(String(row.song.trackNo))
+                            // Extend the length of the text view to detect the cursor
+                            // 24 is the default height of a NSTableView row
+                            .frame(width: geometry.size.width, height: 24, alignment: .leading)
+                            .onHover() { inside in
+                                if inside {
+                                    self.hovering.append(row)
+                                } else {
+                                    self.hovering.removeAll(where: { $0 == row })
+                                }
+                            }
+                    }.width(20)
+                    TableColumn("Title", value: \.song.title)
+                    TableColumn("Artrist", value: \.song.artist)
                 }
-                ToolbarItem() {
-                    Button(action: openFile) {
-                        Image(systemName: "doc.badge.plus")
-                    }.controlSize(.large)
+                .contextMenu {
+                    Button("Add Files") {
+                        openFile()
+                    }
+                    if $hovering.count != 0 {
+                        Button(hovering.first!.song.title) {}
+                    }
+                }
+                .onChange(of: sortOrder) {
+                    dataStorage.selectedPlaylist!.items.sort(using: $0)
+                }
+                .toolbar {
+                    ToolbarItem() {
+                        Spacer()
+                    }
+                    ToolbarItem() {
+                        Button(action: openFile) {
+                            Image(systemName: "doc.badge.plus")
+                        }.controlSize(.large)
+                    }
                 }
             }
         }

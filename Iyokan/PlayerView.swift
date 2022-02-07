@@ -10,7 +10,7 @@ import SwiftUI
 struct PlayerView: View {
     @EnvironmentObject var dataStorage: DataStorage
 
-    @ObservedObject var player = Player()
+    @ObservedObject var player = Player.shared
 
     func togglePlay() {
         guard let playlist = dataStorage.selectedPlaylist else { return }

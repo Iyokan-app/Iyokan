@@ -19,6 +19,12 @@ FFMPEGFLAGS=(
   --disable-appkit
 )
 
+if which yasm || which nasm; then
+  true
+else
+  FFMPEGFLAGS+=(--disable-x86asm)
+fi
+
 mkdir -p FFmpeg/src
 curl https://ffmpeg.org/releases/ffmpeg-$VERSION.tar.bz2 -o FFmpeg/ffmpeg-$VERSION.tar.bz2
 tar -xf FFmpeg/ffmpeg-$VERSION.tar.bz2 -C FFmpeg/src

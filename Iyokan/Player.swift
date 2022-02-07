@@ -14,6 +14,7 @@ fileprivate let lock = DispatchSemaphore(value: 1)
 
 class Player: ObservableObject {
     @Published var percentage: Double = 0.0
+    @Published var song: Song?
 
     private var dataStorage = DataStorage.shared
 
@@ -30,6 +31,7 @@ class Player: ObservableObject {
         itemObserver = notificationCenter.addObserver(forName: Serializer.itemDidChange, object: serializer, queue: .main) { _ in
             guard let id = self.serializer.currentItem?.id else { return }
             self.dataStorage.selectedPlaylist?.setCurrnetIndex(id: id)
+            self.song = self.serializer.currentItem?.song
         }
     }
 
@@ -67,6 +69,7 @@ class Player: ObservableObject {
 
     private func restartWithItems(fromIndex index: Int, atOffset offset: CMTime) {
         guard let playlist = dataStorage.selectedPlaylist else { return }
+        logger.debug("Restarting with total of \(playlist.items.count) items, start at \(index)")
         let items = Array(playlist.items[index ..< playlist.items.count])
         serializer.restartPlayback(with: items, atOffset: offset)
     }

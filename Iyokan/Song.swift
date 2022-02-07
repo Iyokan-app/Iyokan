@@ -11,7 +11,6 @@ import CoreMedia
 struct Song {
     init(_ path: String) {
         self.path = path
-
         let decoder = Decoder(path)
         let metadata = decoder.getMetadata()
         self.title = metadata["title"] ?? "Unkown"

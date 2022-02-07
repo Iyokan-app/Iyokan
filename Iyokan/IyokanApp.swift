@@ -14,6 +14,6 @@ struct IyokanApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(dataStorage: dataStorage)
-        }.windowToolbarStyle(.unified(showsTitle: false))
+        }.windowToolbarStyle(.unifiedCompact(showsTitle: false))
     }
 }

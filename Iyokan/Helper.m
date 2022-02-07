@@ -7,15 +7,18 @@
 
 #import "Helper.h"
 
-@implementation Helper
+@implementation Helper {
+    AVPacket *packet;
+    AVFrame *frame;
 
-AVPacket *packet;
-AVFrame *frame;
+    AVFormatContext *formatContext;
+    AVCodecParameters *codecParams;
+    const AVCodec *codec;
+    AVCodecContext *codecContext;
 
-AVFormatContext *formatContext;
-AVCodecParameters *codecParams;
-const AVCodec *codec;
-AVCodecContext *codecContext;
+    BOOL codecIsOpen;
+    int audioStreamIndex;
+}
 
 - (id) init:(NSString *) filePath {
     const char *cFilePath = [filePath cStringUsingEncoding: NSUTF8StringEncoding];
@@ -29,6 +32,8 @@ AVCodecContext *codecContext;
 
     av_dump_format(formatContext, 0, cFilePath, 0);
     _sampleRate = -1;
+    codecIsOpen = NO;
+    audioStreamIndex = -1;
 
     return self;
 }
@@ -45,9 +50,6 @@ AVCodecContext *codecContext;
     }
     return mutableDict;
 }
-
-BOOL codecIsOpen = NO;
-int audioStreamIndex = -1;
 
 - (BOOL) openCodec {
     // find the first audio stream

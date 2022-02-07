@@ -249,6 +249,7 @@ class Serializer: ObservableObject {
             } else {
                 // play the next item
                 // TODO: invalide the current item
+                logger.debug("The previous one finished, now providing for the next item")
 
                 nowEnqueuing += 1
                 enqueuingPlaybackEndTime += currentItem.endOffset

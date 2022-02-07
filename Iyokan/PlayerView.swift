@@ -57,9 +57,11 @@ struct PlayerView: View {
                         Image(systemName: "forward.fill")
                     }
                     // Divider()
-                    VStack {
-                        Text("Song Name").bold()
-                        Text("Artist Name").foregroundColor(.secondary)
+                    VStack(alignment: .leading) {
+                        if $player.song.wrappedValue != nil {
+                            Text($player.song.wrappedValue!.title).bold()
+                            Text($player.song.wrappedValue!.artist).foregroundColor(.secondary)
+                        }
                     }.padding(.vertical)
                 }
             }

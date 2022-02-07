@@ -9,6 +9,8 @@ import Foundation
 import AVFoundation
 import os
 
+fileprivate let logger = Logger.init(subsystem: "Iyokan", category: "Item")
+
 class Item: Identifiable, Hashable {
     static func == (lhs: Item, rhs: Item) -> Bool {
         return lhs.id == rhs.id
@@ -47,6 +49,7 @@ class Item: Identifiable, Hashable {
             isEnqueued = true
             decoder = Decoder(song.path)
         }
+        // logger.debug("Making sample for \(self.song.title)")
 
         guard let buffer = decoder?.nextSampleBuffer() else { return nil }
         endOffset = buffer.presentationTimeStamp + buffer.duration

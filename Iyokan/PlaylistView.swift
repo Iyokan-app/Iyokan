@@ -41,22 +41,32 @@ struct PlaylistView: View {
                             // 24 is the default height of a NSTableView row
                             .frame(width: geometry.size.width, height: 24, alignment: .leading)
                             .onHover() { inside in
+                                lastHovering = inside
                                 if inside {
+                                    if self.hovering.count > 2 {
+                                        _ = self.hovering.dropFirst()
+                                    }
                                     self.hovering.append(row)
                                 } else {
                                     self.hovering.removeAll(where: { $0 == row })
                                 }
                             }
-                    }.width(20)
+                            .contextMenu {
+                                Button("test") {
+
+                                }
+                            }
+                    }
+                    .width(20)
                     TableColumn("Title", value: \.song.title)
-                    TableColumn("Artrist", value: \.song.artist)
+                    TableColumn("Artist", value: \.song.artist)
                 }
                 .contextMenu {
                     Button("Add Files") {
                         openFile()
                     }
                     if $hovering.count != 0 {
-                        Button(hovering.first!.song.title) {}
+                        Button(hovering.last!.song.title) {}
                     }
                 }
                 .onChange(of: sortOrder) {

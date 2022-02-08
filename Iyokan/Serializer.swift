@@ -82,7 +82,7 @@ class Serializer: ObservableObject {
         }
     }
 
-    func restartPlayback(with newItems: [Item], atOffset offset: CMTime) {
+    func restartPlayback(with newItems: [Item], atOffset offset: CMTime, atRate rate: Float = 1) {
         serializationQueue.async { [unowned self] in
             stopEnqueuing()
 
@@ -103,7 +103,7 @@ class Serializer: ObservableObject {
                 self.provideMediaData()
             }
 
-            synchronizer.setRate(1, time: firstItem.startOffset)
+            synchronizer.setRate(rate, time: firstItem.startOffset)
         }
     }
 
@@ -167,6 +167,10 @@ class Serializer: ObservableObject {
         renderer.requestMediaDataWhenReady(on: serializationQueue) {
             self.provideMediaData()
         }
+    }
+
+    func currentRate() -> Float {
+        return synchronizer.rate
     }
 
     /// - Tag: Private helper functions

@@ -66,7 +66,7 @@ class Player: ObservableObject {
         lock.wait()
         defer { lock.signal() }
 
-        restartWithItems(fromIndex: 0, atOffset: offset)
+        restartWithItems(fromIndex: 0, atOffset: offset, pause: !serializer.isPlaying)
     }
 
     func seekToItem(_ item: Item) {
@@ -91,10 +91,10 @@ class Player: ObservableObject {
         serializer.continuePlayback(with: items)
     }
 
-    private func restartWithItems(fromIndex index: Int, atOffset offset: CMTime) {
+    private func restartWithItems(fromIndex index: Int, atOffset offset: CMTime, pause: Bool = false) {
         guard let playlist = dataStorage.selectedPlaylist else { return }
         logger.debug("Restarting with total of \(playlist.items.count) items, start at \(index)")
         let items = Array(playlist.items[index ..< playlist.items.count])
-        serializer.restartPlayback(with: items, atOffset: offset)
+        serializer.restartPlayback(with: items, atOffset: offset, atRate: pause ? 0 : 1)
     }
 }

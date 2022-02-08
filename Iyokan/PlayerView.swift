@@ -40,7 +40,6 @@ struct PlayerView: View {
                         guard let index = dataStorage.selectedPlaylist?.currentIndex else { return }
                         let duration = dataStorage.selectedPlaylist!.items[index].song.duration
                         player.seekToOffset(CMTimeMultiplyByFloat64(duration, multiplier: player.percentage))
-                        player.play()
                     }
                 }.padding(.horizontal)
             }

@@ -18,6 +18,8 @@ struct PlaylistView: View {
 
     @State private var hovering: [Item] = []
 
+    private var player = Player.shared
+
     func openFile() {
         guard let playlist = dataStorage.selectedPlaylist else { return }
         let openPanel = NSOpenPanel()
@@ -41,7 +43,6 @@ struct PlaylistView: View {
                             // 24 is the default height of a NSTableView row
                             .frame(width: geometry.size.width, height: 24, alignment: .leading)
                             .onHover() { inside in
-                                lastHovering = inside
                                 if inside {
                                     if self.hovering.count > 2 {
                                         _ = self.hovering.dropFirst()
@@ -49,11 +50,6 @@ struct PlaylistView: View {
                                     self.hovering.append(row)
                                 } else {
                                     self.hovering.removeAll(where: { $0 == row })
-                                }
-                            }
-                            .contextMenu {
-                                Button("test") {
-
                                 }
                             }
                     }
@@ -66,7 +62,10 @@ struct PlaylistView: View {
                         openFile()
                     }
                     if $hovering.count != 0 {
-                        Button(hovering.last!.song.title) {}
+                        let item = hovering.last!
+                        Button("Play \(item.song.title)") {
+                            player.seekToItem(item)
+                        }
                     }
                 }
                 .onChange(of: sortOrder) {

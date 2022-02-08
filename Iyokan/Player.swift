@@ -69,6 +69,16 @@ class Player: ObservableObject {
         restartWithItems(fromIndex: 0, atOffset: offset)
     }
 
+    func seekToItem(_ item: Item) {
+        logger.debug("Seeking to item \(item.song.title)")
+        guard let playlist = dataStorage.selectedPlaylist else { return }
+        lock.wait()
+        defer { lock.signal() }
+
+        guard let index = playlist.items.firstIndex(of: item) else { return }
+        restartWithItems(fromIndex: index, atOffset: .zero)
+    }
+
     // called when the playlist has been changed
     func continueWithCurrentItems() {
         logger.debug("Coninue with current items")

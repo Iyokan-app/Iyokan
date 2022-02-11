@@ -5,7 +5,7 @@
 //  Created by uiryuu on 2021/07/06.
 //
 
-import Foundation
+import Cocoa
 
 class Playlist: Identifiable, ObservableObject, Hashable {
     static func == (lhs: Playlist, rhs: Playlist) -> Bool {
@@ -28,6 +28,7 @@ class Playlist: Identifiable, ObservableObject, Hashable {
         }
         objectWillChange.send()
         Player.shared.continueWithCurrentItems()
+        playlistView?.reloadData()
     }
 
     func setCurrnetIndex(id: UUID) {
@@ -45,4 +46,6 @@ class Playlist: Identifiable, ObservableObject, Hashable {
     var items: [Item] = []
     // nil if the player is in a stopped state
     var currentIndex: Int?
+
+    var playlistView: NSTableView? = nil
 }

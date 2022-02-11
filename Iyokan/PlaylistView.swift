@@ -23,27 +23,41 @@ struct RepresentedPlaylistView: NSViewRepresentable {
         scrollView.documentView = tableView
         scrollView.hasVerticalScroller = true
         scrollView.hasHorizontalScroller = true
+
         tableView.dataSource = context.coordinator
         tableView.delegate = context.coordinator
+        tableView.target = context.coordinator
+        tableView.doubleAction = #selector(PlaylistViewController.doubleAction(sender:))
+        tableView.usesAlternatingRowBackgroundColors = true
+        tableView.allowsMultipleSelection = true
 
-        let col1 = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "trackNo"))
-        col1.title = "#"
+        // configuring columns
+        let col = makeColumn(id: "playing", title: " ")
+        col.width = 10
+        tableView.addTableColumn(col)
+
+        let col1 = makeColumn(id: "trackNo", title: "#")
         col1.width = 10
         tableView.addTableColumn(col1)
 
-        let col3 = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "artist"))
-        col3.title = "Artist"
-        col3.minWidth = 50
-        tableView.addTableColumn(col3)
-
-        let col2 = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "title"))
-        col2.title = "Title"
-        col2.minWidth = 50
+        let col2 = makeColumn(id: "artist", title: "Artist")
+        col2.minWidth = 100
         tableView.addTableColumn(col2)
+
+        let col3 = makeColumn(id: "title", title: "Title")
+        col3.minWidth = 100
+        tableView.addTableColumn(col3)
 
         dataStorage.selectedPlaylist?.playlistView = tableView
 
         return scrollView
+    }
+
+    private func makeColumn(id: String, title: String) -> NSTableColumn {
+        let column = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: id))
+        column.title = title
+        column.isEditable = false
+        return column
     }
 
     func makeCoordinator() -> PlaylistViewController {
@@ -55,6 +69,7 @@ struct RepresentedPlaylistView: NSViewRepresentable {
     }
 }
 
+@objc
 class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     let playlist: Playlist
 
@@ -65,6 +80,14 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // target actions
+    @objc func doubleAction(sender: AnyObject) {
+        let tableView = sender as! NSTableView
+        guard tableView.clickedRow != -1 else { return }
+
+        Player.shared.seekToItem(playlist.items[tableView.clickedRow])
     }
 
     // NSTableViewDataSource
@@ -78,6 +101,8 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         let text = NSTextField()
         let cell = NSView()
         switch tableColumn?.identifier.rawValue {
+        case "playing":
+            text.stringValue = item.isEnqueued ? "o" : "x"
         case "trackNo":
             text.stringValue = String(item.song.trackNo)
         case "title":
@@ -90,6 +115,9 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         cell.addSubview(text)
         text.drawsBackground = false
         text.isBordered = false
+        text.isEditable = false
+        text.cell?.wraps = false
+        text.maximumNumberOfLines = 1
         text.translatesAutoresizingMaskIntoConstraints = false
         cell.addConstraint(NSLayoutConstraint(item: text, attribute: .centerY, relatedBy: .equal, toItem: cell, attribute: .centerY, multiplier: 1, constant: 0))
         cell.addConstraint(NSLayoutConstraint(item: text, attribute: .left, relatedBy: .equal, toItem: cell, attribute: .left, multiplier: 1, constant: 0))
@@ -97,11 +125,6 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         return cell
     }
 
-    func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
-        let rowView = NSTableRowView()
-        rowView.isEmphasized = false
-        return rowView
-    }
     // NSTableViewDelegate
 
 }

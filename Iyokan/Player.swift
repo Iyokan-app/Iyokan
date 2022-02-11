@@ -66,7 +66,8 @@ class Player: ObservableObject {
         lock.wait()
         defer { lock.signal() }
 
-        restartWithItems(fromIndex: 0, atOffset: offset)
+        guard let currentIndex = dataStorage.selectedPlaylist?.currentIndex else { return }
+        restartWithItems(fromIndex: currentIndex, atOffset: offset)
     }
 
     func seekToItem(_ item: Item) {

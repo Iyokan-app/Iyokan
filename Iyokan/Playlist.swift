@@ -24,7 +24,7 @@ class Playlist: Identifiable, ObservableObject, Hashable {
     func addMedia(urls: [URL]) {
         urls.forEach{
             let song = Song($0.path)
-            items.append(Item(song: song, fromOffset: .zero))
+            items.append(Item(song: song, fromOffset: .zero, playlist: self))
         }
         objectWillChange.send()
         Player.shared.continueWithCurrentItems()

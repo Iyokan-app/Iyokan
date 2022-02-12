@@ -27,6 +27,7 @@ class Player: ObservableObject {
     private var percentageObserver: NSObjectProtocol!
     private var isPlayingObserver: NSObjectProtocol!
 
+    var isPausedBeforeEditing = false
 
     init() {
         let notificationCenter = NotificationCenter.default
@@ -75,7 +76,7 @@ class Player: ObservableObject {
         defer { lock.signal() }
 
         guard let currentIndex = dataStorage.selectedPlaylist?.currentIndex else { return }
-        restartWithItems(fromIndex: currentIndex, atOffset: offset, pause: !isPlaying)
+        restartWithItems(fromIndex: currentIndex, atOffset: offset, pause: isPausedBeforeEditing)
     }
 
     func seekToItem(_ item: Item) {

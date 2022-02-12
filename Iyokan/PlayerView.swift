@@ -31,6 +31,7 @@ struct PlayerView: View {
             VStack {
                 Slider(value: $player.percentage, in: 0...1) { editing in
                     if editing {
+                        player.isPausedBeforeEditing = !player.isPlaying
                         player.pause()
                     } else {
                         guard let index = dataStorage.selectedPlaylist?.currentIndex else { return }

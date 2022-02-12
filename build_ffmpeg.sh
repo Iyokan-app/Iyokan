@@ -3,6 +3,19 @@
 set -e
 set -x
 
+CWD="$(pwd)"
+
+function error_handler() {
+  set +x
+  echo "we meet an error when installing" >&2
+  echo "remove FFmpeg folder" >&2
+  rm -r "$CWD/FFmpeg"
+  exit 1
+}
+
+trap error_handler ERR
+trap error_handler INT
+
 VERSION=5.0
 FFMPEGFLAGS=(
   --enable-gpl

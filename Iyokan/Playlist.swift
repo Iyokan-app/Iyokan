@@ -21,7 +21,19 @@ class Playlist: Identifiable, ObservableObject, Hashable {
         hasher.combine(id)
     }
 
-    func addMedia(urls: [URL]) {
+    func openFile() {
+        let openPanel = NSOpenPanel()
+        openPanel.allowedContentTypes = [.audio]
+        openPanel.allowsMultipleSelection = true
+        openPanel.canChooseDirectories = false
+        openPanel.canChooseFiles = true
+        openPanel.beginSheetModal(for: NSApp.keyWindow!) {_ in
+            self.addMedia(urls: openPanel.urls)
+            DataStorage.shared.objectWillChange.send()
+        }
+    }
+
+    private func addMedia(urls: [URL]) {
         urls.forEach{
             let song = Song($0.path)
             items.append(Item(song: song, fromOffset: .zero, playlist: self))

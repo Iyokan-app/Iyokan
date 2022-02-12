@@ -15,7 +15,7 @@ struct RepresentedPlaylistView: NSViewRepresentable {
 
     func makeNSView(context: Context) -> NSScrollView {
         let scrollView = NSScrollView()
-        let tableView = NSTableView()
+        let tableView = IKTableView()
 
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -90,6 +90,10 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         Player.shared.seekToItem(playlist.items[tableView.clickedRow])
     }
 
+    @objc func addFiles(sender: AnyObject) {
+        playlist.openFile()
+    }
+
     // NSTableViewDataSource
     func numberOfRows(in tableView: NSTableView) -> Int {
         return playlist.items.count
@@ -118,6 +122,8 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         text.isEditable = false
         text.cell?.wraps = false
         text.maximumNumberOfLines = 1
+        text.cell?.lineBreakMode = .byTruncatingTail
+        // text.cell?.truncatesLastVisibleLine = true
         text.translatesAutoresizingMaskIntoConstraints = false
         cell.addConstraint(NSLayoutConstraint(item: text, attribute: .centerY, relatedBy: .equal, toItem: cell, attribute: .centerY, multiplier: 1, constant: 0))
         cell.addConstraint(NSLayoutConstraint(item: text, attribute: .left, relatedBy: .equal, toItem: cell, attribute: .left, multiplier: 1, constant: 0))
@@ -126,7 +132,15 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
     }
 
     // NSTableViewDelegate
+}
 
+class IKTableView: NSTableView {
+    override func menu(for event: NSEvent) -> NSMenu? {
+        let menu = NSMenu()
+        let item = menu.insertItem(withTitle: "Add Files", action: #selector(PlaylistViewController.addFiles(sender:)), keyEquivalent: "o", at: 0)
+        item.target = self.target
+        return menu
+    }
 }
 
 //struct PlaylistView: View {

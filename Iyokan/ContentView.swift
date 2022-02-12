@@ -58,21 +58,6 @@ struct ContentView: View {
 }
 
 struct MainView: View {
-
-    func openFile() {
-        let dataStorage = DataStorage.shared
-        guard let playlist = dataStorage.selectedPlaylist else { return }
-        let openPanel = NSOpenPanel()
-        openPanel.allowedContentTypes = [.audio]
-        openPanel.allowsMultipleSelection = true
-        openPanel.canChooseDirectories = false
-        openPanel.canChooseFiles = true
-        openPanel.beginSheetModal(for: NSApp.keyWindow!) {_ in
-            playlist.addMedia(urls: openPanel.urls)
-            dataStorage.objectWillChange.send()
-        }
-    }
-
     var body: some View {
         VStack {
             PlayerView()
@@ -82,7 +67,7 @@ struct MainView: View {
                         Spacer()
                     }
                     ToolbarItem() {
-                        Button(action: openFile) {
+                        Button(action: { DataStorage.shared.selectedPlaylist?.openFile() }) {
                             Image(systemName: "doc.badge.plus")
                         }.controlSize(.large)
                     }

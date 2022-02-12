@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -x
 
 VERSION=5.0
 FFMPEGFLAGS=(

@@ -84,7 +84,7 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
 
     // target actions
     @objc func doubleAction(sender: AnyObject) {
-        let tableView = sender as! NSTableView
+        let tableView = playlist.playlistView!
         guard tableView.clickedRow != -1 else { return }
 
         Player.shared.seekToItem(playlist.items[tableView.clickedRow])
@@ -92,6 +92,17 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
 
     @objc func addFiles(sender: AnyObject) {
         playlist.openFile()
+    }
+
+    func menu(for event: NSEvent) -> NSMenu? {
+        let menu = NSMenu()
+        menu.insertItem(withTitle: "Add Files", action: #selector(addFiles(sender:)), keyEquivalent: "o", at: 0).target = self
+
+        if let clickedRow = playlist.playlistView?.clickedRow {
+            let clickedItem = playlist.items[clickedRow]
+            menu.insertItem(withTitle: "Play \(clickedItem.song.title)", action: #selector(doubleAction(sender:)), keyEquivalent: "", at: 0).target = self
+        }
+        return menu
     }
 
     // NSTableViewDataSource
@@ -136,10 +147,8 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
 
 class IKTableView: NSTableView {
     override func menu(for event: NSEvent) -> NSMenu? {
-        let menu = NSMenu()
-        let item = menu.insertItem(withTitle: "Add Files", action: #selector(PlaylistViewController.addFiles(sender:)), keyEquivalent: "o", at: 0)
-        item.target = self.target
-        return menu
+        super.menu(for: event)
+        return (self.target as! PlaylistViewController).menu(for: event)
     }
 }
 

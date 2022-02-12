@@ -15,14 +15,18 @@ fileprivate let lock = DispatchSemaphore(value: 1)
 class Player: ObservableObject {
     static let shared = Player()
 
-    @Published var percentage: Double = 0.0
+    private lazy var serializer = Serializer.shared
+    private lazy var dataStorage = DataStorage.shared
+
+    // reported by the serializer
     @Published var song: Song?
+    @Published var isPlaying: Bool = false
+    @Published var percentage: Double = 0.0
 
-    private var dataStorage = DataStorage.shared
-
-    let serializer = Serializer()
-    private var percentageObserver: NSObjectProtocol!
     private var itemObserver: NSObjectProtocol!
+    private var percentageObserver: NSObjectProtocol!
+    private var isPlayingObserver: NSObjectProtocol!
+
 
     init() {
         let notificationCenter = NotificationCenter.default
@@ -35,6 +39,10 @@ class Player: ObservableObject {
             self.dataStorage.selectedPlaylist?.setCurrnetIndex(id: id)
             self.song = self.serializer.currentItem?.song
         }
+        isPlayingObserver = notificationCenter.addObserver(forName: Serializer.rateDidChange, object: serializer, queue: .main) { notification in
+            guard let isPlaying = notification.userInfo?[Serializer.isPlayingKey] as? Bool else { return }
+            self.isPlaying = isPlaying
+        }
     }
 
     func pause() {
@@ -42,7 +50,7 @@ class Player: ObservableObject {
         lock.wait()
         defer { lock.signal() }
 
-        if serializer.isPlaying {
+        if isPlaying {
             serializer.pausePlayback()
         }
     }
@@ -56,7 +64,7 @@ class Player: ObservableObject {
 
         if playlist.currentIndex == nil {
             restartWithItems(fromIndex: 0, atOffset: .zero)
-        } else if !serializer.isPlaying {
+        } else if !isPlaying {
             serializer.resumePlayback()
         }
     }
@@ -67,7 +75,7 @@ class Player: ObservableObject {
         defer { lock.signal() }
 
         guard let currentIndex = dataStorage.selectedPlaylist?.currentIndex else { return }
-        restartWithItems(fromIndex: currentIndex, atOffset: offset, pause: !serializer.isPlaying)
+        restartWithItems(fromIndex: currentIndex, atOffset: offset, pause: !isPlaying)
     }
 
     func seekToItem(_ item: Item) {

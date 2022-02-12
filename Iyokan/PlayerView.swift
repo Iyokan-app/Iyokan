@@ -15,11 +15,7 @@ struct PlayerView: View {
     func togglePlay() {
         guard let playlist = dataStorage.selectedPlaylist else { return }
         guard !playlist.items.isEmpty else { return }
-        if player.serializer.isPlaying {
-            player.serializer.pausePlayback()
-        } else {
-            player.play()
-        }
+        player.isPlaying ? player.pause() : player.play()
     }
 
     func previous() {
@@ -50,7 +46,7 @@ struct PlayerView: View {
                         Image(systemName: "backward.fill")
                     }
                     Button(action: togglePlay) {
-                        Image(systemName: "playpause.fill")
+                        Image(systemName: player.isPlaying ? "pause.fill" : "play.fill")
                     }
                     Button(action: next) {
                         Image(systemName: "forward.fill")

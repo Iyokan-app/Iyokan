@@ -13,13 +13,19 @@ fileprivate let serializationQueue = DispatchQueue(label: "org.iyokan-app.iyokan
 fileprivate let logger = Logger.init(subsystem: "Iyokan", category: "Serializer")
 
 class Serializer: ObservableObject {
+    static let shared = Serializer()
+
+    private lazy var player = Player.shared
+
     // The playback infrastructure
     private let renderer = AVSampleBufferAudioRenderer()
     private let synchronizer = AVSampleBufferRenderSynchronizer()
 
-    static let percentageKey = "IKCurrentPercentage"
     static let offsetDidChange = Notification.Name("IKSerializerOffsetDidChange")
     static let itemDidChange = Notification.Name("IKSerializerItemDidChange")
+    static let rateDidChange = Notification.Name("IKSerializerRateDidChange")
+    static let percentageKey = "IKCurrentPercentage"
+    static let isPlayingKey = "IKIsPlaying"
 
     var items: [Item] = []
 
@@ -37,13 +43,11 @@ class Serializer: ObservableObject {
     private var automaticFlushObserver: NSObjectProtocol!
     private var periodicObserver: Any?
 
-    var isPlaying: Bool { synchronizer.rate != 0 }
-
     init() {
         synchronizer.addRenderer(renderer)
         automaticFlushObserver = NotificationCenter.default.addObserver(forName: .AVSampleBufferAudioRendererWasFlushedAutomatically,
                                                                         object: renderer,
-                                                                        queue: nil) { [unowned self] notification in
+                                                                        queue: nil) { notification in
             serializationQueue.async {
                 let restartTime = (notification.userInfo?[AVSampleBufferAudioRendererFlushTimeKey] as? NSValue)?.timeValue
                 self.autoflushPlayback(restartingAt: restartTime)
@@ -55,6 +59,7 @@ class Serializer: ObservableObject {
         serializationQueue.async { [unowned self] in
             logger.debug("Start playing")
             synchronizer.rate = 1
+            notifyRateDidChange()
             updateCurrentPlayingItem(at: .zero)
         }
     }
@@ -63,6 +68,7 @@ class Serializer: ObservableObject {
         serializationQueue.async { [unowned self] in
             logger.debug("Stopping playing")
             stopEnqueuing()
+            notifyRateDidChange()
         }
     }
 
@@ -71,6 +77,7 @@ class Serializer: ObservableObject {
             logger.debug("Pause playing")
             if synchronizer.rate == 0 { return }
             synchronizer.rate = 0
+            notifyRateDidChange()
         }
     }
 
@@ -79,6 +86,7 @@ class Serializer: ObservableObject {
             logger.debug("Resume playing")
             if synchronizer.rate != 0 || items.isEmpty { return }
             synchronizer.rate = 1
+            notifyRateDidChange()
         }
     }
 
@@ -104,6 +112,7 @@ class Serializer: ObservableObject {
             }
 
             synchronizer.setRate(rate, time: firstItem.startOffset)
+            notifyRateDidChange()
         }
     }
 
@@ -169,11 +178,11 @@ class Serializer: ObservableObject {
         }
     }
 
-    func currentRate() -> Float {
-        return synchronizer.rate
-    }
-
     /// - Tag: Private helper functions
+
+    private func notifyRateDidChange() {
+        NotificationCenter.default.post(name: Serializer.rateDidChange, object: self, userInfo: [Serializer.isPlayingKey: synchronizer.rate != 0])
+    }
 
     private func stopEnqueuing() {
         synchronizer.rate = 0
@@ -218,6 +227,7 @@ class Serializer: ObservableObject {
             }
         } else {
             synchronizer.rate = 0
+            notifyRateDidChange()
         }
     }
 

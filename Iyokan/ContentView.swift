@@ -28,27 +28,34 @@ struct ContentView: View {
                     ToolbarItem(placement: .primaryAction) {
                         Button(action: toggleSidebar, label: {
                             Image(systemName: "sidebar.left")
-                        }).controlSize(.large)
+                        })
+                        .controlSize(.large)
                     }
                 }
                 Divider()
                 HStack {
                     Button(action: {
-                        dataStorage.append(Playlist(name: "New Playlist", items: nil))
+                        dataStorage.newPlaylist()
                     }) {
                         Image(systemName: "plus")
-                    }.buttonStyle(.borderless).padding([.horizontal, .bottom], 6)
+                    }
+                    .buttonStyle(.borderless)
+                    .padding([.horizontal, .bottom], 6)
                     Spacer()
                     Button(action: {
                         dataStorage.remove(nil)
                     }) {
                         Image(systemName: "minus")
-                    }.buttonStyle(.borderless).padding([.horizontal, .bottom], 6)
+                    }
+                    .buttonStyle(.borderless)
+                    .padding([.horizontal, .bottom], 6)
                 }
             }
-        }.onAppear {
+        }
+        .onAppear {
             // select = playlists[0]
-        }.environmentObject(dataStorage)
+        }
+        .environmentObject(dataStorage)
     }
 
     private func toggleSidebar() {
@@ -69,7 +76,8 @@ struct MainView: View {
                     ToolbarItem() {
                         Button(action: { DataStorage.shared.selectedPlaylist?.openFile() }) {
                             Image(systemName: "doc.badge.plus")
-                        }.controlSize(.large)
+                        }
+                        .controlSize(.large)
                     }
                 }
         }

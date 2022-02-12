@@ -13,6 +13,10 @@ class DataStorage: ObservableObject {
     var playlists: [Playlist] = []
     @Published var selectedPlaylist: Playlist?
 
+    func newPlaylist() {
+        append(Playlist(name: "New Playlist", items: nil))
+    }
+
     func append(_ item: Playlist) {
         playlists.append(item)
         selectedPlaylist = item

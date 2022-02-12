@@ -14,6 +14,17 @@ struct IyokanApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(dataStorage: dataStorage)
-        }.windowToolbarStyle(.unifiedCompact(showsTitle: false))
+                .onAppear {
+                    NSWindow.allowsAutomaticWindowTabbing = false
+                }
+        }
+        .windowToolbarStyle(.unifiedCompact(showsTitle: false))
+        .commands {
+            CommandGroup(replacing: .newItem) {
+                Button("New Playlist") {
+                    dataStorage.newPlaylist()
+                }.keyboardShortcut("n")
+            }
+        }
     }
 }

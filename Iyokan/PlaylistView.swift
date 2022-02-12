@@ -98,7 +98,7 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         let menu = NSMenu()
         menu.insertItem(withTitle: "Add Files", action: #selector(addFiles(sender:)), keyEquivalent: "o", at: 0).target = self
 
-        if let clickedRow = playlist.playlistView?.clickedRow {
+        if let clickedRow = playlist.playlistView?.clickedRow, clickedRow != -1 {
             let clickedItem = playlist.items[clickedRow]
             menu.insertItem(withTitle: "Play \(clickedItem.song.title)", action: #selector(doubleAction(sender:)), keyEquivalent: "", at: 0).target = self
         }
@@ -114,10 +114,11 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         let item = playlist.items[row]
 
         let text = NSTextField()
-        let cell = NSView()
+        let view = NSView()
         switch tableColumn?.identifier.rawValue {
         case "playing":
-            text.stringValue = item.isEnqueued ? "o" : "x"
+            if !item.isEnqueued { return nil }
+            return NSImageView(image: .init(systemSymbolName: "play.fill", accessibilityDescription: nil)!)
         case "trackNo":
             text.stringValue = String(item.song.trackNo)
         case "title":
@@ -127,7 +128,7 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         default:
             break
         }
-        cell.addSubview(text)
+        view.addSubview(text)
         text.drawsBackground = false
         text.isBordered = false
         text.isEditable = false
@@ -136,10 +137,10 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         text.cell?.lineBreakMode = .byTruncatingTail
         // text.cell?.truncatesLastVisibleLine = true
         text.translatesAutoresizingMaskIntoConstraints = false
-        cell.addConstraint(NSLayoutConstraint(item: text, attribute: .centerY, relatedBy: .equal, toItem: cell, attribute: .centerY, multiplier: 1, constant: 0))
-        cell.addConstraint(NSLayoutConstraint(item: text, attribute: .left, relatedBy: .equal, toItem: cell, attribute: .left, multiplier: 1, constant: 0))
-        cell.addConstraint(NSLayoutConstraint(item: text, attribute: .right, relatedBy: .equal, toItem: cell, attribute: .right, multiplier: 1, constant: 0))
-        return cell
+        view.addConstraint(NSLayoutConstraint(item: text, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: text, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: text, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1, constant: 0))
+        return view
     }
 
     // NSTableViewDelegate

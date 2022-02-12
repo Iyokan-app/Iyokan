@@ -61,7 +61,17 @@ struct MainView: View {
     var body: some View {
         VStack {
             PlayerView()
-            PlaylistView()
+            RepresentedPlaylistView()
+                .toolbar {
+                    ToolbarItem() {
+                        Spacer()
+                    }
+                    ToolbarItem() {
+                        Button(action: { DataStorage.shared.selectedPlaylist?.openFile() }) {
+                            Image(systemName: "doc.badge.plus")
+                        }.controlSize(.large)
+                    }
+                }
         }
     }
 }

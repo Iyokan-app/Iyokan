@@ -22,6 +22,7 @@ class Item: Identifiable, Hashable {
 
     let id = UUID()
     let song: Song
+    let playlist: Playlist
     private var decoder: Decoder?
 
     var boundaryTimeObserver: Any?
@@ -34,14 +35,22 @@ class Item: Identifiable, Hashable {
     private(set) var endOffset: CMTime
 
     // true if this item has been used to get sample buffers
-    private(set) var isEnqueued = false
+    private(set) var isEnqueued = false {
+        didSet {
+            // TODO: reloadData(for indexes)
+            DispatchQueue.main.async {
+                self.playlist.playlistView?.reloadData()
+            }
+        }
+    }
 
-    init (song: Song, fromOffset offset: CMTime) {
+    init (song: Song, fromOffset offset: CMTime, playlist: Playlist) {
         self.song = song
         self.startOffset = offset
         self.endOffset = offset
 
         self.startOffset = offset > .zero && offset < song.duration ? offset : .zero
+        self.playlist = playlist
     }
 
     func nextSample() -> CMSampleBuffer? {

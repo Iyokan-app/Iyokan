@@ -90,6 +90,13 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         Player.shared.seekToItem(playlist.items[tableView.clickedRow])
     }
 
+    @objc func openFileLocation(sender: AnyObject) {
+        let tableView = playlist.playlistView!
+        guard tableView.clickedRow != -1 else { return }
+
+        NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: playlist.items[tableView.clickedRow].song.path)])
+    }
+
     @objc func addFiles(sender: AnyObject) {
         playlist.openFile()
     }
@@ -97,11 +104,13 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
     func menu(for event: NSEvent) -> NSMenu? {
         let menu = NSMenu()
         menu.insertItem(withTitle: "Add Files", action: #selector(addFiles(sender:)), keyEquivalent: "o", at: 0).target = self
-
         if let clickedRow = playlist.playlistView?.clickedRow, clickedRow != -1 {
             let clickedItem = playlist.items[clickedRow]
+            menu.insertItem(.separator(), at: 0)
+            menu.insertItem(withTitle: "Open File Location", action: #selector(openFileLocation(sender:)), keyEquivalent: "", at: 0).target = self
             menu.insertItem(withTitle: "Play \(clickedItem.song.title)", action: #selector(doubleAction(sender:)), keyEquivalent: "", at: 0).target = self
         }
+
         return menu
     }
 

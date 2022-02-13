@@ -59,5 +59,5 @@ class Playlist: Identifiable, ObservableObject, Hashable {
     // nil if the player is in a stopped state
     var currentIndex: Int?
 
-    var playlistView: IKTableView? = nil
+    var playlistView: NSTableView? = nil
 }

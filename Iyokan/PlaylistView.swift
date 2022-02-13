@@ -15,7 +15,7 @@ struct RepresentedPlaylistView: NSViewRepresentable {
 
     func makeNSView(context: Context) -> NSScrollView {
         let scrollView = NSScrollView()
-        let tableView = IKTableView()
+        let tableView = NSTableView()
 
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -31,22 +31,31 @@ struct RepresentedPlaylistView: NSViewRepresentable {
         tableView.usesAlternatingRowBackgroundColors = true
         tableView.allowsMultipleSelection = true
 
+        let menu = NSMenu()
+        tableView.menu = menu
+        menu.delegate = context.coordinator
+
         // configuring columns
         let col = makeColumn(id: "playing", title: " ")
         col.width = 10
         tableView.addTableColumn(col)
 
         let col1 = makeColumn(id: "trackNo", title: "#")
-        col1.width = 10
+        col1.minWidth = 15
+        col1.maxWidth = 15
         tableView.addTableColumn(col1)
 
-        let col2 = makeColumn(id: "artist", title: "Artist")
-        col2.minWidth = 100
-        tableView.addTableColumn(col2)
-
         let col3 = makeColumn(id: "title", title: "Title")
-        col3.minWidth = 100
+        col3.minWidth = 200
         tableView.addTableColumn(col3)
+
+        let col4 = makeColumn(id: "album", title: "Album")
+        col3.minWidth = 200
+        tableView.addTableColumn(col4)
+
+        let col2 = makeColumn(id: "artist", title: "Artist")
+        col2.minWidth = 200
+        tableView.addTableColumn(col2)
 
         dataStorage.selectedPlaylist?.playlistView = tableView
 
@@ -70,7 +79,7 @@ struct RepresentedPlaylistView: NSViewRepresentable {
 }
 
 @objc
-class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
+class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, NSMenuDelegate {
     let playlist: Playlist
 
     init(playlist: Playlist) {
@@ -101,8 +110,8 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         playlist.openFile()
     }
 
-    func menu(for event: NSEvent) -> NSMenu? {
-        let menu = NSMenu()
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        menu.removeAllItems()
         menu.insertItem(withTitle: "Add Files", action: #selector(addFiles(sender:)), keyEquivalent: "o", at: 0).target = self
         if let clickedRow = playlist.playlistView?.clickedRow, clickedRow != -1 {
             let clickedItem = playlist.items[clickedRow]
@@ -110,8 +119,6 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
             menu.insertItem(withTitle: "Open File Location", action: #selector(openFileLocation(sender:)), keyEquivalent: "", at: 0).target = self
             menu.insertItem(withTitle: "Play \(clickedItem.song.title)", action: #selector(doubleAction(sender:)), keyEquivalent: "", at: 0).target = self
         }
-
-        return menu
     }
 
     // NSTableViewDataSource
@@ -124,16 +131,19 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
 
         let text = NSTextField()
         let view = NSView()
+        let song = item.song
         switch tableColumn?.identifier.rawValue {
         case "playing":
             if !item.isEnqueued { return nil }
             return NSImageView(image: .init(systemSymbolName: "play.fill", accessibilityDescription: nil)!)
         case "trackNo":
-            text.stringValue = String(item.song.trackNo)
+            text.stringValue = String(song.trackNo)
         case "title":
-            text.stringValue = item.song.title
+            text.stringValue = song.title
         case "artist":
-            text.stringValue = item.song.artist
+            text.stringValue = song.artist
+        case "album":
+            text.stringValue = song.album
         default:
             break
         }
@@ -153,13 +163,6 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
     }
 
     // NSTableViewDelegate
-}
-
-class IKTableView: NSTableView {
-    override func menu(for event: NSEvent) -> NSMenu? {
-        super.menu(for: event)
-        return (self.target as! PlaylistViewController).menu(for: event)
-    }
 }
 
 //struct PlaylistView: View {

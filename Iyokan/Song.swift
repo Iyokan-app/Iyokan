@@ -13,9 +13,10 @@ struct Song {
         self.path = path
         let decoder = Decoder(path)
         let metadata = decoder.getMetadata()
-        self.title = metadata["title"] ?? "Unkown"
+        self.title = metadata["title"] ?? "Unknown"
         self.trackNo = Int(metadata["track"] ?? "0") ?? 0
-        self.artist = metadata["artist"] ?? "Unkown Artist"
+        self.artist = metadata["artist"] ?? "Unknown Artist"
+        self.album = metadata["album"] ?? "Unknown Ablum"
 
         self.duration = decoder.getDuration()
     }
@@ -25,6 +26,7 @@ struct Song {
     let title: String
     let trackNo: Int
     let artist: String
+    let album: String
 
     let duration: CMTime
 }

@@ -7,7 +7,7 @@
 
 import Cocoa
 
-class Playlist: Identifiable, ObservableObject, Hashable {
+class Playlist: Identifiable, Hashable {
     static func == (lhs: Playlist, rhs: Playlist) -> Bool {
         lhs.id == rhs.id
     }
@@ -38,7 +38,6 @@ class Playlist: Identifiable, ObservableObject, Hashable {
             let song = Song($0.path)
             items.append(Item(song: song, fromOffset: .zero, playlist: self))
         }
-        objectWillChange.send()
         Player.shared.continueWithCurrentItems()
         playlistView?.reloadData()
     }

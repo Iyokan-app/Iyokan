@@ -19,7 +19,11 @@ struct ContentView: View {
                 List {
                     ForEach(dataStorage.playlists) { playlist in
                         NavigationLink(destination: MainView(), tag: playlist, selection: $dataStorage.selectedPlaylist) {
-                            Label(playlist.name, systemImage: "music.note.list")
+                            HStack {
+                                Image(systemName: "music.note.list")
+                                TextField(playlist.name, text: Binding(get: {playlist.name}, set: {playlist.name = $0}))
+                                    .disabled(playlist != $dataStorage.selectedPlaylist.wrappedValue)
+                            }
                         }
                     }
                 }

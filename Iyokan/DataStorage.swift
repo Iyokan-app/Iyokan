@@ -10,7 +10,7 @@ import Foundation
 class DataStorage: ObservableObject {
     static let shared = DataStorage()
 
-    var playlists: [Playlist] = []
+    @Published var playlists: [Playlist] = []
     @Published var selectedPlaylist: Playlist?
 
     func newPlaylist() {
@@ -20,7 +20,6 @@ class DataStorage: ObservableObject {
     func append(_ item: Playlist) {
         playlists.append(item)
         selectedPlaylist = item
-        objectWillChange.send();
     }
 
     func remove(_ item: Playlist?) {
@@ -31,6 +30,5 @@ class DataStorage: ObservableObject {
         if (item == nil) && !playlists.isEmpty {
             selectedPlaylist = playlists[0]
         }
-        objectWillChange.send();
     }
 }

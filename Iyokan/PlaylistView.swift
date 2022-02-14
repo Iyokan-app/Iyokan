@@ -79,7 +79,7 @@ struct RepresentedPlaylistView: NSViewRepresentable {
 }
 
 @objc
-class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, NSMenuDelegate {
+class PlaylistViewController: NSViewController {
     let playlist: Playlist
 
     init(playlist: Playlist) {
@@ -91,7 +91,6 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         fatalError("init(coder:) has not been implemented")
     }
 
-    // target actions
     @objc func doubleAction(sender: AnyObject) {
         let tableView = playlist.playlistView!
         guard tableView.clickedRow != -1 else { return }
@@ -109,7 +108,9 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
     @objc func addFiles(sender: AnyObject) {
         playlist.openFile()
     }
+}
 
+extension PlaylistViewController: NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
         menu.insertItem(withTitle: "Add Files", action: #selector(addFiles(sender:)), keyEquivalent: "o", at: 0).target = self
@@ -120,8 +121,9 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
             menu.insertItem(withTitle: "Play \(clickedItem.song.title)", action: #selector(doubleAction(sender:)), keyEquivalent: "", at: 0).target = self
         }
     }
+}
 
-    // NSTableViewDataSource
+extension PlaylistViewController: NSTableViewDataSource {
     func numberOfRows(in tableView: NSTableView) -> Int {
         return playlist.items.count
     }
@@ -161,83 +163,7 @@ class PlaylistViewController: NSViewController, NSTableViewDataSource, NSTableVi
         view.addConstraint(NSLayoutConstraint(item: text, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1, constant: 0))
         return view
     }
-
-    // NSTableViewDelegate
 }
 
-//struct PlaylistView: View {
-//    @EnvironmentObject var dataStorage: DataStorage
-//
-//    @State private var selectedItems = Set<Item.ID>()
-//    @State private var sortOrder = [KeyPathComparator(\Item.song.trackNo)]
-//    @State private var position: Double = 0
-//
-//    @State private var hovering: [Item] = []
-//
-//    private var player = Player.shared
-//
-//    func openFile() {
-//        guard let playlist = dataStorage.selectedPlaylist else { return }
-//        let openPanel = NSOpenPanel()
-//        openPanel.allowedContentTypes = [.audio]
-//        openPanel.allowsMultipleSelection = true
-//        openPanel.canChooseDirectories = false
-//        openPanel.canChooseFiles = true
-//        openPanel.beginSheetModal(for: NSApp.keyWindow!) {_ in
-//            playlist.addMedia(urls: openPanel.urls)
-//            dataStorage.objectWillChange.send()
-//        }
-//    }
-//
-//    var body: some View {
-//        VStack {
-//            GeometryReader { geometry in
-//                Table(dataStorage.selectedPlaylist!.items, selection: $selectedItems, sortOrder: $sortOrder) {
-//                    TableColumn("#", value: \.song.trackNo) { row in
-//                        Text(String(row.song.trackNo))
-//                            // Extend the length of the text view to detect the cursor
-//                            // 24 is the default height of a NSTableView row
-//                            .frame(width: geometry.size.width, height: 24, alignment: .leading)
-//                            .onHover() { inside in
-//                                if inside {
-//                                    if self.hovering.count > 2 {
-//                                        _ = self.hovering.dropFirst()
-//                                    }
-//                                    self.hovering.append(row)
-//                                } else {
-//                                    self.hovering.removeAll(where: { $0 == row })
-//                                }
-//                            }
-//                    }
-//                    .width(20)
-//                    TableColumn("Title", value: \.song.title)
-//                    TableColumn("Artist", value: \.song.artist)
-//                }
-//                .contextMenu {
-//                    Button("Add Files") {
-//                        openFile()
-//                    }
-//                    if $hovering.count != 0 {
-//                        let item = hovering.last!
-//                        Button("Play \(item.song.title)") {
-//                            player.seekToItem(item)
-//                        }
-//                    }
-//                }
-//                .onChange(of: sortOrder) {
-//                    dataStorage.selectedPlaylist!.items.sort(using: $0)
-//                }
-//                .toolbar {
-//                    ToolbarItem() {
-//                        Spacer()
-//                    }
-//                    ToolbarItem() {
-//                        Button(action: openFile) {
-//                            Image(systemName: "doc.badge.plus")
-//                        }.controlSize(.large)
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
+extension PlaylistViewController: NSTableViewDelegate {
+}

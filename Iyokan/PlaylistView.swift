@@ -30,6 +30,7 @@ struct RepresentedPlaylistView: NSViewRepresentable {
         tableView.doubleAction = #selector(PlaylistViewController.doubleAction(sender:))
         tableView.usesAlternatingRowBackgroundColors = true
         tableView.allowsMultipleSelection = true
+        tableView.autosaveTableColumns = true
 
         let menu = NSMenu()
         tableView.menu = menu
@@ -49,13 +50,13 @@ struct RepresentedPlaylistView: NSViewRepresentable {
         col3.minWidth = 200
         tableView.addTableColumn(col3)
 
-        let col4 = makeColumn(id: "album", title: "Album")
-        col3.minWidth = 200
-        tableView.addTableColumn(col4)
-
         let col2 = makeColumn(id: "artist", title: "Artist")
         col2.minWidth = 200
         tableView.addTableColumn(col2)
+
+        let col4 = makeColumn(id: "album", title: "Album")
+        col3.minWidth = 200
+        tableView.addTableColumn(col4)
 
         dataStorage.selectedPlaylist?.playlistView = tableView
 
@@ -113,7 +114,7 @@ class PlaylistViewController: NSViewController {
 extension PlaylistViewController: NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
-        menu.insertItem(withTitle: "Add Files", action: #selector(addFiles(sender:)), keyEquivalent: "o", at: 0).target = self
+        menu.insertItem(withTitle: "Add Files", action: #selector(addFiles(sender:)), keyEquivalent: "", at: 0).target = self
         if let clickedRow = playlist.playlistView?.clickedRow, clickedRow != -1 {
             let clickedItem = playlist.items[clickedRow]
             menu.insertItem(.separator(), at: 0)

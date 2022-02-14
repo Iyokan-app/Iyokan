@@ -23,7 +23,13 @@ struct IyokanApp: App {
             CommandGroup(replacing: .newItem) {
                 Button("New Playlist") {
                     dataStorage.newPlaylist()
-                }.keyboardShortcut("n")
+                }
+                .keyboardShortcut("n")
+                Button("Add Files") {
+                    dataStorage.selectedPlaylist?.openFile()
+                }
+                .keyboardShortcut("o")
+                .disabled(dataStorage.selectedPlaylist == nil)
             }
         }
     }

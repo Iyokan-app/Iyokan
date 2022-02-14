@@ -34,8 +34,7 @@ struct PlayerView: View {
                         player.isPausedBeforeEditing = !player.isPlaying
                         player.pause()
                     } else {
-                        guard let index = dataStorage.selectedPlaylist?.currentIndex else { return }
-                        let duration = dataStorage.selectedPlaylist!.items[index].song.duration
+                        guard let duration = player.song?.duration else { return }
                         player.seekToOffset(CMTimeMultiplyByFloat64(duration, multiplier: player.percentage))
                     }
                 }.padding(.horizontal)

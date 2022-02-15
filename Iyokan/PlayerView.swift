@@ -12,20 +12,6 @@ struct PlayerView: View {
 
     @ObservedObject var player = Player.shared
 
-    func togglePlay() {
-        guard let playlist = dataStorage.selectedPlaylist else { return }
-        guard !playlist.items.isEmpty else { return }
-        player.isPlaying ? player.pause() : player.play()
-    }
-
-    func previous() {
-        print("previous")
-    }
-
-    func next() {
-        print("next")
-    }
-
     var body: some View {
         HStack {
             VStack {
@@ -42,16 +28,18 @@ struct PlayerView: View {
         }.toolbar {
             ToolbarItemGroup(placement: .navigation) {
                 HStack {
-                    Button(action: previous) {
+                    Button(action: player.previous) {
                         Image(systemName: "backward.fill")
                     }
-                    Button(action: togglePlay) {
+                    .keyboardShortcut(.leftArrow, modifiers: [])
+                    Button(action: player.toggle) {
                         Image(systemName: player.isPlaying ? "pause.fill" : "play.fill")
-                    }.keyboardShortcut(" ", modifiers: [])
-                    Button(action: next) {
+                    }
+                    .keyboardShortcut(" ", modifiers: [])
+                    Button(action: player.next) {
                         Image(systemName: "forward.fill")
                     }
-                    // Divider()
+                    .keyboardShortcut(.rightArrow, modifiers: [])
                     VStack(alignment: .leading) {
                         if $player.song.wrappedValue != nil {
                             Text($player.song.wrappedValue!.title).bold()

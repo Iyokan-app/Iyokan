@@ -46,6 +46,10 @@ class Player: ObservableObject {
         }
     }
 
+    func toggle() {
+        isPlaying ? pause() : play()
+    }
+
     func pause() {
         logger.debug("Pausing")
         lock.wait()
@@ -68,6 +72,25 @@ class Player: ObservableObject {
         } else if !isPlaying {
             serializer.resumePlayback()
         }
+    }
+
+    func previous() {
+        lock.wait()
+        defer { lock.signal() }
+
+        guard let playlist = dataStorage.selectedPlaylist else { return }
+        guard let index = playlist.currentIndex else { return }
+        restartWithItems(fromIndex: index, atOffset: .zero)
+    }
+
+    func next() {
+        lock.wait()
+        defer { lock.signal() }
+
+        guard let playlist = dataStorage.selectedPlaylist else { return }
+        guard let index = playlist.currentIndex else { return }
+        if index == playlist.items.count - 1 { return }
+        restartWithItems(fromIndex: index + 1, atOffset: .zero)
     }
 
     func seekToOffset(_ offset: CMTime) {

@@ -21,11 +21,19 @@ struct IyokanApp: App {
         .windowToolbarStyle(.unifiedCompact(showsTitle: false))
         .commands {
             CommandMenu("Playback") {
-                Button("Play/pause") {
-                    Player.shared.play()
+                Button("Toggle Play/pause") {
+                    Player.shared.toggle()
                 }
                 .disabled(dataStorage.selectedPlaylist == nil)
                 .keyboardShortcut(" ", modifiers: [])       // this shortcut doesn't work
+                Button("Next Song") {
+                    Player.shared.next()
+                }
+                .disabled(dataStorage.selectedPlaylist == nil)
+                Button("Previous Song") {
+                    Player.shared.previous()
+                }
+                .disabled(dataStorage.selectedPlaylist == nil)
             }
             CommandGroup(replacing: .newItem) {
                 Button("New Playlist") {

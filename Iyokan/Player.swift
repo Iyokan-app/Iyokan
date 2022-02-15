@@ -22,6 +22,11 @@ class Player: ObservableObject {
     @Published var song: Song?
     @Published var isPlaying: Bool = false
     @Published var percentage: Double = 0.0
+    @Published var volume: Float = 1.0 {
+        didSet {
+            serializer.setVolume(volume)
+        }
+    }
 
     private var itemObserver: NSObjectProtocol!
     private var percentageObserver: NSObjectProtocol!
@@ -44,6 +49,7 @@ class Player: ObservableObject {
             guard let isPlaying = notification.userInfo?[Serializer.isPlayingKey] as? Bool else { return }
             self.isPlaying = isPlaying
         }
+        volume = serializer.getVolume()
     }
 
     func toggle() {

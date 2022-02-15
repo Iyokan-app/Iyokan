@@ -74,9 +74,7 @@ struct MainView: View {
             PlayerView()
             RepresentedPlaylistView()
                 .toolbar {
-                    ToolbarItem() {
-                        Spacer()
-                    }
+
                     ToolbarItem() {
                         Button(action: { DataStorage.shared.selectedPlaylist?.openFile() }) {
                             Image(systemName: "doc.badge.plus")

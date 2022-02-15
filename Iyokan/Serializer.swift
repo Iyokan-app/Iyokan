@@ -55,6 +55,15 @@ class Serializer: ObservableObject {
         }
     }
 
+    func getVolume() -> Float {
+        return renderer.volume
+    }
+
+    func setVolume(_ vol: Float) {
+        if vol > 1 || vol < 0 { return }
+        renderer.volume = vol
+    }
+
     func startPlayback() {
         serializationQueue.async { [unowned self] in
             logger.debug("Start playing")

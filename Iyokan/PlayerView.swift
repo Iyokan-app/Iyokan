@@ -14,18 +14,20 @@ struct PlayerView: View {
 
     var body: some View {
         HStack {
-            VStack {
-                Slider(value: $player.percentage, in: 0...1) { editing in
-                    if editing {
-                        player.isPausedBeforeEditing = !player.isPlaying
-                        player.pause()
-                    } else {
-                        guard let duration = player.song?.duration else { return }
-                        player.seekToOffset(CMTimeMultiplyByFloat64(duration, multiplier: player.percentage))
-                    }
-                }.padding(.horizontal)
+            Slider(value: $player.volume, in: 0...1)
+                .frame(width: 50)
+            Slider(value: $player.percentage, in: 0...1) { editing in
+                if editing {
+                    player.isPausedBeforeEditing = !player.isPlaying
+                    player.pause()
+                } else {
+                    guard let duration = player.song?.duration else { return }
+                    player.seekToOffset(CMTimeMultiplyByFloat64(duration, multiplier: player.percentage))
+                }
             }
-        }.toolbar {
+        }
+        .padding(.horizontal)
+        .toolbar {
             ToolbarItemGroup(placement: .navigation) {
                 HStack {
                     Button(action: player.previous) {
@@ -47,6 +49,9 @@ struct PlayerView: View {
                         }
                     }.padding(.vertical)
                 }
+            }
+            ToolbarItem() {
+                Spacer()
             }
         }
     }

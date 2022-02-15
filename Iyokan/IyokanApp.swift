@@ -20,6 +20,13 @@ struct IyokanApp: App {
         }
         .windowToolbarStyle(.unifiedCompact(showsTitle: false))
         .commands {
+            CommandMenu("Playback") {
+                Button("Play/pause") {
+                    Player.shared.play()
+                }
+                .disabled(dataStorage.selectedPlaylist == nil)
+                .keyboardShortcut(" ", modifiers: [])       // this shortcut doesn't work
+            }
             CommandGroup(replacing: .newItem) {
                 Button("New Playlist") {
                     dataStorage.newPlaylist()
@@ -28,8 +35,8 @@ struct IyokanApp: App {
                 Button("Add Files") {
                     dataStorage.selectedPlaylist?.openFile()
                 }
-                .keyboardShortcut("o")
                 .disabled(dataStorage.selectedPlaylist == nil)
+                .keyboardShortcut("o")
             }
         }
     }

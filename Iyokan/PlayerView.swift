@@ -47,7 +47,7 @@ struct PlayerView: View {
                     }
                     Button(action: togglePlay) {
                         Image(systemName: player.isPlaying ? "pause.fill" : "play.fill")
-                    }
+                    }.keyboardShortcut(" ", modifiers: [])
                     Button(action: next) {
                         Image(systemName: "forward.fill")
                     }

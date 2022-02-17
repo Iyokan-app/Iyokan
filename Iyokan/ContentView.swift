@@ -77,9 +77,15 @@ struct MainView: View {
             RepresentedPlaylistView()
                 .toolbar {
                     ToolbarItemGroup {
-                        Slider(value: $player.volume, in: 0...1)
-                            .frame(width: 75)
-                            .controlSize(.mini)
+                        Slider(value: $player.volume, in: 0...1) {}
+                        minimumValueLabel: {
+                            Image(systemName: "speaker.slash.fill")
+                        }
+                        maximumValueLabel: {
+                            Image(systemName: "speaker.wave.3.fill")
+                        }
+                        .frame(width: 120)
+                        .controlSize(.mini)
                         Button(action: { DataStorage.shared.selectedPlaylist?.openFile() }) {
                             Image(systemName: "doc.badge.plus")
                         }

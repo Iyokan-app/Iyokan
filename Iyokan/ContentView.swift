@@ -69,13 +69,17 @@ struct ContentView: View {
 }
 
 struct MainView: View {
+    @ObservedObject var player = Player.shared
+
     var body: some View {
         VStack {
             PlayerView()
             RepresentedPlaylistView()
                 .toolbar {
-
-                    ToolbarItem() {
+                    ToolbarItemGroup {
+                        Slider(value: $player.volume, in: 0...1)
+                            .frame(width: 75)
+                            .controlSize(.mini)
                         Button(action: { DataStorage.shared.selectedPlaylist?.openFile() }) {
                             Image(systemName: "doc.badge.plus")
                         }

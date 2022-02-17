@@ -14,8 +14,6 @@ struct PlayerView: View {
 
     var body: some View {
         HStack {
-            Slider(value: $player.volume, in: 0...1)
-                .frame(width: 50)
             Slider(value: $player.percentage, in: 0...1) { editing in
                 if editing {
                     player.isPausedBeforeEditing = !player.isPlaying
@@ -25,6 +23,7 @@ struct PlayerView: View {
                     player.seekToOffset(CMTimeMultiplyByFloat64(duration, multiplier: player.percentage))
                 }
             }
+            .controlSize(.small)
         }
         .padding(.horizontal)
         .toolbar {

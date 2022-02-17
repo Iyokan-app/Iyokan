@@ -10,8 +10,7 @@ import Foundation
 import AVFoundation
 
 struct ContentView: View {
-
-    @ObservedObject var dataStorage: DataStorage
+    @EnvironmentObject var dataStorage: DataStorage
 
     var body: some View {
         NavigationView {
@@ -59,7 +58,6 @@ struct ContentView: View {
         .onAppear {
             // select = playlists[0]
         }
-        .environmentObject(dataStorage)
     }
 
     private func toggleSidebar() {
@@ -69,6 +67,7 @@ struct ContentView: View {
 }
 
 struct MainView: View {
+    @EnvironmentObject var dataStorage: DataStorage
     @ObservedObject var player = Player.shared
 
     var body: some View {
@@ -85,8 +84,8 @@ struct MainView: View {
                             Image(systemName: "speaker.wave.3.fill")
                         }
                         .frame(width: 120)
-                        .controlSize(.mini)
-                        Button(action: { DataStorage.shared.selectedPlaylist?.openFile() }) {
+                        .controlSize(.small)
+                        Button(action: { dataStorage.selectedPlaylist?.openFile() }) {
                             Image(systemName: "doc.badge.plus")
                         }
                         .controlSize(.large)

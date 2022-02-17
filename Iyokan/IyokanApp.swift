@@ -13,7 +13,8 @@ struct IyokanApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(dataStorage: dataStorage)
+            ContentView()
+                .environmentObject(dataStorage)
                 .onAppear {
                     NSWindow.allowsAutomaticWindowTabbing = false
                 }

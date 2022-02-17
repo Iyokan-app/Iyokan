@@ -55,8 +55,15 @@ class Playlist: Identifiable, Hashable {
     let id = UUID()
     var name: String = ""
     var items: [Item] = []
+
     // nil if the player is in a stopped state
     var currentIndex: Int?
+    var currentItem: Item? {
+        guard let index = currentIndex else { return nil }
+        guard index >= 0 && index < items.count else { return nil }
+        return items[index]
+    }
+    var currentSong: Song? { currentItem?.song ?? nil }
 
     var playlistView: NSTableView? = nil
 }

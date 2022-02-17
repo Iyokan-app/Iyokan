@@ -16,6 +16,7 @@ class Serializer: ObservableObject {
     static let shared = Serializer()
 
     private lazy var player = Player.shared
+    private lazy var dataStorage = DataStorage.shared
 
     // The playback infrastructure
     private let renderer = AVSampleBufferAudioRenderer()
@@ -27,11 +28,8 @@ class Serializer: ObservableObject {
     static let percentageKey = "IKCurrentPercentage"
     static let isPlayingKey = "IKIsPlaying"
 
-    var items: [Item] = []
-
-    var currentItem: Item? {
-        return items.first
-    }
+    private var items: [Item] = []
+    var currentItem: Item? { items.first }
 
     private var nowEnqueuing = 0
 
@@ -227,8 +225,8 @@ class Serializer: ObservableObject {
         if items.first != nil {
             let interval = CMTime(seconds: 0.1, preferredTimescale: 1000)
             periodicObserver = synchronizer.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [unowned self] _ in
-                if let currentSong = currentItem?.song {
-                    let currentTime = CMTimeGetSeconds(synchronizer.currentTime())
+                if let currentSong = dataStorage.selectedPlaylist?.currentSong {
+                    let currentTime = CMTimeGetSeconds(synchronizer.currentTime() - boundaryTime)
                     let duration = CMTimeGetSeconds(currentSong.duration)
                     let userInfo = [Serializer.percentageKey: currentTime / duration]
                     NotificationCenter.default.post(name: Serializer.offsetDidChange, object: self, userInfo: userInfo)
@@ -249,11 +247,11 @@ class Serializer: ObservableObject {
         var currentItem = items[nowEnqueuing]
         var remainingTime = limitedTime
 
-        if let seconds = remainingTime?.seconds {
-            logger.debug("Providing \(seconds)s of data for item #\(self.nowEnqueuing)")
-        } else {
-            logger.debug("Providing data for item #\(self.nowEnqueuing)")
-        }
+//        if let seconds = remainingTime?.seconds {
+//            logger.debug("Providing \(seconds)s of data for item #\(self.nowEnqueuing)")
+//        } else {
+//            logger.debug("Providing data for item #\(self.nowEnqueuing)")
+//        }
 
         while renderer.isReadyForMoreMediaData {
             // Stop providing data if provided data exceeded limitTime

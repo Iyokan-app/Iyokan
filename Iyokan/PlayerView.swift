@@ -16,8 +16,7 @@ struct PlayerView: View {
         HStack {
             Slider(value: $player.percentage, in: 0...1) { editing in
                 if editing {
-                    player.isPausedBeforeEditing = !player.isPlaying
-                    player.pause()
+                    player.blockPercentageUpdate = true
                 } else {
                     guard let duration = player.song?.duration else { return }
                     player.seekToOffset(CMTimeMultiplyByFloat64(duration, multiplier: player.percentage))

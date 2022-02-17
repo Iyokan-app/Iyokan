@@ -32,11 +32,12 @@ class Player: ObservableObject {
     private var percentageObserver: NSObjectProtocol!
     private var isPlayingObserver: NSObjectProtocol!
 
-    var isPausedBeforeEditing = false
+    var blockPercentageUpdate = false
 
     init() {
         let notificationCenter = NotificationCenter.default
         percentageObserver = notificationCenter.addObserver(forName: Serializer.offsetDidChange, object: serializer, queue: .main) { notification in
+            guard !self.blockPercentageUpdate else { return }
             guard let percentage = notification.userInfo?[Serializer.percentageKey] as? Double else { return }
             self.percentage = percentage
         }
@@ -105,7 +106,7 @@ class Player: ObservableObject {
         defer { lock.signal() }
 
         guard let currentIndex = dataStorage.selectedPlaylist?.currentIndex else { return }
-        restartWithItems(fromIndex: currentIndex, atOffset: offset, pause: isPausedBeforeEditing)
+        restartWithItems(fromIndex: currentIndex, atOffset: offset, pause: !isPlaying)
     }
 
     func seekToItem(_ item: Item) {

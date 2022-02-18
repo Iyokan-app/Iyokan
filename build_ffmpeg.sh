@@ -39,6 +39,8 @@ Script for building FFmpeg library
 USAGE
 }
 
+cd "$SCRIPT_DIR"
+
 for i in "$@"; do
   case $i in
     --universal)

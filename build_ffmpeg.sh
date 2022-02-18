@@ -94,12 +94,25 @@ if [[ ! $(which yasm) && ! $(which nasm) ]]; then
   FFMPEGFLAGS+=(--disable-x86asm)
 fi
 
+set -x
+
 mkdir -p FFmpeg/src
 curl -C - https://ffmpeg.org/releases/ffmpeg-$VERSION.tar.bz2 -o FFmpeg/ffmpeg-$VERSION.tar.bz2
 tar -xf FFmpeg/ffmpeg-$VERSION.tar.bz2 -C FFmpeg/src
 
 pushd FFmpeg/src/ffmpeg-$VERSION
-make clean || true
+make clean 2>/dev/null || true
 ./configure "${FFMPEGFLAGS[@]}" --prefix=../../"$PREFIX"
 make -j8 install
 popd
+
+if [[ $UNIVERSAL = YES && $(arch) = arm64 ]]; then
+  arch -x86_64 bash "${BASH_SOURCE[0]}" --cwd="$CWD" --no-clean-on-failed --prefix=x86_64
+  mkdir -p FFmpeg/lib-universal
+  for lib in FFmpeg/lib/*.a; do
+    lib="${lib##*/}"
+    lipo -create FFmpeg/lib/"$lib" FFmpeg/x86_64/lib/"$lib" -output FFmpeg/lib-universal/"$lib"
+  done
+  mv -f FFmpeg/lib FFmpeg/lib-arm64
+  mv FFmpeg/lib-universal FFmpeg/lib
+fi

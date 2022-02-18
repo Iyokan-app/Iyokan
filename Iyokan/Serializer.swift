@@ -121,7 +121,7 @@ class Serializer: ObservableObject {
             synchronizer.setRate(rate, time: firstItem.startOffset)
             notifyRateDidChange()
             DispatchQueue.main.async {
-                player.blockPercentageUpdate = false
+                self.player.blockPercentageUpdate = false
             }
         }
     }

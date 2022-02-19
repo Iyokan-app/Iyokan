@@ -16,12 +16,15 @@ class Decoder {
 
     var buffers: [CMSampleBuffer] = []
     private var presentationTimeStamp: CMTime
-    private let sampleRate: Int32
+
+    let sampleRate: Int32
+    let formatName: String
 
     init(_ filePath: String) {
         self.helper = Helper(filePath)!
         self.helper.openCodec()
         self.sampleRate = helper.sampleRate
+        self.formatName = String(cString: helper.formatName)
         self.presentationTimeStamp = CMTime(value: 0, timescale: sampleRate)
     }
 

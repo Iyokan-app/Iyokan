@@ -11,6 +11,7 @@ struct PlayerView: View {
     @EnvironmentObject var dataStorage: DataStorage
 
     @ObservedObject var player = Player.shared
+    @State var showingPopover = false
 
     var body: some View {
         HStack {
@@ -40,12 +41,28 @@ struct PlayerView: View {
                         Image(systemName: "forward.fill")
                     }
                     .keyboardShortcut(.rightArrow, modifiers: [])
-                    VStack(alignment: .leading) {
-                        if $player.song.wrappedValue != nil {
-                            Text($player.song.wrappedValue!.title).bold()
-                            Text($player.song.wrappedValue!.artist).foregroundColor(.secondary)
+                    if $player.song.wrappedValue != nil {
+                        ZStack {
+                            Text(player.song!.formatName.uppercased())
+                                .bold()
+                                .font(.system(size: 12))
+                                .foregroundColor(.black)
+                                .padding(.horizontal, 3)
                         }
-                    }.padding(.vertical)
+                        .background(.gray)
+                        .cornerRadius(2)
+                        .onTapGesture {
+                            showingPopover = true
+                        }
+                        .popover(isPresented: $showingPopover) {
+                            let str = "Sample Rate: \(player.song!.sampleRate) kHz"
+                            Text(str).padding()
+                        }
+                        VStack(alignment: .leading) {
+                                Text($player.song.wrappedValue!.title).bold()
+                                Text($player.song.wrappedValue!.artist).foregroundColor(.secondary)
+                        }.padding(.vertical)
+                    }
                 }
             }
             ToolbarItem() {

@@ -31,6 +31,7 @@
     if (ret < 0) return NULL;
 
     av_dump_format(formatContext, 0, cFilePath, 0);
+    _formatName = formatContext->iformat->name;
     _sampleRate = -1;
     codecIsOpen = NO;
     audioStreamIndex = -1;

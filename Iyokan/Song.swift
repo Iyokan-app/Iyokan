@@ -19,6 +19,8 @@ struct Song {
         self.album = metadata["album"] ?? "Unknown Ablum"
 
         self.duration = decoder.getDuration()
+        self.formatName = decoder.formatName
+        self.sampleRate = decoder.sampleRate
     }
     let path: String
 
@@ -29,4 +31,6 @@ struct Song {
     let album: String
 
     let duration: CMTime
+    let formatName: String
+    let sampleRate: Int32
 }

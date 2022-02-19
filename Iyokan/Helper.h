@@ -18,6 +18,7 @@
 @interface Helper: NSObject
 
 @property int sampleRate;
+@property const char *formatName;
 @property CMTime duration;
 @property enum AVSampleFormat format;
 

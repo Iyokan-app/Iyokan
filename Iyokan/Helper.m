@@ -31,28 +31,8 @@
     if (ret < 0) return NULL;
 
     av_dump_format(formatContext, 0, cFilePath, 0);
-    _formatName = formatContext->iformat->name;
-    _sampleRate = -1;
     codecIsOpen = NO;
-    audioStreamIndex = -1;
 
-    return self;
-}
-
-- (NSDictionary<NSString *, NSString *> *) getMetadata {
-    AVDictionary *dict = formatContext->metadata;
-    NSMutableDictionary<NSString *, NSString *> *mutableDict = [[NSMutableDictionary alloc] init];
-
-    AVDictionaryEntry *last = NULL;
-    while ((last = av_dict_get(dict, "", last, AV_DICT_IGNORE_SUFFIX))) {
-        NSString *key = [[NSString alloc] initWithUTF8String: last->key];
-        NSString *value = [[NSString alloc] initWithUTF8String: last->value];
-        [mutableDict setObject: value forKey: [key lowercaseString]];
-    }
-    return mutableDict;
-}
-
-- (BOOL) openCodec {
     // find the first audio stream
     audioStreamIndex = -1;
     for (int i = 0; i < formatContext->nb_streams; ++i) {
@@ -63,20 +43,21 @@
         }
     }
 
-    if (audioStreamIndex == -1) return NO;
+    if (audioStreamIndex == -1) return nil;
 
     codec = avcodec_find_decoder(codecParams->codec_id);
-    if (!codec) return NO;
+    if (!codec) return nil;
 
     codecContext = avcodec_alloc_context3(codec);
 
     AVDictionary *dict = NULL;
-    int ret = av_dict_set(&dict, "ac", "2", 0);
-    if (ret < 0) return NO;
+    ret = av_dict_set(&dict, "ac", "2", 0);
+    if (ret < 0) return nil;
 
     ret = avcodec_open2(codecContext, NULL, &dict);
-    if (ret < 0) return NO;
+    if (ret < 0) return nil;
 
+    _formatName = codec->name;
     _sampleRate = codecParams->sample_rate;
     _duration.timescale = AV_TIME_BASE;
     _duration.value = formatContext->duration;
@@ -86,7 +67,6 @@
     frame = av_frame_alloc();
 
     codecIsOpen = YES;
-    return YES;
     //    // resample to 16bit 44100 PCM
     //    enum AVSampleFormat inFormat = _codecContext->sample_fmt;
     //    enum AVSampleFormat outFormat = AV_SAMPLE_FMT_S16;
@@ -102,6 +82,21 @@
     //    swr_init(swrContext);
     //
     //    int outChannelCount = av_get_channel_layout_nb_channels(outChannelLayout);
+
+    return self;
+}
+
+- (NSDictionary<NSString *, NSString *> *) getMetadata {
+    AVDictionary *dict = formatContext->metadata;
+    NSMutableDictionary<NSString *, NSString *> *mutableDict = [[NSMutableDictionary alloc] init];
+
+    AVDictionaryEntry *last = NULL;
+    while ((last = av_dict_get(dict, "", last, AV_DICT_IGNORE_SUFFIX))) {
+        NSString *key = [[NSString alloc] initWithUTF8String: last->key];
+        NSString *value = [[NSString alloc] initWithUTF8String: last->value];
+        [mutableDict setObject: value forKey: [key lowercaseString]];
+    }
+    return mutableDict;
 }
 
 - (BOOL) sendPacket {

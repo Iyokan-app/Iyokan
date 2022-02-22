@@ -51,6 +51,7 @@ class Item: Identifiable, Hashable {
 
         self.startOffset = offset > .zero && offset < song.duration ? offset : .zero
         self.playlist = playlist
+
     }
 
     func nextSample() -> CMSampleBuffer? {

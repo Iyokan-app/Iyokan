@@ -14,26 +14,13 @@ fileprivate let logger = Logger.init(subsystem: "Iyokan", category: "Decoder")
 class Decoder {
     private let helper: Helper
 
-    var buffers: [CMSampleBuffer] = []
     private var presentationTimeStamp: CMTime
-
     let sampleRate: Int32
-    let formatName: String
 
     init(_ filePath: String) {
         self.helper = Helper(filePath)!
-        self.helper.openCodec()
         self.sampleRate = helper.sampleRate
-        self.formatName = String(cString: helper.formatName)
         self.presentationTimeStamp = CMTime(value: 0, timescale: sampleRate)
-    }
-
-    func getMetadata() -> Dictionary<String, String> {
-        return helper.getMetadata()
-    }
-
-    func getDuration() -> CMTime {
-        return helper.duration
     }
 
     func nextSampleBuffer() -> CMSampleBuffer? {
@@ -60,7 +47,7 @@ class Decoder {
 
     private func getASBD(from format: AVSampleFormat) -> AudioStreamBasicDescription {
         var desc = AudioStreamBasicDescription()
-        desc.mSampleRate = Float64(helper.sampleRate)
+        desc.mSampleRate = Float64(sampleRate)
         desc.mFormatID = kAudioFormatLinearPCM
 
         switch format {

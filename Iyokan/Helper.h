@@ -18,12 +18,11 @@
 @interface Helper: NSObject
 
 @property int sampleRate;
-@property const char *formatName;
+@property const char * _Nonnull formatName;
 @property CMTime duration;
 @property enum AVSampleFormat format;
 
 - (id _Nullable) init:(NSString * _Nonnull) filePath;
-- (BOOL) openCodec;
 - (NSDictionary<NSString *, NSString *> * _Nonnull) getMetadata;
 
 - (BOOL) sendPacket;

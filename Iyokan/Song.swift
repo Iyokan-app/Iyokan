@@ -11,26 +11,28 @@ import CoreMedia
 struct Song {
     init(_ path: String) {
         self.path = path
-        let decoder = Decoder(path)
-        let metadata = decoder.getMetadata()
+        let helper = Helper(path)!
+        let metadata = helper.getMetadata()
+
+        self.duration = helper.duration
+        self.formatName = String(cString: helper.formatName)
+        self.sampleRate = helper.sampleRate
+
         self.title = metadata["title"] ?? "Unknown"
         self.trackNo = Int(metadata["track"] ?? "0") ?? 0
         self.artist = metadata["artist"] ?? "Unknown Artist"
         self.album = metadata["album"] ?? "Unknown Ablum"
-
-        self.duration = decoder.getDuration()
-        self.formatName = decoder.formatName
-        self.sampleRate = decoder.sampleRate
     }
-    let path: String
 
-    // metadata
+    // file data
+    let path: String
+    let duration: CMTime
+    let formatName: String
+    let sampleRate: Int32
+
+    // media metadata
     let title: String
     let trackNo: Int
     let artist: String
     let album: String
-
-    let duration: CMTime
-    let formatName: String
-    let sampleRate: Int32
 }

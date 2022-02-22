@@ -12,6 +12,7 @@ import os
 fileprivate let serializationQueue = DispatchQueue(label: "org.iyokan-app.iyokan.serialization.queue", qos: .userInteractive)
 fileprivate let logger = Logger.init(subsystem: "Iyokan", category: "Serializer")
 
+// Only access via Player class
 class Serializer: ObservableObject {
     static let shared = Serializer()
 

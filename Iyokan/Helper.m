@@ -49,6 +49,8 @@
     if (!codec) return nil;
 
     codecContext = avcodec_alloc_context3(codec);
+    ret = avcodec_parameters_to_context(codecContext, codecParams);
+    if (ret < 0) return nil;
 
     AVDictionary *dict = NULL;
     ret = av_dict_set(&dict, "ac", "2", 0);

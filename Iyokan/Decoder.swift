@@ -11,6 +11,17 @@ import os
 
 fileprivate let logger = Logger.init(subsystem: "Iyokan", category: "Decoder")
 
+extension AudioStreamBasicDescription {
+    func getSizePerSample() -> Int {
+        let bytesPerChannel = Int(mBitsPerChannel >> 3)
+        if (mFormatFlags & kAudioFormatFlagIsNonInterleaved) != 0 {
+            return bytesPerChannel
+        } else {
+            return bytesPerChannel << 1
+        }
+    }
+}
+
 class Decoder {
     private let helper: Helper
 
@@ -81,7 +92,7 @@ class Decoder {
     func makeSampleBuffer(from data: UnsafeRawPointer, presentationTimeStamp time: CMTime, samples: Int32, sampleRate: Int32) throws -> CMSampleBuffer {
         // make block buffer first
         var status: OSStatus
-        let size = Int(asbd.mBitsPerChannel * UInt32(samples) >> 3)
+        let size = asbd.getSizePerSample() * Int(samples)
         var outBlockBuffer: CMBlockBuffer? = nil
 
         // create block buffer

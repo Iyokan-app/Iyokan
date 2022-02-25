@@ -27,6 +27,7 @@ class Serializer: ObservableObject {
     static let itemDidChange = Notification.Name("IKSerializerItemDidChange")
     static let rateDidChange = Notification.Name("IKSerializerRateDidChange")
     static let percentageKey = "IKCurrentPercentage"
+    static let currentTimeKey = "IKCurrentTime"
     static let isPlayingKey = "IKIsPlaying"
 
     private var items: [Item] = []
@@ -232,7 +233,10 @@ class Serializer: ObservableObject {
                 if let currentSong = dataStorage.selectedPlaylist?.currentSong {
                     let currentTime = CMTimeGetSeconds(synchronizer.currentTime() - boundaryTime)
                     let duration = CMTimeGetSeconds(currentSong.duration)
-                    let userInfo = [Serializer.percentageKey: currentTime / duration]
+                    let userInfo = [
+                        Serializer.percentageKey: currentTime / duration,
+                        Serializer.currentTimeKey: currentTime,
+                    ]
                     NotificationCenter.default.post(name: Serializer.offsetDidChange, object: self, userInfo: userInfo)
                 }
             }

@@ -5,12 +5,15 @@
 //  Created by uiryuu on 3/2/2022.
 //
 
-import Foundation
 import SwiftUI
+import MediaPlayer
+
 import os
 
 fileprivate let logger = Logger.init(subsystem: "Iyokan", category: "Player")
 fileprivate let lock = DispatchSemaphore(value: 1)
+
+fileprivate let infoCenter = MPNowPlayingInfoCenter.default()
 
 class Player: ObservableObject {
     static let shared = Player()
@@ -36,19 +39,42 @@ class Player: ObservableObject {
 
     init() {
         let notificationCenter = NotificationCenter.default
+
         percentageObserver = notificationCenter.addObserver(forName: Serializer.offsetDidChange, object: serializer, queue: .main) { notification in
             guard !self.blockPercentageUpdate else { return }
             guard let percentage = notification.userInfo?[Serializer.percentageKey] as? Double else { return }
             self.percentage = percentage
+
+            guard let currentTime = notification.userInfo?[Serializer.currentTimeKey] as? Double else { return }
+            guard var info = infoCenter.nowPlayingInfo else { return }
+            info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime
         }
-        itemObserver = notificationCenter.addObserver(forName: Serializer.itemDidChange, object: serializer, queue: .main) { _ in
-            guard let id = self.serializer.currentItem?.id else { return }
-            self.dataStorage.selectedPlaylist?.setCurrnetIndex(id: id)
-            self.song = self.serializer.currentItem?.song
+
+        itemObserver = notificationCenter.addObserver(forName: Serializer.itemDidChange, object: serializer, queue: .main) { [unowned self] _ in
+            guard let id = serializer.currentItem?.id else { return }
+            dataStorage.selectedPlaylist?.setCurrnetIndex(id: id)
+            song = serializer.currentItem?.song
+
+            guard let song = song else { infoCenter.nowPlayingInfo = nil; return }
+
+            let info: [String: Any] = [
+                MPNowPlayingInfoPropertyMediaType: MPNowPlayingInfoMediaType.audio.rawValue,
+                MPMediaItemPropertyArtist: song.artist,
+                MPMediaItemPropertyTitle: song.title,
+                MPMediaItemPropertyPlaybackDuration: CMTimeGetSeconds(song.duration),
+            ]
+            infoCenter.playbackState = .playing
+            infoCenter.nowPlayingInfo = info
         }
-        isPlayingObserver = notificationCenter.addObserver(forName: Serializer.rateDidChange, object: serializer, queue: .main) { notification in
+
+        isPlayingObserver = notificationCenter.addObserver(forName: Serializer.rateDidChange, object: serializer, queue: .main) { [unowned self] notification in
             guard let isPlaying = notification.userInfo?[Serializer.isPlayingKey] as? Bool else { return }
             self.isPlaying = isPlaying
+
+            infoCenter.playbackState = isPlaying ? .playing : .paused
+            guard var info = infoCenter.nowPlayingInfo else { return }
+            guard song != nil else { return }
+            info[MPNowPlayingInfoPropertyPlaybackRate] = isPlaying ? 1 : 0
         }
         volume = serializer.getVolume()
     }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MediaPlayer
 
 @main
 struct IyokanApp: App {
@@ -17,6 +18,10 @@ struct IyokanApp: App {
                 .environmentObject(dataStorage)
                 .onAppear {
                     NSWindow.allowsAutomaticWindowTabbing = false
+
+                    MPRemoteCommandCenter.shared().playCommand.addTarget {_ in
+                        return .success
+                    }
                 }
         }
         .windowToolbarStyle(.unifiedCompact(showsTitle: false))

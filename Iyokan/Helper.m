@@ -22,6 +22,7 @@
 
 - (id) init:(NSString *) filePath {
     const char *cFilePath = [filePath cStringUsingEncoding: NSUTF8StringEncoding];
+    codecIsOpen = NO;
 
     formatContext = avformat_alloc_context();
     int ret = avformat_open_input(&formatContext, cFilePath, NULL, NULL);
@@ -31,7 +32,6 @@
     if (ret < 0) return NULL;
 
     av_dump_format(formatContext, 0, cFilePath, 0);
-    codecIsOpen = NO;
 
     // find the first audio stream
     audioStreamIndex = -1;

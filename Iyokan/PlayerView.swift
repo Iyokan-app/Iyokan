@@ -48,6 +48,7 @@ struct PlayerView: View {
                                 .font(.system(size: 12))
                                 .foregroundColor(.black)
                                 .padding(.horizontal, 3)
+                                .lineLimit(1)
                         }
                         .background(.gray)
                         .cornerRadius(2)
@@ -58,6 +59,7 @@ struct PlayerView: View {
                             let str = "Sample Rate: \(player.song!.sampleRate) kHz"
                             Text(str).padding()
                         }
+                        .frame(width: 40)
                         VStack(alignment: .leading) {
                                 Text($player.song.wrappedValue!.title).bold()
                                 Text($player.song.wrappedValue!.artist).foregroundColor(.secondary)

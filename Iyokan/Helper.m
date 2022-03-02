@@ -7,9 +7,11 @@
 
 #import "Helper.h"
 
+#define MAX_FRAME_BUF 100
+
 @implementation Helper {
     AVPacket *packet;
-    AVFrame *frame_buf[1000];
+    AVFrame *frame_buf[MAX_FRAME_BUF];
     int tail, head;
 
     AVFormatContext *formatContext;
@@ -165,9 +167,12 @@
 
 - (void) dealloc {
     av_packet_free(&packet);
-    for (int i = 0; i < 1000; ++i)
+    BOOL empty = false;
+    for (int i = 0; i < MAX_FRAME_BUF && !empty; ++i)
         if (frame_buf[i])
             av_frame_free(&frame_buf[i]);
+        else
+            empty = true;
     avcodec_free_context(&codecContext);
     avcodec_close(codecContext);
     avformat_free_context(formatContext);

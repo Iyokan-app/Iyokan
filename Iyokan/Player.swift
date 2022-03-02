@@ -31,6 +31,19 @@ class Player: ObservableObject {
         }
     }
 
+    var currentTime: Double = 0
+    var currentTimeString: String {
+        get {
+            String(format: "%02d:%02d", Int(currentTime) / 60, Int(currentTime) % 60)
+        }
+    }
+    var duration: Double = 0
+    var durationString: String {
+        get {
+            String(format: "%02d:%02d", Int(duration) / 60, Int(duration) % 60)
+        }
+    }
+
     private var itemObserver: NSObjectProtocol!
     private var percentageObserver: NSObjectProtocol!
     private var isPlayingObserver: NSObjectProtocol!
@@ -40,12 +53,13 @@ class Player: ObservableObject {
     init() {
         let notificationCenter = NotificationCenter.default
 
-        percentageObserver = notificationCenter.addObserver(forName: Serializer.offsetDidChange, object: serializer, queue: .main) { notification in
-            guard !self.blockPercentageUpdate else { return }
+        percentageObserver = notificationCenter.addObserver(forName: Serializer.offsetDidChange, object: serializer, queue: .main) { [unowned self] notification in
+            guard !blockPercentageUpdate else { return }
             guard let percentage = notification.userInfo?[Serializer.percentageKey] as? Double else { return }
             self.percentage = percentage
 
             guard let currentTime = notification.userInfo?[Serializer.currentTimeKey] as? Double else { return }
+            self.currentTime = currentTime
             guard var info = infoCenter.nowPlayingInfo else { return }
             info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime
         }
@@ -56,12 +70,13 @@ class Player: ObservableObject {
             song = serializer.currentItem?.song
 
             guard let song = song else { infoCenter.nowPlayingInfo = nil; return }
+            duration = CMTimeGetSeconds(song.duration)
 
             let info: [String: Any] = [
                 MPNowPlayingInfoPropertyMediaType: MPNowPlayingInfoMediaType.audio.rawValue,
                 MPMediaItemPropertyArtist: song.artist,
                 MPMediaItemPropertyTitle: song.title,
-                MPMediaItemPropertyPlaybackDuration: CMTimeGetSeconds(song.duration),
+                MPMediaItemPropertyPlaybackDuration: duration,
             ]
             infoCenter.playbackState = .playing
             infoCenter.nowPlayingInfo = info

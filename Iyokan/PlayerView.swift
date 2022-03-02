@@ -15,12 +15,18 @@ struct PlayerView: View {
 
     var body: some View {
         HStack {
-            Slider(value: $player.percentage, in: 0...1) { editing in
+            Slider(value: $player.percentage, in: 0...1) {
+            } minimumValueLabel: {
+                Text(player.currentTimeString).monospacedDigit()
+            } maximumValueLabel: {
+                Text(player.durationString).monospacedDigit()
+            } onEditingChanged: { editing in
                 if editing {
                     player.blockPercentageUpdate = true
                 } else {
-                    guard let duration = player.song?.duration else { return }
-                    player.seekToOffset(CMTimeMultiplyByFloat64(duration, multiplier: player.percentage))
+                    if let duration = player.song?.duration {
+                        player.seekToOffset(CMTimeMultiplyByFloat64(duration, multiplier: player.percentage))
+                    }
                 }
             }
             .controlSize(.small)

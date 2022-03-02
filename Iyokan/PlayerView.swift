@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlayerView: View {
     @EnvironmentObject var dataStorage: DataStorage
+    @Environment(\.colorScheme) var colorScheme
 
     @ObservedObject var player = Player.shared
     @State var showingPopover = false
@@ -17,9 +18,9 @@ struct PlayerView: View {
         HStack {
             Slider(value: $player.percentage, in: 0...1) {
             } minimumValueLabel: {
-                Text(player.currentTimeString).monospacedDigit()
+                Text(player.currentTimeString).monospacedDigit().foregroundColor(.gray)
             } maximumValueLabel: {
-                Text(player.durationString).monospacedDigit()
+                Text(player.durationString).monospacedDigit().foregroundColor(.gray)
             } onEditingChanged: { editing in
                 if editing {
                     player.blockPercentageUpdate = true
@@ -52,7 +53,7 @@ struct PlayerView: View {
                             Text(player.song!.formatName.uppercased())
                                 .bold()
                                 .font(.system(size: 12))
-                                .foregroundColor(.black)
+                                .foregroundColor(colorScheme == .dark ? .black : .white)
                                 .padding(.horizontal, 3)
                                 .lineLimit(1)
                         }

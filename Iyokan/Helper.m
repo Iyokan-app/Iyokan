@@ -9,7 +9,8 @@
 
 @implementation Helper {
     AVPacket *packet;
-    AVFrame *frame;
+    AVFrame *frame_buf[1000];
+    int tail, head;
 
     AVFormatContext *formatContext;
     AVCodecParameters *codecParams;
@@ -23,6 +24,9 @@
 - (id) init:(NSString *) filePath {
     const char *cFilePath = [filePath cStringUsingEncoding: NSUTF8StringEncoding];
     codecIsOpen = NO;
+
+    tail = 0;
+    head = 0;
 
     formatContext = avformat_alloc_context();
     int ret = avformat_open_input(&formatContext, cFilePath, NULL, NULL);
@@ -67,7 +71,6 @@
     _duration.flags |= kCMTimeFlags_Valid;
 
     packet = av_packet_alloc();
-    frame = av_frame_alloc();
 
     codecIsOpen = YES;
     //    // resample to 16bit 44100 PCM
@@ -103,7 +106,6 @@
 }
 
 - (BOOL) sendPacket {
-    if (!codecIsOpen) return NO;
     int ret = 0;
     while (av_read_frame(formatContext, packet) >= 0) {
         if (packet->stream_index != audioStreamIndex) continue;
@@ -113,16 +115,53 @@
     return NO;
 }
 
-- (nullable AVFrame *) nextFrame {
+- (nullable AVFrame *) nextFrameInternal {
     if (!codecIsOpen) return NULL;
-    int ret = avcodec_receive_frame(codecContext, frame);
-    if (ret < 0) return NULL;
+
+    if (tail) { // has buf
+        if (head != tail) {
+            return frame_buf[head++];
+        }
+        else {
+            for (int i = 0; i < tail; ++i)
+                av_frame_unref(frame_buf[i]);
+            head = 0;
+            tail = 0;
+        }
+    }
+
+    [self sendPacket];
+
+    int ret = 0;
+    while (ret >= 0) {
+        if (!frame_buf[tail])
+            frame_buf[tail] = av_frame_alloc();
+        ret = avcodec_receive_frame(codecContext, frame_buf[tail]);
+        if (ret < 0) {
+            if (!tail)
+                return NULL;
+            else
+                return frame_buf[--tail];
+        }
+        tail++;
+    }
+    return NULL;
+}
+
+- (nullable AVFrame *) nextFrame {
+    AVFrame *frame = [self nextFrameInternal];
+    while (!frame) {
+        frame = [self nextFrameInternal];
+    }
+
     return frame;
 }
 
 - (void) dealloc {
     av_packet_free(&packet);
-    av_frame_free(&frame);
+    for (int i = 0; i < 1000; ++i)
+        if (frame_buf[i])
+            av_frame_free(&frame_buf[i]);
     avcodec_free_context(&codecContext);
     avcodec_close(codecContext);
     avformat_free_context(formatContext);

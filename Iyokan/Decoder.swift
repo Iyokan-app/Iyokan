@@ -36,7 +36,6 @@ class Decoder {
     }
 
     func nextSampleBuffer() -> CMSampleBuffer? {
-        helper.sendPacket()
         guard let frame = helper.nextFrame()?.pointee else { return nil }
         guard let data = frame.data.0 else { return nil }
         let sampleBuffer: CMSampleBuffer

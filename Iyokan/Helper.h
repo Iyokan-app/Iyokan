@@ -27,6 +27,7 @@
 
 - (BOOL) sendPacket;
 - (nullable AVFrame *) nextFrame;
+- (nullable AVFrame *) nextFrameInternal;
 
 @end
 

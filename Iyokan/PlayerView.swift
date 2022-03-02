@@ -33,6 +33,7 @@ struct PlayerView: View {
             .controlSize(.small)
         }
         .padding(.horizontal)
+        .background(colorScheme == .light ? Color.init(nsColor: .controlColor) : nil)
         .toolbar {
             ToolbarItemGroup(placement: .navigation) {
                 HStack {

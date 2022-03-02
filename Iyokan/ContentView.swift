@@ -71,7 +71,7 @@ struct MainView: View {
     @ObservedObject var player = Player.shared
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             PlayerView()
             RepresentedPlaylistView()
                 .toolbar {

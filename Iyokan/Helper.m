@@ -59,6 +59,7 @@
     ret = avcodec_open2(codecContext, NULL, &dict);
     if (ret < 0) return nil;
 
+    _format = codecContext->sample_fmt;
     _formatName = codec->name;
     _sampleRate = codecParams->sample_rate;
     _duration.timescale = AV_TIME_BASE;
@@ -115,8 +116,6 @@
 - (nullable AVFrame *) nextFrame {
     if (!codecIsOpen) return NULL;
     int ret = avcodec_receive_frame(codecContext, frame);
-    if (!_format)
-        _format = frame->format;
     if (ret < 0) return NULL;
     return frame;
 }

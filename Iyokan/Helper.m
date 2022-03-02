@@ -130,7 +130,9 @@
         }
     }
 
-    [self sendPacket];
+    if (![self sendPacket]) {
+        [NSException raise: @"End of File" format: @""];
+    }
 
     int ret = 0;
     while (ret >= 0) {
@@ -149,11 +151,15 @@
 }
 
 - (nullable AVFrame *) nextFrame {
-    AVFrame *frame = [self nextFrameInternal];
-    while (!frame) {
-        frame = [self nextFrameInternal];
-    }
-
+    AVFrame *frame = NULL;
+    do {
+        @try {
+            frame = [self nextFrameInternal];
+        }
+        @catch (NSException *exception) {
+            return NULL;
+        }
+    } while (!frame);
     return frame;
 }
 

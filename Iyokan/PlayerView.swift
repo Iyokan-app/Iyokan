@@ -73,7 +73,7 @@ struct PlayerView: View {
                             Text($player.song.wrappedValue!.title).bold()
                             Text($player.song.wrappedValue!.artist).foregroundColor(.secondary)
                         }
-                        .padding(.vertical)
+                        .frame(width: 400)
                     }
                 }
             }

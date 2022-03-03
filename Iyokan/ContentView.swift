@@ -92,5 +92,6 @@ struct MainView: View {
                     }
                 }
         }
+        .frame(minWidth: 900, minHeight: nil, idealHeight: nil, maxHeight: nil)
     }
 }

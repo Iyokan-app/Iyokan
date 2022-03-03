@@ -49,21 +49,21 @@
         }
     }
 
-    if (audioStreamIndex == -1) return nil;
+    if (audioStreamIndex == -1) return NULL;
 
     codec = avcodec_find_decoder(codecParams->codec_id);
-    if (!codec) return nil;
+    if (!codec) return NULL;
 
     codecContext = avcodec_alloc_context3(codec);
     ret = avcodec_parameters_to_context(codecContext, codecParams);
-    if (ret < 0) return nil;
+    if (ret < 0) return NULL;
 
     AVDictionary *dict = NULL;
     ret = av_dict_set(&dict, "ac", "2", 0);
-    if (ret < 0) return nil;
+    if (ret < 0) return NULL;
 
     ret = avcodec_open2(codecContext, NULL, &dict);
-    if (ret < 0) return nil;
+    if (ret < 0) return NULL;
 
     _format = codecContext->sample_fmt;
     _formatName = codec->name;
@@ -76,22 +76,6 @@
     packet = av_packet_alloc();
 
     codecIsOpen = YES;
-    //    // resample to 16bit 44100 PCM
-    //    enum AVSampleFormat inFormat = _codecContext->sample_fmt;
-    //    enum AVSampleFormat outFormat = AV_SAMPLE_FMT_S16;
-    //
-    //    int inSampleRate = _codecContext->sample_rate;
-    //    int outSampleRate = 44100;
-    //
-    //    uint64_t inChannelLayout = _codecContext->channel_layout;
-    //    uint64_t outChannelLayout = AV_CH_LAYOUT_MONO;
-    //
-    //    SwrContext *swrContext = swr_alloc();
-    //    swr_alloc_set_opts(swrContext, outChannelLayout, outFormat, outSampleRate, inChannelLayout, inFormat, inSampleRate, 0, NULL);
-    //    swr_init(swrContext);
-    //
-    //    int outChannelCount = av_get_channel_layout_nb_channels(outChannelLayout);
-
     return self;
 }
 

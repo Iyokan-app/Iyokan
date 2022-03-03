@@ -55,10 +55,12 @@ class Playlist: Identifiable, Hashable {
         itemsHasChanged()
     }
 
-    private func addMedia(urls: [URL]) {
+    func addMedia(urls: [URL], at offset: Int? = nil) {
+        var offset = offset ?? items.count
         urls.forEach{
             let song = Song($0.path)
-            items.append(Item(song: song, fromOffset: .zero, playlist: self))
+            items.insert(Item(song: song, fromOffset: .zero, playlist: self), at: offset)
+            offset += 1
         }
         itemsHasChanged()
     }

@@ -21,7 +21,7 @@ struct RepresentedPlaylistView: NSViewRepresentable {
         let scrollView = NSScrollView()
         let tableView = NSTableView()
 
-        tableView.registerForDraggedTypes([.tableViewIndex])
+        tableView.registerForDraggedTypes([.tableViewIndex, .fileURL])
 
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -193,23 +193,41 @@ extension PlaylistViewController: NSTableViewDataSource {
     func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableView.DropOperation) -> NSDragOperation {
         guard dropOperation == .above else { return [] }
 
-//        if let source = info.draggingSource as? NSTableView, source === tableView {
-//            tableView.draggingDestinationFeedbackStyle = .gap
-//        } else {
-//            tableView.draggingDestinationFeedbackStyle = .regular
-//        }
-
-        return .move
+        if let source = info.draggingSource as? NSTableView, source === tableView {
+            // dragging from playlist
+            // tableView.draggingDestinationFeedbackStyle = .gap
+            return .move
+        }
+        // dragging from outside Iyokan
+        // tableView.draggingDestinationFeedbackStyle = .regular
+        let pasteboard = info.draggingPasteboard
+        if pasteboard.types?.contains(.fileURL) ?? false {
+            guard let urls = pasteboard.readObjects(forClasses: [NSURL.self]) as? [NSURL] else { return [] }
+            let filtered = urls.filter{ allowedTypes.contains($0.pathExtension ?? "") }
+            return filtered.isEmpty ? [] : .copy
+        }
+        return .copy
     }
 
     func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableView.DropOperation) -> Bool {
-        guard let items = info.draggingPasteboard.pasteboardItems else { return false }
-        let indexes = items.compactMap{ $0.propertyList(forType: .tableViewIndex) as? Int }
-        if !indexes.isEmpty {
-            playlist.move(with: IndexSet(indexes), to: row)
-            tableView.reloadData()
+        let pasteboard = info.draggingPasteboard
+        guard let items = pasteboard.pasteboardItems else { return false }
+        guard let types = pasteboard.types else { return false }
+        if types.contains(.fileURL) {
+            guard let urls = pasteboard.readObjects(forClasses: [NSURL.self]) as? [NSURL] else { return false }
+            let filtered = urls.filter{ allowedTypes.contains($0.pathExtension ?? "") }
+            playlist.addMedia(urls: filtered.compactMap{ $0.absoluteURL }, at: row)
+            return true
+        } else if types.contains(.tableViewIndex) {
+            let indexes = items.compactMap{ $0.propertyList(forType: .tableViewIndex) as? Int }
+            if !indexes.isEmpty {
+                playlist.move(with: IndexSet(indexes), to: row)
+                tableView.reloadData()
+            }
+            return true
         }
-        return true
+
+        return false
     }
 }
 

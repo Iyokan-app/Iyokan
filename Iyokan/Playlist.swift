@@ -50,6 +50,11 @@ class Playlist: Identifiable, Hashable {
         itemsHasChanged()
     }
 
+    func move(with indexSet: IndexSet, to dest: Int) {
+        items.move(fromOffsets: indexSet, toOffset: dest)
+        itemsHasChanged()
+    }
+
     private func addMedia(urls: [URL]) {
         urls.forEach{
             let song = Song($0.path)

@@ -10,12 +10,18 @@ import SwiftUI
 import AVFoundation
 import Cocoa
 
+extension NSPasteboard.PasteboardType {
+    static let tableViewIndex = NSPasteboard.PasteboardType("io.iyokan-app.iyokan.playlist.index")
+}
+
 struct RepresentedPlaylistView: NSViewRepresentable {
     let dataStorage = DataStorage.shared
 
     func makeNSView(context: Context) -> NSScrollView {
         let scrollView = NSScrollView()
         let tableView = NSTableView()
+
+        tableView.registerForDraggedTypes([.tableViewIndex])
 
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -175,7 +181,42 @@ extension PlaylistViewController: NSTableViewDataSource {
         view.addConstraint(NSLayoutConstraint(item: text, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1, constant: 0))
         return view
     }
+
+    func tableView(_ tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
+        let pasteboardItem = NSPasteboardItem()
+        pasteboardItem.setPropertyList(row, forType: .tableViewIndex)
+        return pasteboardItem
+    }
+
+    func tableView(_ tableView: NSTableView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forRowIndexes rowIndexes: IndexSet) {}
+
+    func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableView.DropOperation) -> NSDragOperation {
+        guard dropOperation == .above else { return [] }
+
+//        if let source = info.draggingSource as? NSTableView, source === tableView {
+//            tableView.draggingDestinationFeedbackStyle = .gap
+//        } else {
+//            tableView.draggingDestinationFeedbackStyle = .regular
+//        }
+
+        return .move
+    }
+
+    func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableView.DropOperation) -> Bool {
+        guard let items = info.draggingPasteboard.pasteboardItems else { return false }
+        let indexes = items.compactMap{ $0.propertyList(forType: .tableViewIndex) as? Int }
+        if !indexes.isEmpty {
+            playlist.move(with: IndexSet(indexes), to: row)
+            tableView.reloadData()
+        }
+        return true
+    }
 }
 
 extension PlaylistViewController: NSTableViewDelegate {
+//    // according to https://www.natethompson.io/2019/03/23/nstableview-drag-and-drop.html
+//    // not writing this will cause a bug in NSTableView .gap feedback animation
+//    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+//        return tableView.rowHeight
+//    }
 }

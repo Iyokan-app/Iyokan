@@ -33,6 +33,7 @@ struct PlayerView: View {
             .controlSize(.small)
         }
         .padding(.horizontal)
+        // this hack might can be removed in a later macOS version
         .background(colorScheme == .light ? Color.init(nsColor: .controlColor) : nil)
         .toolbar {
             ToolbarItemGroup(placement: .navigation) {
@@ -54,7 +55,7 @@ struct PlayerView: View {
                             Text(player.song!.formatName.uppercased())
                                 .bold()
                                 .font(.system(size: 12))
-                                .foregroundColor(colorScheme == .dark ? .black : .white)
+                                .foregroundColor(.init(nsColor: .controlBackgroundColor))
                                 .padding(.horizontal, 3)
                                 .lineLimit(1)
                         }
@@ -70,10 +71,11 @@ struct PlayerView: View {
                         }
                         .frame(width: 40)
                         VStack(alignment: .leading) {
-                            Text($player.song.wrappedValue!.title).bold()
-                            Text($player.song.wrappedValue!.artist).foregroundColor(.secondary)
+                            Group {
+                                Text($player.song.wrappedValue!.title).bold()
+                                Text($player.song.wrappedValue!.artist).foregroundColor(.secondary)
+                            }.frame(maxWidth: 400, alignment: .leading)
                         }
-                        .frame(width: 400)
                     }
                 }
             }

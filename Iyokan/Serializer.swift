@@ -326,8 +326,8 @@ class Serializer: ObservableObject {
             logger.debug("stopping playback")
         }
 
-        // Restart playback with the new item  queue.
-        restartPlayback(with: newItems, atOffset: offset)
+        // Restart playback with the new item queue.
+        restartPlayback(with: newItems, atOffset: offset, atRate: synchronizer.rate)
     }
 
     func flushItem(_ item: Item) {

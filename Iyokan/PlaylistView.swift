@@ -83,6 +83,13 @@ struct RepresentedPlaylistView: NSViewRepresentable {
 class PlaylistViewController: NSViewController {
     let playlist: Playlist
 
+    lazy var tableView = playlist.playlistView!
+
+    var selections: IndexSet {
+        let clicked = tableView.clickedRow == -1 ? IndexSet() : IndexSet([tableView.clickedRow])
+        return tableView.selectedRowIndexes.union(clicked)
+    }
+
     init(playlist: Playlist) {
         self.playlist = playlist
         super.init(nibName: nil, bundle: nil)
@@ -93,21 +100,24 @@ class PlaylistViewController: NSViewController {
     }
 
     @objc func doubleAction(sender: AnyObject) {
-        let tableView = playlist.playlistView!
         guard tableView.clickedRow != -1 else { return }
 
         Player.shared.seekToItem(playlist.items[tableView.clickedRow])
     }
 
     @objc func openFileLocation(sender: AnyObject) {
-        let tableView = playlist.playlistView!
-        guard tableView.clickedRow != -1 else { return }
-
-        NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: playlist.items[tableView.clickedRow].song.path)])
+        let urls = selections.map {
+            URL(fileURLWithPath: playlist.items[$0].song.path)
+        }
+        NSWorkspace.shared.activateFileViewerSelecting(urls)
     }
 
     @objc func addFiles(sender: AnyObject) {
         playlist.openFile()
+    }
+
+    @objc func removeItems(sender: AnyObject) {
+        playlist.removeItems(indexes: selections)
     }
 }
 
@@ -119,6 +129,7 @@ extension PlaylistViewController: NSMenuDelegate {
             let clickedItem = playlist.items[clickedRow]
             menu.insertItem(.separator(), at: 0)
             menu.insertItem(withTitle: "Open File Location", action: #selector(openFileLocation(sender:)), keyEquivalent: "", at: 0).target = self
+            menu.insertItem(withTitle: "Remove Item(s)", action: #selector(removeItems(sender:)), keyEquivalent: "", at: 0).target = self
             menu.insertItem(withTitle: "Play \(clickedItem.song.title)", action: #selector(doubleAction(sender:)), keyEquivalent: "", at: 0).target = self
         }
     }

@@ -33,15 +33,6 @@ class Playlist: Identifiable, Hashable {
         }
     }
 
-    private func addMedia(urls: [URL]) {
-        urls.forEach{
-            let song = Song($0.path)
-            items.append(Item(song: song, fromOffset: .zero, playlist: self))
-        }
-        Player.shared.continueWithCurrentItems()
-        playlistView?.reloadData()
-    }
-
     func setCurrnetIndex(id: UUID) {
         for i in 0 ..< items.count {
             if items[i].id == id {
@@ -50,6 +41,26 @@ class Playlist: Identifiable, Hashable {
             }
         }
         currentIndex = nil
+    }
+
+    func removeItems(indexes: IndexSet) {
+        indexes.enumerated().reversed().forEach {
+            items.remove(at: $0.element)
+        }
+        itemsHasChanged()
+    }
+
+    private func addMedia(urls: [URL]) {
+        urls.forEach{
+            let song = Song($0.path)
+            items.append(Item(song: song, fromOffset: .zero, playlist: self))
+        }
+        itemsHasChanged()
+    }
+
+    private func itemsHasChanged() {
+        Player.shared.continueWithCurrentItems()
+        playlistView?.reloadData()
     }
 
     let id = UUID()

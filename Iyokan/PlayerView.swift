@@ -64,14 +64,16 @@ struct PlayerView: View {
                             showingPopover = true
                         }
                         .popover(isPresented: $showingPopover) {
-                            let str = "Sample Rate: \(player.song!.sampleRate) kHz"
-                            Text(str).padding()
+                            let song = player.song!
+                            let sampleRate = String(format: "%g", Double(song.sampleRate) / 1000)
+                            Text("\(song.bitDepth) bit/\(sampleRate) kHz").padding(10)
                         }
                         .frame(width: 40)
                         VStack(alignment: .leading) {
-                                Text($player.song.wrappedValue!.title).bold()
-                                Text($player.song.wrappedValue!.artist).foregroundColor(.secondary)
-                        }.padding(.vertical)
+                            Text($player.song.wrappedValue!.title).bold()
+                            Text($player.song.wrappedValue!.artist).foregroundColor(.secondary)
+                        }
+                        .padding(.vertical)
                     }
                 }
             }

@@ -68,6 +68,7 @@
     _format = codecContext->sample_fmt;
     _formatName = codec->name;
     _sampleRate = codecParams->sample_rate;
+    _bitDepth = codecParams->bits_per_raw_sample ? codecParams->bits_per_raw_sample : codecParams->bits_per_coded_sample;
     _duration.timescale = AV_TIME_BASE;
     _duration.value = formatContext->duration;
     _duration.flags |= kCMTimeFlags_Valid;

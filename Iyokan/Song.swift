@@ -17,6 +17,7 @@ struct Song {
         self.duration = helper.duration
         self.formatName = String(cString: helper.formatName)
         self.sampleRate = helper.sampleRate
+        self.bitDepth = helper.bitDepth
 
         self.title = metadata["title"] ?? "Unknown"
         self.trackNo = Int(metadata["track"] ?? "0") ?? 0
@@ -29,6 +30,7 @@ struct Song {
     let duration: CMTime
     let formatName: String
     let sampleRate: Int32
+    let bitDepth: Int32
 
     // media metadata
     let title: String

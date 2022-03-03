@@ -110,8 +110,14 @@
 
 - (BOOL) sendPacket {
     int ret = 0;
+    av_packet_free(&packet);
+    packet = av_packet_alloc();
     while (av_read_frame(formatContext, packet) >= 0) {
-        if (packet->stream_index != audioStreamIndex) continue;
+        if (packet->stream_index != audioStreamIndex) {
+            av_packet_free(&packet);
+            packet = av_packet_alloc();
+            continue;
+        }
         ret = avcodec_send_packet(codecContext, packet);
         return ret >= 0;
     }

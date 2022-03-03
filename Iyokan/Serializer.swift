@@ -291,6 +291,7 @@ class Serializer: ObservableObject {
                 // run out of tracks
                 if nowEnqueuing >= items.count {
                     renderer.stopRequestingMediaData()
+                    dataStorage.selectedPlaylist?.currentIndex = nil
                     break
                 }
 

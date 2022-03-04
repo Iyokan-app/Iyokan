@@ -11,6 +11,7 @@ import MediaPlayer
 @main
 struct IyokanApp: App {
     @StateObject var dataStorage = DataStorage.shared
+    let player = Player.shared
 
     var body: some Scene {
         WindowGroup {
@@ -19,7 +20,30 @@ struct IyokanApp: App {
                 .onAppear {
                     NSWindow.allowsAutomaticWindowTabbing = false
 
-                    MPRemoteCommandCenter.shared().playCommand.addTarget {_ in
+                    let commandCenter = MPRemoteCommandCenter.shared()
+                    commandCenter.playCommand.addTarget { _ in
+                        player.play()
+                        return .success
+                    }
+                    commandCenter.pauseCommand.addTarget { _ in
+                        player.pause()
+                        return .success
+                    }
+                    commandCenter.togglePlayPauseCommand.addTarget { _ in
+                        player.toggle()
+                        return .success
+                    }
+                    commandCenter.nextTrackCommand.addTarget { _ in
+                        player.next()
+                        return .success
+                    }
+                    commandCenter.previousTrackCommand.addTarget { _ in
+                        player.previous()
+                        return .success
+                    }
+                    commandCenter.changePlaybackPositionCommand.addTarget { event in
+                        guard let position = (event as? MPChangePlaybackPositionCommandEvent)?.positionTime else { return .commandFailed }
+                        player.seekToOffset(.init(seconds: position, preferredTimescale: CMTimePreferredTimescale))
                         return .success
                     }
                 }

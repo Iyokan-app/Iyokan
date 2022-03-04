@@ -62,6 +62,7 @@ class Player: ObservableObject {
             self.currentTime = currentTime
             guard var info = infoCenter.nowPlayingInfo else { return }
             info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime
+            infoCenter.nowPlayingInfo = info
         }
 
         itemObserver = notificationCenter.addObserver(forName: Serializer.itemDidChange, object: serializer, queue: .main) { [unowned self] _ in
@@ -90,6 +91,8 @@ class Player: ObservableObject {
             guard var info = infoCenter.nowPlayingInfo else { return }
             guard song != nil else { return }
             info[MPNowPlayingInfoPropertyPlaybackRate] = isPlaying ? 1 : 0
+            info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime
+            infoCenter.nowPlayingInfo = info
         }
     }
 

@@ -9,6 +9,8 @@ import Foundation
 
 let allowedTypes = ["mp3", "wav", "flac", "m4a", "tta"]
 
+let CMTimePreferredTimescale: Int32 = 1000
+
 struct AppStorageKeys {
     static let volume = "volume"
 }

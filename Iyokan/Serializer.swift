@@ -115,7 +115,7 @@ class Serializer: ObservableObject {
 
             updateCurrentPlayingItem(at: .zero)
 
-            provideMediaData(for: CMTime(seconds: 0.25, preferredTimescale: 1000))
+            provideMediaData(for: CMTime(seconds: 0.25, preferredTimescale: CMTimePreferredTimescale))
             renderer.requestMediaDataWhenReady(on: serializationQueue) {
                 self.provideMediaData()
             }
@@ -184,7 +184,7 @@ class Serializer: ObservableObject {
             enqueuingPlaybackEndTime = initialEndTime
         }
 
-        provideMediaData(for: CMTime(seconds: 0.25, preferredTimescale: 1000))
+        provideMediaData(for: CMTime(seconds: 0.25, preferredTimescale: CMTimePreferredTimescale))
         renderer.requestMediaDataWhenReady(on: serializationQueue) {
             self.provideMediaData()
         }
@@ -228,7 +228,7 @@ class Serializer: ObservableObject {
         NotificationCenter.default.post(name: Serializer.itemDidChange, object: self)
 
         if items.first != nil {
-            let interval = CMTime(seconds: 0.1, preferredTimescale: 1000)
+            let interval = CMTime(seconds: 0.1, preferredTimescale: CMTimePreferredTimescale)
             periodicObserver = synchronizer.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [unowned self] _ in
                 if let currentSong = dataStorage.selectedPlaylist?.currentSong {
                     let currentTime = CMTimeGetSeconds(synchronizer.currentTime() - boundaryTime)

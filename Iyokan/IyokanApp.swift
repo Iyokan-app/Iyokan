@@ -27,7 +27,7 @@ struct IyokanApp: App {
         .windowToolbarStyle(.unifiedCompact(showsTitle: false))
         .commands {
             CommandMenu("Playback") {
-                Button("Toggle Play/pause") {
+                Button("Toggle Play/Pause") {
                     Player.shared.toggle()
                 }
                 .disabled(dataStorage.selectedPlaylist == nil)
@@ -52,6 +52,16 @@ struct IyokanApp: App {
                 .disabled(dataStorage.selectedPlaylist == nil)
                 .keyboardShortcut("o")
             }
+//            CommandGroup(replacing: .appSettings) {
+//                Button("Preferences…") {
+//
+//                }
+//                .keyboardShortcut(",")
+//            }
+        }
+
+        Settings {
+            PreferencesView()
         }
     }
 }

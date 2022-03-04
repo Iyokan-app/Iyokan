@@ -10,6 +10,9 @@
 		343D1E8D27AA78E70067958D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343D1E8C27AA78E70067958D /* Extensions.swift */; };
 		3498996727ABE0CF009A1FA2 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498996627ABE0CF009A1FA2 /* Player.swift */; };
 		3498996927ABE275009A1FA2 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498996827ABE275009A1FA2 /* PlayerView.swift */; };
+		34B1178527D20936006D3702 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B1178427D20936006D3702 /* PreferencesView.swift */; };
+		34B1178727D20A4A006D3702 /* GeneralPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B1178627D20A4A006D3702 /* GeneralPreferencesView.swift */; };
+		34B1178927D20B12006D3702 /* PlaybackPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B1178827D20B12006D3702 /* PlaybackPreferencesView.swift */; };
 		34DA1923279A87A700481176 /* IyokanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1922279A87A700481176 /* IyokanApp.swift */; };
 		34DA1925279A87A700481176 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1924279A87A700481176 /* ContentView.swift */; };
 		34DA1927279A87A800481176 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34DA1926279A87A800481176 /* Assets.xcassets */; };
@@ -58,6 +61,9 @@
 		343D1E8C27AA78E70067958D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3498996627ABE0CF009A1FA2 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		3498996827ABE275009A1FA2 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		34B1178427D20936006D3702 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		34B1178627D20A4A006D3702 /* GeneralPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralPreferencesView.swift; sourceTree = "<group>"; };
+		34B1178827D20B12006D3702 /* PlaybackPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackPreferencesView.swift; sourceTree = "<group>"; };
 		34DA191F279A87A700481176 /* Iyokan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Iyokan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34DA1922279A87A700481176 /* IyokanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IyokanApp.swift; sourceTree = "<group>"; };
 		34DA1924279A87A700481176 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -125,6 +131,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		34B1178327D20906006D3702 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				34B1178427D20936006D3702 /* PreferencesView.swift */,
+				34B1178627D20A4A006D3702 /* GeneralPreferencesView.swift */,
+				34B1178827D20B12006D3702 /* PlaybackPreferencesView.swift */,
+			);
+			name = Preferences;
+			sourceTree = "<group>";
+		};
 		34DA1916279A87A700481176 = {
 			isa = PBXGroup;
 			children = (
@@ -156,6 +172,7 @@
 				34DA194F279A8B7A00481176 /* Views */,
 				34DA1955279A8C0B00481176 /* Models */,
 				34DA1963279A8C9F00481176 /* ObjC */,
+				34B1178327D20906006D3702 /* Preferences */,
 				34DA1965279A8CE000481176 /* Bridging Headers */,
 				34DA1966279A8D0100481176 /* Others */,
 				34DA1928279A87A800481176 /* Preview Content */,
@@ -394,6 +411,7 @@
 			files = (
 				34DA1925279A87A700481176 /* ContentView.swift in Sources */,
 				34DA194E279A8B4F00481176 /* Decoder.swift in Sources */,
+				34B1178727D20A4A006D3702 /* GeneralPreferencesView.swift in Sources */,
 				34DA195E279A8C4F00481176 /* Playlist.swift in Sources */,
 				34DA1923279A87A700481176 /* IyokanApp.swift in Sources */,
 				34DA1952279A8BD000481176 /* AppData.swift in Sources */,
@@ -402,7 +420,9 @@
 				34DA195B279A8C4F00481176 /* Item.swift in Sources */,
 				343D1E8D27AA78E70067958D /* Extensions.swift in Sources */,
 				3498996927ABE275009A1FA2 /* PlayerView.swift in Sources */,
+				34B1178527D20936006D3702 /* PreferencesView.swift in Sources */,
 				34DA195C279A8C4F00481176 /* DataStorage.swift in Sources */,
+				34B1178927D20B12006D3702 /* PlaybackPreferencesView.swift in Sources */,
 				34DA1962279A8C8E00481176 /* Helper.m in Sources */,
 				34DA1954279A8BEE00481176 /* PlaylistView.swift in Sources */,
 				34DA195F279A8C4F00481176 /* Serializer.swift in Sources */,

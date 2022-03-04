@@ -8,3 +8,7 @@
 import Foundation
 
 let allowedTypes = ["mp3", "wav", "flac", "m4a", "tta"]
+
+struct AppStorageKeys {
+    static let volume = "volume"
+}

@@ -25,9 +25,9 @@ class Player: ObservableObject {
     @Published var song: Song?
     @Published var isPlaying: Bool = false
     @Published var percentage: Double = 0.0
-    @Published var volume: Float = 1.0 {
+    @AppStorage(AppStorageKeys.volume) var volume: Double = 1.0 {
         didSet {
-            serializer.setVolume(volume)
+            serializer.setVolume(Float(volume))
         }
     }
 
@@ -91,7 +91,6 @@ class Player: ObservableObject {
             guard song != nil else { return }
             info[MPNowPlayingInfoPropertyPlaybackRate] = isPlaying ? 1 : 0
         }
-        volume = serializer.getVolume()
     }
 
     func toggle() {

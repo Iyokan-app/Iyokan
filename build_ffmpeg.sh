@@ -29,6 +29,7 @@ Script for building FFmpeg library
   $0 [--no-clean-on-failed] [--universal]
 
   -h, --help              show this help
+  -g, --debug             enable FFmpeg debugging
   --universal             build universal library
   --[no-]clean-on-failed  remove FFmpeg folder if any error happened
   -f=FLAG, --flag=FLAG    add ffmpeg flag when build configuration
@@ -54,6 +55,9 @@ for i in "$@"; do
       ;;
     --no-clean-on-failed)
       CLEAN_ON_FAILED=NO
+      ;;
+    -g|--debug)
+      ENABLE_DEBUG=YES
       ;;
     -f=*|--flag=)
       FFMPEGFLAGS+=("${i#*=}")
@@ -94,6 +98,16 @@ fi
 
 if [[ ! $(which yasm) && ! $(which nasm) ]]; then
   FFMPEGFLAGS+=(--disable-x86asm)
+fi
+if [[ $ENABLE_DEBUG = YES ]]; then
+  # https://stackoverflow.com/questions/9211163/debugging-ffmpeg/60963911#60963911
+  FFMPEGFLAGS+=(
+    --disable-optimizations
+    --extra-cflags="-Og"
+    --extra-cflags="-fno-omit-frame-pointer"
+    --enable-debug="3"
+    --extra-cflags="-fno-inline"
+  )
 fi
 
 set -x

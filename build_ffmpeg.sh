@@ -67,8 +67,8 @@ for i in "$@"; do
       CWD="$(pwd)"
       ;;
     -c|--clean)
-      rm -r "$CWD/FFmpeg"
-      exit 1
+      rm -r "$CWD/FFmpeg" || true
+      exit 0
       ;;
     -h|--help)
       usage

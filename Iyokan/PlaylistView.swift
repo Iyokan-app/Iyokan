@@ -14,6 +14,10 @@ extension NSPasteboard.PasteboardType {
     static let tableViewIndex = NSPasteboard.PasteboardType("io.iyokan-app.iyokan.playlist.index")
 }
 
+enum TableViewColumnID: String {
+    case playing, trackNo, title, artist, album
+}
+
 struct RepresentedPlaylistView: NSViewRepresentable {
     let dataStorage = DataStorage.shared
 
@@ -43,36 +47,31 @@ struct RepresentedPlaylistView: NSViewRepresentable {
         menu.delegate = context.coordinator
 
         // configuring columns
-        let col = makeColumn(id: "playing", title: " ")
-        col.width = 10
-        tableView.addTableColumn(col)
-
-        let col1 = makeColumn(id: "trackNo", title: "#")
-        col1.minWidth = 15
-        col1.maxWidth = 15
-        tableView.addTableColumn(col1)
-
-        let col3 = makeColumn(id: "title", title: "Title")
-        col3.minWidth = 200
-        tableView.addTableColumn(col3)
-
-        let col2 = makeColumn(id: "artist", title: "Artist")
-        col2.minWidth = 200
-        tableView.addTableColumn(col2)
-
-        let col4 = makeColumn(id: "album", title: "Album")
-        col3.minWidth = 200
-        tableView.addTableColumn(col4)
+        tableView.addTableColumn(makeColumn(id: TableViewColumnID.playing.rawValue, title: " ", width: 10))
+        tableView.addTableColumn(makeColumn(id: TableViewColumnID.trackNo.rawValue, title: "#", minWidth: 15, maxWidth: 15))
+        tableView.addTableColumn(makeColumn(id: TableViewColumnID.title.rawValue, title: "Title", minWidth: 200))
+        tableView.addTableColumn(makeColumn(id: TableViewColumnID.artist.rawValue, title: "Artist", minWidth: 200))
+        tableView.addTableColumn(makeColumn(id: TableViewColumnID.album.rawValue, title: "Album", minWidth: 200))
 
         dataStorage.selectedPlaylist?.playlistView = tableView
 
         return scrollView
     }
 
-    private func makeColumn(id: String, title: String) -> NSTableColumn {
+    private func makeColumn(id: String, title: String, minWidth: CGFloat? = nil, maxWidth: CGFloat? = nil, width: CGFloat? = nil) -> NSTableColumn {
         let column = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: id))
         column.title = title
         column.isEditable = false
+
+        if let minWidth = minWidth {
+            column.minWidth = minWidth
+        }
+        if let maxWidth = maxWidth {
+            column.maxWidth = maxWidth
+        }
+        if let width = width {
+            column.width = width
+        }
         return column
     }
 
@@ -153,16 +152,16 @@ extension PlaylistViewController: NSTableViewDataSource {
         let view = NSView()
         let song = item.song
         switch tableColumn?.identifier.rawValue {
-        case "playing":
+        case TableViewColumnID.playing.rawValue:
             if !item.isEnqueued { return nil }
             return NSImageView(image: .init(systemSymbolName: "play.fill", accessibilityDescription: nil)!)
-        case "trackNo":
+        case TableViewColumnID.trackNo.rawValue:
             text.stringValue = String(song.trackNo)
-        case "title":
+        case TableViewColumnID.title.rawValue:
             text.stringValue = song.title
-        case "artist":
+        case TableViewColumnID.artist.rawValue:
             text.stringValue = song.artist
-        case "album":
+        case TableViewColumnID.album.rawValue:
             text.stringValue = song.album
         default:
             break

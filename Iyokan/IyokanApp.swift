@@ -76,12 +76,6 @@ struct IyokanApp: App {
                 .disabled(dataStorage.selectedPlaylist == nil)
                 .keyboardShortcut("o")
             }
-//            CommandGroup(replacing: .appSettings) {
-//                Button("Preferences…") {
-//
-//                }
-//                .keyboardShortcut(",")
-//            }
         }
 
         Settings {

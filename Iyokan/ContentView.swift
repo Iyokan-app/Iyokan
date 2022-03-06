@@ -55,9 +55,6 @@ struct ContentView: View {
                 }
             }
         }
-        .onAppear {
-            // select = playlists[0]
-        }
     }
 
     private func toggleSidebar() {

@@ -52,7 +52,7 @@ struct PlayerView: View {
                     .keyboardShortcut(.rightArrow, modifiers: [])
                     if $player.song.wrappedValue != nil {
                         ZStack {
-                            Text(player.song!.formatName.uppercased())
+                            Text(player.song!.codecName.uppercased())
                                 .bold()
                                 .font(.system(size: 12))
                                 .foregroundColor(.init(nsColor: .controlBackgroundColor))

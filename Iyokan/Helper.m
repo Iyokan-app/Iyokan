@@ -66,7 +66,7 @@
     if (ret < 0) return NULL;
 
     _format = codecContext->sample_fmt;
-    _formatName = codec->name;
+    _codecName = codec->name;
     _sampleRate = codecParams->sample_rate;
     _bitDepth = codecParams->bits_per_raw_sample ? codecParams->bits_per_raw_sample : codecParams->bits_per_coded_sample;
     _duration.timescale = AV_TIME_BASE;

@@ -15,7 +15,12 @@ struct Song {
         let metadata = helper.getMetadata()
 
         self.duration = helper.duration
-        self.formatName = String(cString: helper.formatName)
+        let name = String(cString: helper.codecName)
+        if name.starts(with: "pcm") {
+            self.codecName = "PCM"
+        } else {
+            self.codecName = name
+        }
         self.sampleRate = helper.sampleRate
         self.bitDepth = helper.bitDepth
 
@@ -28,7 +33,7 @@ struct Song {
     // file data
     let path: String
     let duration: CMTime
-    let formatName: String
+    let codecName: String
     let sampleRate: Int32
     let bitDepth: Int32
 

@@ -19,7 +19,7 @@
 
 @property int sampleRate;
 @property int bitDepth;
-@property const char * _Nonnull formatName;
+@property const char * _Nonnull codecName;
 @property CMTime duration;
 @property enum AVSampleFormat format;
 

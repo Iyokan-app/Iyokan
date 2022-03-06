@@ -7,7 +7,7 @@
 
 import Foundation
 
-let allowedTypes = ["mp3", "wav", "flac", "m4a", "tta"]
+let allowedTypes = ["mp3", "wav", "flac", "m4a", "tta", "aiff"]
 
 let CMTimePreferredTimescale: Int32 = 1000
 

@@ -51,6 +51,8 @@ class Player: ObservableObject {
     var blockPercentageUpdate = false
 
     init() {
+        volume = volume // to trigger the didSet closure of volume
+
         let notificationCenter = NotificationCenter.default
 
         percentageObserver = notificationCenter.addObserver(forName: Serializer.offsetDidChange, object: serializer, queue: .main) { [unowned self] notification in

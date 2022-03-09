@@ -153,7 +153,7 @@ extension PlaylistViewController: NSTableViewDataSource {
         let song = item.song
         switch tableColumn?.identifier.rawValue {
         case TableViewColumnID.playing.rawValue:
-            if !item.isEnqueued { return nil }
+            if playlist.currentItem != item { return nil }
             return NSImageView(image: .init(systemSymbolName: "play.fill", accessibilityDescription: nil)!)
         case TableViewColumnID.trackNo.rawValue:
             text.stringValue = String(song.trackNo)

@@ -58,11 +58,7 @@
     ret = avcodec_parameters_to_context(codecContext, codecParams);
     if (ret < 0) return NULL;
 
-    AVDictionary *dict = NULL;
-    ret = av_dict_set(&dict, "ac", "2", 0);
-    if (ret < 0) return NULL;
-
-    ret = avcodec_open2(codecContext, NULL, &dict);
+    ret = avcodec_open2(codecContext, codec, NULL);
     if (ret < 0) return NULL;
 
     _format = codecContext->sample_fmt;

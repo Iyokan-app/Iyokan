@@ -18,6 +18,8 @@ struct Song {
         let name = String(cString: helper.codecName)
         if name.starts(with: "pcm") {
             self.codecName = "PCM"
+        } else if name.starts(with: "mp3") {
+            self.codecName = "MP3"
         } else {
             self.codecName = name
         }

@@ -69,7 +69,7 @@ struct PlayerView: View {
                             let sampleRate = String(format: "%g", Double(song.sampleRate) / 1000)
                             Text((song.bitDepth == 0 ? "" : "\(song.bitDepth) bit/") + "\(sampleRate) kHz").padding(10)
                         }
-                        .frame(width: 40)
+                        .frame(width: 45)
                         VStack(alignment: .leading) {
                             Group {
                                 Text($player.song.wrappedValue!.title).bold()

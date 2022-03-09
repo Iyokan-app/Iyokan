@@ -7,7 +7,7 @@ Or if you are using M1 Mac, for compiling universal ffmpeg library,
 you should add `--universal` flag
 
 ```shell
-./build_ffmpeg.sh --universal
+./build_ffmpeg.sh --release --universal
 ```
 
 Then run in Xcode.

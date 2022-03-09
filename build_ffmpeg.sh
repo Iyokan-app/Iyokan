@@ -3,6 +3,7 @@
 set -e
 
 CLEAN_ON_FAILED=YES
+ENABLE_DEBUG=YES
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 CWD="$SCRIPT_DIR"
 VERSION=5.0
@@ -30,6 +31,7 @@ Script for building FFmpeg library
 
   -h, --help              show this help
   -g, --debug             enable FFmpeg debugging
+  --release               disable debugging compilation
   --universal             build universal library
   --[no-]clean-on-failed  remove FFmpeg folder if any error happened
   -f=FLAG, --flag=FLAG    add ffmpeg flag when build configuration
@@ -58,6 +60,9 @@ for i in "$@"; do
       ;;
     -g|--debug)
       ENABLE_DEBUG=YES
+      ;;
+    --release)
+      ENABLE_DEBUG=NO
       ;;
     -f=*|--flag=)
       FFMPEGFLAGS+=("${i#*=}")

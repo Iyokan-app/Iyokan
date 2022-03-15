@@ -18,7 +18,7 @@ class DataStorage: ObservableObject {
     }
 
     func newPlaylist() {
-        append(Playlist(name: String(localized: "New Playlist"), items: nil))
+        append(Playlist(name: String(localized: "Untitled Playlist"), items: nil))
     }
 
     func append(_ item: Playlist) {

@@ -26,10 +26,10 @@ struct Song {
         self.sampleRate = helper.sampleRate
         self.bitDepth = helper.bitDepth
 
-        self.title = metadata["title"] ?? "Unknown"
+        self.title = metadata["title"] ?? String(localized: "Unknown", comment: "Unknown song title")
         self.trackNo = Int(metadata["track"] ?? "0") ?? 0
-        self.artist = metadata["artist"] ?? "Unknown Artist"
-        self.album = metadata["album"] ?? "Unknown Ablum"
+        self.artist = metadata["artist"] ?? String(localized: "Unknown Artist")
+        self.album = metadata["album"] ?? String(localized: "Unknown Ablum")
     }
 
     // file data

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PlaybackPreferencesView: View {
     var body: some View {
-        Text("Playback Preferences View")
+        Text("Playback Preferences View", comment: "Do not translate")
     }
 }
 

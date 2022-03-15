@@ -50,27 +50,27 @@ struct IyokanApp: App {
         }
         .windowToolbarStyle(.unifiedCompact(showsTitle: false))
         .commands {
-            CommandMenu("Playback") {
-                Button("Toggle Play/Pause") {
+            CommandMenu(String(localized: "Playback")) {
+                Button(String(localized: "Toggle Play/Pause")) {
                     Player.shared.toggle()
                 }
                 .disabled(dataStorage.selectedPlaylist == nil)
                 .keyboardShortcut(" ", modifiers: [])       // this shortcut doesn't work
-                Button("Next Song") {
+                Button(String(localized: "Next Song")) {
                     Player.shared.next()
                 }
                 .disabled(dataStorage.selectedPlaylist == nil)
-                Button("Previous Song") {
+                Button(String(localized: "Previous Song")) {
                     Player.shared.previous()
                 }
                 .disabled(dataStorage.selectedPlaylist == nil)
             }
             CommandGroup(replacing: .newItem) {
-                Button("New Playlist") {
+                Button(String(localized: "New Playlist")) {
                     dataStorage.newPlaylist()
                 }
                 .keyboardShortcut("n")
-                Button("Add Files") {
+                Button(String(localized:"Add Files")) {
                     dataStorage.selectedPlaylist?.openFile()
                 }
                 .disabled(dataStorage.selectedPlaylist == nil)

@@ -49,9 +49,9 @@ struct RepresentedPlaylistView: NSViewRepresentable {
         // configuring columns
         tableView.addTableColumn(makeColumn(id: TableViewColumnID.playing.rawValue, title: " ", width: 10))
         tableView.addTableColumn(makeColumn(id: TableViewColumnID.trackNo.rawValue, title: "#", minWidth: 15, maxWidth: 15))
-        tableView.addTableColumn(makeColumn(id: TableViewColumnID.title.rawValue, title: "Title", minWidth: 200))
-        tableView.addTableColumn(makeColumn(id: TableViewColumnID.artist.rawValue, title: "Artist", minWidth: 200))
-        tableView.addTableColumn(makeColumn(id: TableViewColumnID.album.rawValue, title: "Album", minWidth: 200))
+        tableView.addTableColumn(makeColumn(id: TableViewColumnID.title.rawValue, title: String(localized: "Title"), minWidth: 200))
+        tableView.addTableColumn(makeColumn(id: TableViewColumnID.artist.rawValue, title: String(localized: "Artist"), minWidth: 200))
+        tableView.addTableColumn(makeColumn(id: TableViewColumnID.album.rawValue, title: String(localized: "Album"), minWidth: 200))
 
         dataStorage.selectedPlaylist?.playlistView = tableView
 
@@ -129,13 +129,13 @@ class PlaylistViewController: NSViewController {
 extension PlaylistViewController: NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
-        menu.insertItem(withTitle: "Add Files", action: #selector(addFiles(sender:)), keyEquivalent: "", at: 0).target = self
+        menu.insertItem(withTitle: String(localized: "Add Files"), action: #selector(addFiles(sender:)), keyEquivalent: "", at: 0).target = self
         if let clickedRow = playlist.playlistView?.clickedRow, clickedRow != -1 {
             let clickedItem = playlist.items[clickedRow]
             menu.insertItem(.separator(), at: 0)
-            menu.insertItem(withTitle: "Open File Location", action: #selector(openFileLocation(sender:)), keyEquivalent: "", at: 0).target = self
-            menu.insertItem(withTitle: "Remove Item(s)", action: #selector(removeItems(sender:)), keyEquivalent: "", at: 0).target = self
-            menu.insertItem(withTitle: "Play \(clickedItem.song.title)", action: #selector(doubleAction(sender:)), keyEquivalent: "", at: 0).target = self
+            menu.insertItem(withTitle: String(localized: "Open File Location"), action: #selector(openFileLocation(sender:)), keyEquivalent: "", at: 0).target = self
+            menu.insertItem(withTitle: String(localized: "Remove Item(s)"), action: #selector(removeItems(sender:)), keyEquivalent: "", at: 0).target = self
+            menu.insertItem(withTitle: String(localized: "Play \(clickedItem.song.title)"), action: #selector(doubleAction(sender:)), keyEquivalent: "", at: 0).target = self
         }
     }
 }

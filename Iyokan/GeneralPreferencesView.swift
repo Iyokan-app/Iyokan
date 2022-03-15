@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GeneralPreferencesView: View {
     var body: some View {
-        Text("General Preferences View")
+        Text("General Preferences View", comment: "Do not translate")
     }
 }
 

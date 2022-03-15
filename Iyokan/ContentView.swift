@@ -35,12 +35,11 @@ struct ContentView: View {
                         .controlSize(.large)
                     }
                 }
-                Divider()
                 HStack {
                     Button(action: {
                         dataStorage.newPlaylist()
                     }) {
-                        Image(systemName: "plus")
+                        Label("New Playlist", systemImage: "plus.circle")
                     }
                     .buttonStyle(.borderless)
                     .padding([.horizontal, .bottom], 6)
@@ -48,7 +47,7 @@ struct ContentView: View {
                     Button(action: {
                         dataStorage.remove(nil)
                     }) {
-                        Image(systemName: "minus")
+                        Image(systemName: "trash")
                     }
                     .buttonStyle(.borderless)
                     .padding([.horizontal, .bottom], 6)

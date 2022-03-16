@@ -12,21 +12,59 @@ import AVFoundation
 struct ContentView: View {
     @EnvironmentObject var dataStorage: DataStorage
 
+    @State private var renaming: Playlist? = nil
+    @State private var name: String = ""
+    @FocusState private var textFieldFocused
+
+    var list: some View {
+        ForEach(dataStorage.playlists) { playlist in
+            NavigationLink(destination: MainView(), tag: playlist, selection: $dataStorage.selectedPlaylist) {
+                HStack {
+                    if renaming == playlist {
+                        Image(systemName: "music.note.list")
+                        TextField("Playlist Name", text: $name)
+                            .focused($textFieldFocused)
+                            .onChange(of: textFieldFocused) { focused in
+                                if !focused {
+                                    renaming = nil
+                                    playlist.name = name
+                                }
+                            }
+                    } else {
+                        Label(playlist.name, systemImage: "music.note.list")
+                    }
+                }
+            }
+            .contextMenu {
+                Button {
+                    renaming = playlist
+                    textFieldFocused = true
+                    name = playlist.name
+                } label: {
+                    Text("Rename")
+                }
+                Button {
+                    dataStorage.remove(playlist)
+                } label: {
+                    Text("Delete \(playlist.name)")
+                }
+            }
+        }
+    }
+
     var body: some View {
         NavigationView {
             VStack {
                 List {
-                    ForEach(dataStorage.playlists) { playlist in
-                        NavigationLink(destination: MainView(), tag: playlist, selection: $dataStorage.selectedPlaylist) {
-                            HStack {
-                                Image(systemName: "music.note.list")
-                                TextField(playlist.name, text: Binding(get: {playlist.name}, set: {playlist.name = $0}))
-                                    .disabled(playlist != $dataStorage.selectedPlaylist.wrappedValue)
-                            }
-                        }
+                    list
+                }
+                .contextMenu {
+                    Button {
+                        dataStorage.newPlaylist()
+                    } label: {
+                        Text("New Playlist")
                     }
                 }
-                .listStyle(.sidebar)
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
                         Button(action: toggleSidebar, label: {

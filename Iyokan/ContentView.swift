@@ -18,7 +18,7 @@ struct ContentView: View {
 
     var list: some View {
         ForEach(dataStorage.playlists) { playlist in
-            NavigationLink(destination: MainView(), tag: playlist, selection: $dataStorage.selectedPlaylist) {
+            NavigationLink(destination: MainView(), isActive: dataStorage.selectionBindingForId(id: playlist.id)) {
                 HStack {
                     if renaming == playlist {
                         Image(systemName: "music.note.list")
@@ -50,6 +50,7 @@ struct ContentView: View {
                 }
             }
         }
+        .onMove(perform: dataStorage.movePlaylists)
     }
 
     var body: some View {

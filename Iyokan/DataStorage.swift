@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class DataStorage: ObservableObject {
     static let shared = DataStorage()
@@ -34,5 +35,27 @@ class DataStorage: ObservableObject {
         if (item == nil) && !playlists.isEmpty {
             selectedPlaylist = playlists[0]
         }
+    }
+
+    func movePlaylists(from source: IndexSet, to destination: Int) {
+        playlists.move(fromOffsets: source, toOffset: destination)
+    }
+
+    // https://stackoverflow.com/a/66129676
+    func selectionBindingForId(id: UUID) -> Binding<Bool> {
+        Binding<Bool> { () -> Bool in
+            guard let selectedID = self.selectedPlaylist?.id else { return false }
+            return id == selectedID
+        } set: { newValue in
+            if newValue {
+                for playlist in self.playlists {
+                    if playlist.id == id {
+                        self.selectedPlaylist = playlist
+                        break
+                    }
+                }
+            }
+        }
+
     }
 }

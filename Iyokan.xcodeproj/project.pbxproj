@@ -63,6 +63,7 @@
 		343D1E8C27AA78E70067958D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3498996627ABE0CF009A1FA2 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		3498996827ABE275009A1FA2 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		34A1932E27E44093005BCC51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		34B1178427D20936006D3702 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		34B1178627D20A4A006D3702 /* GeneralPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralPreferencesView.swift; sourceTree = "<group>"; };
 		34B1178827D20B12006D3702 /* PlaybackPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackPreferencesView.swift; sourceTree = "<group>"; };
@@ -470,6 +471,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				2B643CAF27E42F01006F0244 /* zh-Hans */,
+				34A1932E27E44093005BCC51 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

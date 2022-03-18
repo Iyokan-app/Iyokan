@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B643CB027E42F01006F0244 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B643CAE27E42F01006F0244 /* Localizable.strings */; };
 		343D1E8D27AA78E70067958D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343D1E8C27AA78E70067958D /* Extensions.swift */; };
 		3498996727ABE0CF009A1FA2 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498996627ABE0CF009A1FA2 /* Player.swift */; };
 		3498996927ABE275009A1FA2 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498996827ABE275009A1FA2 /* PlayerView.swift */; };
@@ -58,6 +59,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2B643CAF27E42F01006F0244 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		343D1E8C27AA78E70067958D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3498996627ABE0CF009A1FA2 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		3498996827ABE275009A1FA2 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 		34DA1921279A87A700481176 /* Iyokan */ = {
 			isa = PBXGroup;
 			children = (
+				2B643CAE27E42F01006F0244 /* Localizable.strings */,
 				34DA1922279A87A700481176 /* IyokanApp.swift */,
 				34DA1951279A8BD000481176 /* AppData.swift */,
 				343D1E8C27AA78E70067958D /* Extensions.swift */,
@@ -384,6 +387,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				34DA192A279A87A800481176 /* Preview Assets.xcassets in Resources */,
+				2B643CB027E42F01006F0244 /* Localizable.strings in Resources */,
 				34DA1927279A87A800481176 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -460,6 +464,17 @@
 			targetProxy = 34DA193B279A87A800481176 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		2B643CAE27E42F01006F0244 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2B643CAF27E42F01006F0244 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		34DA1942279A87A800481176 /* Debug */ = {

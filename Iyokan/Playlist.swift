@@ -44,7 +44,7 @@ class Playlist: Identifiable, Hashable {
     }
 
     func removeItems(indexes: IndexSet) {
-        indexes.enumerated().reversed().forEach {
+        indexes.sorted().enumerated().reversed().forEach {
             items.remove(at: $0.element)
         }
         itemsHasChanged()
@@ -84,4 +84,7 @@ class Playlist: Identifiable, Hashable {
     var currentSong: Song? { currentItem?.song ?? nil }
 
     var playlistView: NSTableView? = nil
+}
+
+class LocalPlaylist: Playlist {
 }

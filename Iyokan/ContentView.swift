@@ -54,17 +54,19 @@ struct ContentView: View {
     }
 
     var tempPlaylist: some View {
-        NavigationLink(destination: MainView(), isActive: dataStorage.selectionBindingForId(id: dataStorage.tempPlaylist.id)) {
+        let tempPlaylist = dataStorage.tempPlaylist
+        return NavigationLink(destination: MainView(), isActive: dataStorage.selectionBindingForId(id: tempPlaylist.id)) {
             Label("Temporary Playlist", systemImage: "list.bullet.rectangle.portrait")
         }
         .contextMenu {
             Button {
-                return
+                tempPlaylist.removeItems(indexes: .init(integersIn: 0 ..< tempPlaylist.items.count))
             } label: {
                 Text("Empty Temporary Playlist")
             }
         }
     }
+
 
     var body: some View {
         NavigationView {
@@ -76,12 +78,8 @@ struct ContentView: View {
                     Section(header: Text("Playlists")) {
                         playlists
                     }
-                }
-                .contextMenu {
-                    Button {
-                        dataStorage.newPlaylist()
-                    } label: {
-                        Text("New Playlist")
+                    Section(header: Text("m3u Playlists")) {
+                        // localPlaylists
                     }
                 }
                 .toolbar {
@@ -93,12 +91,24 @@ struct ContentView: View {
                     }
                 }
                 HStack {
-                    Button(action: {
-                        dataStorage.newPlaylist()
-                    }) {
+                    Menu {
+                        Button("Create a New Playlist") {
+                            dataStorage.newPlaylist()
+                        }
+                        Button("Open a m3u Playlist…") {
+                            let openPanel = NSOpenPanel()
+                            openPanel.allowedContentTypes = [.m3uPlaylist]
+                            openPanel.allowsMultipleSelection = true
+                            openPanel.canChooseDirectories = false
+                            openPanel.canChooseFiles = true
+                            openPanel.beginSheetModal(for: NSApp.keyWindow!) {_ in
+                            }
+                        }
+                    } label: {
                         Label("New Playlist", systemImage: "plus.circle")
                     }
-                    .buttonStyle(.borderless)
+                    .menuStyle(.borderlessButton)
+                    .menuIndicator(.hidden)
                     .padding([.horizontal, .bottom], 6)
                     Spacer()
                     Button(action: {

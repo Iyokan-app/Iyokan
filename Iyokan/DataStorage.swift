@@ -13,10 +13,12 @@ class DataStorage: ObservableObject {
 
     let tempPlaylist: Playlist
     @Published var playlists: [Playlist] = []
+    @Published var localPlaylists: [LocalPlaylist] = []
+
     @Published var selectedPlaylist: Playlist?
 
     var allPlaylists: [Playlist] {
-        playlists + [tempPlaylist]
+        playlists + localPlaylists + [tempPlaylist]
     }
 
     init() {
@@ -35,11 +37,12 @@ class DataStorage: ObservableObject {
 
     func remove(_ item: Playlist?) {
         guard let target = item ?? selectedPlaylist else { return }
-        guard let index = playlists.firstIndex(of: target) else { return }
-        playlists.remove(at: index)
-        selectedPlaylist = nil
-        if (item == nil) && !playlists.isEmpty {
-            selectedPlaylist = playlists[0]
+
+        playlists.removeAll(where: { $0 == target })
+        localPlaylists.removeAll(where: { $0 == target })
+
+        if target == selectedPlaylist {
+            selectedPlaylist = tempPlaylist
         }
     }
 

@@ -8,7 +8,7 @@
 import Foundation
 import CoreMedia
 
-struct Song {
+class Song: Codable {
     init(_ path: String) {
         self.path = path
         let helper = Helper(path)!
@@ -30,6 +30,16 @@ struct Song {
         self.trackNo = Int(metadata["track"] ?? "0") ?? 0
         self.artist = metadata["artist"] ?? String(localized: "Unknown Artist")
         self.album = metadata["album"] ?? String(localized: "Unknown Ablum")
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case path
+    }
+
+    required convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let path = try container.decode(String.self, forKey: .path)
+        self.init(path)
     }
 
     // file data

@@ -7,7 +7,7 @@
 
 import Cocoa
 
-class Playlist: Identifiable, Hashable {
+class Playlist: Identifiable, Hashable, Codable {
     static func == (lhs: Playlist, rhs: Playlist) -> Bool {
         lhs.id == rhs.id
     }
@@ -15,6 +15,17 @@ class Playlist: Identifiable, Hashable {
     init(name: String, items: [Item]?) {
         self.name = name
         self.items = items ?? []
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case name, items
+    }
+
+    required convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let name = try container.decode(String.self, forKey: .name)
+        let items = try container.decode(Array<Item>.self, forKey: .items)
+        self.init(name: name, items: items)
     }
 
     func hash(into hasher: inout Hasher) {
@@ -59,7 +70,7 @@ class Playlist: Identifiable, Hashable {
         var offset = offset ?? items.count
         urls.forEach{
             let song = Song($0.path)
-            items.insert(Item(song: song, fromOffset: .zero, playlist: self), at: offset)
+            items.insert(Item(song: song, fromOffset: .zero), at: offset)
             offset += 1
         }
         itemsHasChanged()

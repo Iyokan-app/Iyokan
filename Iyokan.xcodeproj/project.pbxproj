@@ -21,7 +21,7 @@
 		34DA1935279A87A800481176 /* IyokanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1934279A87A800481176 /* IyokanTests.swift */; };
 		34DA193F279A87A800481176 /* IyokanUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA193E279A87A800481176 /* IyokanUITests.swift */; };
 		34DA1941279A87A800481176 /* IyokanUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1940279A87A800481176 /* IyokanUITestsLaunchTests.swift */; };
-		34DA194E279A8B4F00481176 /* Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA194D279A8B4F00481176 /* Decoder.swift */; };
+		34DA194E279A8B4F00481176 /* BufferProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA194D279A8B4F00481176 /* BufferProvider.swift */; };
 		34DA1952279A8BD000481176 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1951279A8BD000481176 /* AppData.swift */; };
 		34DA1954279A8BEE00481176 /* PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1953279A8BEE00481176 /* PlaylistView.swift */; };
 		34DA195B279A8C4F00481176 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DA1956279A8C4E00481176 /* Item.swift */; };
@@ -78,7 +78,7 @@
 		34DA193A279A87A800481176 /* IyokanUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IyokanUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		34DA193E279A87A800481176 /* IyokanUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IyokanUITests.swift; sourceTree = "<group>"; };
 		34DA1940279A87A800481176 /* IyokanUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IyokanUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		34DA194D279A8B4F00481176 /* Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decoder.swift; sourceTree = "<group>"; };
+		34DA194D279A8B4F00481176 /* BufferProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferProvider.swift; sourceTree = "<group>"; };
 		34DA1951279A8BD000481176 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		34DA1953279A8BEE00481176 /* PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistView.swift; sourceTree = "<group>"; };
 		34DA1956279A8C4E00481176 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -276,7 +276,7 @@
 			isa = PBXGroup;
 			children = (
 				3498996627ABE0CF009A1FA2 /* Player.swift */,
-				34DA194D279A8B4F00481176 /* Decoder.swift */,
+				34DA194D279A8B4F00481176 /* BufferProvider.swift */,
 				34DA195A279A8C4F00481176 /* Serializer.swift */,
 			);
 			name = Components;
@@ -415,7 +415,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				34DA1925279A87A700481176 /* ContentView.swift in Sources */,
-				34DA194E279A8B4F00481176 /* Decoder.swift in Sources */,
+				34DA194E279A8B4F00481176 /* BufferProvider.swift in Sources */,
 				34B1178727D20A4A006D3702 /* GeneralPreferencesView.swift in Sources */,
 				34DA195E279A8C4F00481176 /* Playlist.swift in Sources */,
 				34DA1923279A87A700481176 /* IyokanApp.swift in Sources */,

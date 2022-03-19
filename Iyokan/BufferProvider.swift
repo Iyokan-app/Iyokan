@@ -22,7 +22,7 @@ extension AudioStreamBasicDescription {
     }
 }
 
-class Decoder {
+class BufferProvider {
     private let helper: Helper
 
     private var presentationTimeStamp: CMTime

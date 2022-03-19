@@ -11,6 +11,9 @@ let allowedTypes = ["mp3", "wav", "flac", "m4a", "tta", "aiff", "opus", "ogg", "
 
 let CMTimePreferredTimescale: Int32 = 1000
 
+let supportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+let storageURL = supportDir.appendingPathComponent("storage.plist")
+
 struct AppStorageKeys {
     static let volume = "volume"
 }

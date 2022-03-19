@@ -8,8 +8,18 @@
 import SwiftUI
 import MediaPlayer
 
+class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationWillTerminate(_ notification: Notification) {
+        let encoder = PropertyListEncoder()
+        let data = try! encoder.encode(DataStorage.shared)
+        try! data.write(to: storageURL)
+    }
+}
+
 @main
 struct IyokanApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     @StateObject var dataStorage = DataStorage.shared
     let player = Player.shared
 

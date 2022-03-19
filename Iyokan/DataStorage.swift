@@ -8,12 +8,22 @@
 import Foundation
 import SwiftUI
 
-class DataStorage: ObservableObject {
-    static let shared = DataStorage()
+class DataStorage: ObservableObject, Codable {
+    static let shared: DataStorage = {
+        do {
+            if let data = try? Data(contentsOf: storageURL) {
+                let decoder = PropertyListDecoder()
+                if let dataStorage = try? decoder.decode(DataStorage.self, from: data) {
+                    return dataStorage
+                }
+            }
+        }
+        return DataStorage()
+    }()
 
-    let tempPlaylist: Playlist
-    @Published var playlists: [Playlist] = []
-    @Published var localPlaylists: [LocalPlaylist] = []
+    let tempPlaylist = Playlist(name: String(localized: "Temporary Playlist"), items: nil)
+    @Published var playlists: [Playlist]
+    @Published var localPlaylists: [LocalPlaylist]
 
     @Published var selectedPlaylist: Playlist?
 
@@ -22,8 +32,26 @@ class DataStorage: ObservableObject {
     }
 
     init() {
-        tempPlaylist = Playlist(name: String(localized: "Temporary Playlist"), items: nil)
+        playlists = []
+        localPlaylists = []
         selectedPlaylist = tempPlaylist
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case playlists, localPlaylists
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        playlists = try container.decode(Array<Playlist>.self, forKey: .playlists)
+        // localPlaylists = try container.decode(Array<LoaclPlaylist>.self, forKey: .localPlaylists)
+        localPlaylists = []
+        selectedPlaylist = tempPlaylist
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(playlists, forKey: .playlists)
     }
 
     func newPlaylist() {

@@ -53,16 +53,16 @@ struct ContentView: View {
         .onMove(perform: dataStorage.movePlaylists)
     }
 
-    var tempPlaylist: some View {
-        let tempPlaylist = dataStorage.tempPlaylist
-        return NavigationLink(destination: MainView(), isActive: dataStorage.selectionBindingForId(id: tempPlaylist.id)) {
-            Label("Temporary Playlist", systemImage: "list.bullet.rectangle.portrait")
+    var defaultPlaylist: some View {
+        let defaultPlaylist = dataStorage.defaultPlaylist
+        return NavigationLink(destination: MainView(), isActive: dataStorage.selectionBindingForId(id: defaultPlaylist.id)) {
+            Label("Default Playlist", systemImage: "list.bullet.rectangle.portrait")
         }
         .contextMenu {
             Button {
-                tempPlaylist.removeItems(indexes: .init(integersIn: 0 ..< tempPlaylist.items.count))
+                defaultPlaylist.removeItems(indexes: .init(integersIn: 0 ..< defaultPlaylist.items.count))
             } label: {
-                Text("Empty Temporary Playlist")
+                Text("Empty Default Playlist")
             }
         }
     }
@@ -72,8 +72,8 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 List {
-                    Section(header: Text("Temp")) {
-                        tempPlaylist
+                    Section(header: Text("Default")) {
+                        defaultPlaylist
                     }
                     Section(header: Text("Playlists")) {
                         playlists

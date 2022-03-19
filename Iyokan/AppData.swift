@@ -16,4 +16,6 @@ let storageURL = supportDir.appendingPathComponent("storage.plist")
 
 struct AppStorageKeys {
     static let volume = "volume"
+
+    static let clearDefaultPlaylist = "clearDefaultPlaylist"
 }

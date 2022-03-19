@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct GeneralPreferencesView: View {
+    @AppStorage(AppStorageKeys.clearDefaultPlaylist) var clearDefaultPlaylist: Bool = true
+
     var body: some View {
-        Text("General Preferences View", comment: "Do not translate")
+        Toggle("Clear the default playlist on quit", isOn: $clearDefaultPlaylist)
+            .toggleStyle(.checkbox)
+        // Text("General Preferences View", comment: "Do not translate")
     }
 }
 

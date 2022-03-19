@@ -102,5 +102,23 @@ class Playlist: Identifiable, Hashable, Codable {
     var playlistView: NSTableView? = nil
 }
 
+
+class DefaultPlaylist: Playlist {
+    init(_ items: [Item]? = nil) {
+        super.init(name: NSLocalizedString("Default Playlist", comment: ""), items: items)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case items
+    }
+
+    required convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let items = try container.decode(Array<Item>.self, forKey: .items)
+        self.init(items)
+    }
+}
+
+
 class LocalPlaylist: Playlist {
 }

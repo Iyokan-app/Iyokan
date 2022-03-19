@@ -21,24 +21,25 @@ class DataStorage: ObservableObject, Codable {
         return DataStorage()
     }()
 
-    let tempPlaylist = Playlist(name: String(localized: "Temporary Playlist"), items: nil)
+    let defaultPlaylist: DefaultPlaylist
     @Published var playlists: [Playlist]
     @Published var localPlaylists: [LocalPlaylist]
 
     @Published var selectedPlaylist: Playlist?
 
     var allPlaylists: [Playlist] {
-        playlists + localPlaylists + [tempPlaylist]
+        playlists + localPlaylists + [defaultPlaylist]
     }
 
     init() {
         playlists = []
         localPlaylists = []
-        selectedPlaylist = tempPlaylist
+        defaultPlaylist = DefaultPlaylist()
+        selectedPlaylist = defaultPlaylist
     }
 
     enum CodingKeys: String, CodingKey {
-        case playlists, localPlaylists
+        case playlists, localPlaylists, defaultPlaylist
     }
 
     required init(from decoder: Decoder) throws {
@@ -46,12 +47,18 @@ class DataStorage: ObservableObject, Codable {
         playlists = try container.decode(Array<Playlist>.self, forKey: .playlists)
         // localPlaylists = try container.decode(Array<LoaclPlaylist>.self, forKey: .localPlaylists)
         localPlaylists = []
-        selectedPlaylist = tempPlaylist
+        defaultPlaylist = (try? container.decode(DefaultPlaylist.self, forKey: .defaultPlaylist)) ?? DefaultPlaylist()
+        selectedPlaylist = defaultPlaylist
     }
+
+    @AppStorage(AppStorageKeys.clearDefaultPlaylist) var clearDefaultPlaylist: Bool = true
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(playlists, forKey: .playlists)
+        if !clearDefaultPlaylist {
+            try container.encode(defaultPlaylist, forKey: .defaultPlaylist)
+        }
     }
 
     func newPlaylist() {
@@ -70,7 +77,7 @@ class DataStorage: ObservableObject, Codable {
         localPlaylists.removeAll(where: { $0 == target })
 
         if target == selectedPlaylist {
-            selectedPlaylist = tempPlaylist
+            selectedPlaylist = defaultPlaylist
         }
     }
 

@@ -75,7 +75,12 @@ class Playlist: Identifiable, Hashable {
     var items: [Item] = []
 
     // nil if the player is in a stopped state
-    var currentIndex: Int?
+    var currentIndex: Int? {
+        didSet {
+            let rowIndexes = IndexSet([oldValue, currentIndex].compactMap { $0 })
+            playlistView?.reloadData(forRowIndexes: rowIndexes, columnIndexes: .init(integer: 0))
+        }
+    }
     var currentItem: Item? {
         guard let index = currentIndex else { return nil }
         guard index >= 0 && index < items.count else { return nil }

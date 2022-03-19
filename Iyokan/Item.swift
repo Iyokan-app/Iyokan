@@ -35,14 +35,7 @@ class Item: Identifiable, Hashable {
     private(set) var endOffset: CMTime
 
     // true if this item has been used to get sample buffers
-    private(set) var isEnqueued = false {
-        didSet {
-            // TODO: reloadData(for indexes)
-            DispatchQueue.main.async {
-                self.playlist.playlistView?.reloadData()
-            }
-        }
-    }
+    private(set) var isEnqueued = false
 
     init (song: Song, fromOffset offset: CMTime, playlist: Playlist) {
         self.song = song
@@ -51,7 +44,6 @@ class Item: Identifiable, Hashable {
 
         self.startOffset = offset > .zero && offset < song.duration ? offset : .zero
         self.playlist = playlist
-
     }
 
     func nextSample() -> CMSampleBuffer? {

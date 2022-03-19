@@ -16,7 +16,7 @@ struct ContentView: View {
     @State private var name: String = ""
     @FocusState private var textFieldFocused
 
-    var list: some View {
+    var playlists: some View {
         ForEach(dataStorage.playlists) { playlist in
             NavigationLink(destination: MainView(), isActive: dataStorage.selectionBindingForId(id: playlist.id)) {
                 HStack {
@@ -53,11 +53,29 @@ struct ContentView: View {
         .onMove(perform: dataStorage.movePlaylists)
     }
 
+    var tempPlaylist: some View {
+        NavigationLink(destination: MainView(), isActive: dataStorage.selectionBindingForId(id: dataStorage.tempPlaylist.id)) {
+            Label("Temporary Playlist", systemImage: "list.bullet.rectangle.portrait")
+        }
+        .contextMenu {
+            Button {
+                return
+            } label: {
+                Text("Empty Temporary Playlist")
+            }
+        }
+    }
+
     var body: some View {
         NavigationView {
             VStack {
                 List {
-                    list
+                    Section(header: Text("Temp")) {
+                        tempPlaylist
+                    }
+                    Section(header: Text("Playlists")) {
+                        playlists
+                    }
                 }
                 .contextMenu {
                     Button {

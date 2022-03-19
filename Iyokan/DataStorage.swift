@@ -11,11 +11,17 @@ import SwiftUI
 class DataStorage: ObservableObject {
     static let shared = DataStorage()
 
+    let tempPlaylist: Playlist
     @Published var playlists: [Playlist] = []
     @Published var selectedPlaylist: Playlist?
 
+    var allPlaylists: [Playlist] {
+        playlists + [tempPlaylist]
+    }
+
     init() {
-        newPlaylist()
+        tempPlaylist = Playlist(name: String(localized: "Temporary Playlist"), items: nil)
+        selectedPlaylist = tempPlaylist
     }
 
     func newPlaylist() {
@@ -48,7 +54,7 @@ class DataStorage: ObservableObject {
             return id == selectedID
         } set: { newValue in
             if newValue {
-                for playlist in self.playlists {
+                for playlist in self.allPlaylists {
                     if playlist.id == id {
                         self.selectedPlaylist = playlist
                         break

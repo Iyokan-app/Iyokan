@@ -31,7 +31,7 @@ class DataStorage: ObservableObject, Codable {
         playlists + localPlaylists + [defaultPlaylist]
     }
 
-    init() {
+    private init() {
         playlists = []
         localPlaylists = []
         defaultPlaylist = DefaultPlaylist()

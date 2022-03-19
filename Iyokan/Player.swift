@@ -50,7 +50,7 @@ class Player: ObservableObject {
 
     var blockPercentageUpdate = false
 
-    init() {
+    private init() {
         volume = volume // to trigger the didSet closure of volume
 
         let notificationCenter = NotificationCenter.default

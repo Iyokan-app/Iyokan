@@ -43,7 +43,7 @@ class Serializer: ObservableObject {
     private var automaticFlushObserver: NSObjectProtocol!
     private var periodicObserver: Any?
 
-    init() {
+    private init() {
         synchronizer.addRenderer(renderer)
         automaticFlushObserver = NotificationCenter.default.addObserver(forName: .AVSampleBufferAudioRendererWasFlushedAutomatically,
                                                                         object: renderer,

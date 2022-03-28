@@ -89,7 +89,9 @@ class Playlist: Identifiable, Hashable, Codable {
     var currentIndex: Int? {
         didSet {
             let rowIndexes = IndexSet([oldValue, currentIndex].compactMap { $0 })
-            playlistView?.reloadData(forRowIndexes: rowIndexes, columnIndexes: .init(integer: 0))
+            DispatchQueue.main.async {
+                self.playlistView?.reloadData(forRowIndexes: rowIndexes, columnIndexes: .init(integer: 0))
+            }
         }
     }
     var currentItem: Item? {
